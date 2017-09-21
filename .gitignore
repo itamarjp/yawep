@@ -1,1 +1,24 @@
-venv/*
+.DS_Store
+*.pyc
+*.pyo
+env
+env*
+venv
+venv*
+migrations
+migrations*
+dist
+build
+*.egg
+*.egg-info
+*.db
+_mailinglist
+.tox
+.cache/
+.idea/
+
+# Coverage reports
+htmlcov
+.coverage
+.coverage.*
+*,cover
