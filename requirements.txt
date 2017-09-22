@@ -1,7 +1,7 @@
 alembic==0.9.1
 appdirs==1.4.3
 click==6.7
-Flask==0.12.1
+Flask==0.12.2
 Flask-Login==0.4.0
 Flask-Migrate==2.0.3
 Flask-Script==2.0.5
@@ -9,7 +9,7 @@ Flask-SQLAlchemy==2.2
 Flask-WTF==0.14.2
 itsdangerous==0.24
 Jinja2==2.9.6
-Mako==1.0.6
+Mako==1.0.7
 MarkupSafe==1.0
 packaging==16.8
 pyparsing==2.2.0
