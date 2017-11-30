@@ -39,8 +39,24 @@ class User(db.Model):
         self.password_clear = ''
         self.password_hash = self.hash_password(password)
 
-    def __repr__(self):
-        return "<User %r>" % self.username
+#    def __repr__(self):
+#        return "<User %r>" % self.username
+
+#    def __repr__(self):
+#        return {
+#        'name' :  self.name ,
+#        'email' :  self.email ,
+#        'username':  self.username ,
+#        'password_clear' : self.password_clear ,
+#        'password_hash' : self.password_hash
+#        }
+
+    def serialize(self):
+        return Serializer.serialize(self)
+    
+    @staticmethod
+    def serialize_list(l):
+        return [m.serialize() for m in l]
 
 class Domain(db.Model):
     __tablename__ = "domains"
