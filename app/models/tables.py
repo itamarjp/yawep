@@ -8,8 +8,7 @@ class User(db.Model):
     name = db.Column(db.String)
     email = db.Column(db.String, unique=True)
     username = db.Column(db.String, unique=True)
-    password_clear = db.Column(db.String)
-    password_hash = db.Column(db.String(128))
+    password = db.Column(db.String(128))
     @property
     def serialize(self):
         return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
@@ -19,31 +18,46 @@ class User(db.Model):
            'name' : self.name ,
            'email' :  self.email,
            'username' : self.username,
-           'password_clear' : self.password_clear,
-           'password_hash' : self.password_hash
+           'password' : self.password,
            }
 
-class Domain(db.Model):
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def hash_password(self, password):
+        self.password = pwd_context.encrypt(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password)
+
+
+
+class Domains(db.Model):
     __tablename__ = "domains"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     name = db.Column(db.Text)
 
-class emails(db.Model):
+class Emails(db.Model):
     __tablename__ = "emails"
     id = db.Column(db.Integer, primary_key=True)
     domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
     username = db.Column(db.Text)
     password = db.Column(db.Text)
 
-class ftpaccounts(db.Model):
+class FtpAccounts(db.Model):
     __tablename__ = "ftpaccounts"
     id = db.Column(db.Integer, primary_key=True)
     domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
     username = db.Column(db.Text)
     password = db.Column(db.Text)
 
-class databases(db.Model):
+class Databases(db.Model):
     __tablename__ = "databases"
     id = db.Column(db.Integer, primary_key=True)
     domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))

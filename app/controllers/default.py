@@ -22,12 +22,9 @@ from flask import abort
 from json import dumps
 from flask import make_response
 
-from sqlalchemy.inspection import inspect
-
 @login_manager.user_loader
 def load_user(id):
     return User.query.filter_by(id=id).first()
-
 
 @app.route("/index")
 @app.route("/home")
@@ -55,24 +52,6 @@ def logout():
     flash("Logged out.")
     return redirect(url_for("login"))
 
-@app.route('/api/xusers', methods = ['POST','GET'])
-def xnew_user():
-    form_user = NewUserForm()
-    if form_user.validate_on_submit():
-     username = request.json.get('username')
-     password = request.json.get('password')
-     if username is None or password is None:
-         abort(400) # missing arguments
-     if User.query.filter_by(username = username).first() is not None:
-         abort(400) # existing user
-     user = User(username = username)
-     user.hash_password(password)
-     db.session.add(user)
-     db.session.commit()
-    return render_template('newuser.html', form=form_user)
-
-
-
 @app.route('/api/resource')
 @auth.login_required
 def get_resource():
@@ -83,85 +62,37 @@ def verify_password(username, password):
     user = User.query.filter_by(username = username).first()
     if not user or not user.verify_password(password):
         return False
-    g.user = user
     return True
 
 
-#users api
-
-
-def make_public_user(user):
-    new_user = {}
-    for field in user:
-        if field == 'id':
-            new_user['uri'] = url_for('get_user', user_id = user['id'], _external = True)
-        else:
-            new_user[field] = user[field]
-    return new_user
-
 #http://localhost/api/users
 @app.route('/api/users', methods = ['GET']) #(retrieve list)
+@auth.login_required
 def get_ALL_users():
    users = User.query.all()
    if not users:
       abort(404)
-   #return jsonify({'users':users}), 201, {'Location': url_for('get_ALL_user', _external = True)}
-   #return make_response(dumps(users))
-   #return jsonify(dict(users))
-   #result = [d.__dict__ for d in users]
-   #return jsonify(users=result)
-   #import json
-   #return json.dumps((users))
-   #return jsonify( { 'users': map(make_public_user, users) } )
-   results = []
-   for user in users:
-      obj = {
-        'id': user.id ,
-        'name' : user.name ,
-        'email' : user.email , 
-        'username' : user.username ,
-        'password_clear' : user.password_clear
-      }
-   results.append(obj)
-   import json
-#   response = json.dumps([dict(r) for r in users])
-   #response = jsonify(users)
    response = jsonify([i.serialize for i in users])
-   #response = jsonify(results)
    response.status_code = 200
    return response
 
 #http://localhost/api/users/123
 @app.route('/api/users/<int:user_id>', methods = ['GET']) #(retrieve user 123)
+@auth.login_required
 def get_user(user_id):
        app.logger.debug('metodo get')
-       user = User.query.filter_by(id = user_id).first()
-       if not user:
-          # Raise an HTTPException with a 404 not found status code
-          abort(404)
-
-       results = []
-       #for user in users:
-       obj = {
-           'id': user.id ,
-           'name' : user.name ,
-           'email' : user.email , 
-           'username' : user.username ,
-           'password_clear' : user.password_clear
-       }
-       results.append(obj)
-       response = jsonify(results)
+       user = User.query.filter_by(id = user_id).first_or_404()
+       response = jsonify(user.serialize)
        response.status_code = 200
        return response
 
-      # return jsonify(user), 201, {'Location': url_for('get_user', user_id = user.id, _external = True)}
-
-
 @app.route('/api/users', methods = ['POST'])  #(create a new user, from data provided with the request)
+@auth.login_required
 def new_user():
-    username = request.json.get('username')
-    password = request.json.get('password')
-    email = request.json.get('email')
+    name =  str(request.json.get('name', ''))
+    email =  str(request.json.get('email', ''))
+    username =  str(request.json.get('username', ''))
+    password =  str(request.json.get('password', ''))
     if username is None or password is None or email is None:
         app.logger.debug('missing arguments')
         abort(400) # missing arguments
@@ -171,40 +102,33 @@ def new_user():
     if User.query.filter_by(email = email).first() is not None:
         app.logger.debug('email ja existe')
         abort(400) # existing user registered with email
-    user = User(username = username,password_clear = password, email=email)
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', user_id = user.id, _external = True)}
+    user = User(name = name,  email = email, username = username)
+    user.hash_password(password)
+    user.save()
+    return jsonify(user.serialize), 201, {'Location': url_for('get_user', user_id = user.id, _external = True)}
 
 #http://localhost/api/users/123
 @app.route('/api/users/<int:user_id>', methods = ['PUT']) #(update user 123, from data provided with the request)
+@auth.login_required
 def update_user(user_id):
    app.logger.debug('metodo put')
-   user = User.query.filter_by(id = user_id).first()
-   if not user:
-      # Raise an HTTPException with a 404 not found status code
-      abort(404)
+   user = User.query.filter_by(id = user_id).first_or_404()
    user.name = str(request.json.get('name', ''))
    user.email = str(request.json.get('email', ''))
    user.username = str(request.json.get('username', ''))
-   user.password_clear = str(request.json.get('password_clear', ''))
+   user.password = user.hash_password(str(request.json.get('password', '')))
    db.session.commit()
-   response = jsonify({
-           'id': user.id ,
-           'name' : user.name ,
-           'email' : user.email , 
-           'username' : user.username ,
-           'password_clear' : user.password_clear})
+   response = jsonify(user.serialize)
    response.status_code = 200
    return response
 
 
 #http://localhost/api/users/123
 @app.route('/api/users/<int:user_id>', methods = ['DELETE']) #(delete user 123, from data provided with the request)
+@auth.login_required
 def delete_user(user_id):
    user = User.query.filter_by(id = user_id).first_or_404()
-   db.session.delete(user)
-   db.session.commit()
+   user.delete()
    response = jsonify({'message': 'User deleted successfully'})
    response.status_code = 204
    return response
