@@ -103,6 +103,8 @@ def make_public_user(user):
 @app.route('/api/users', methods = ['GET']) #(retrieve list)
 def get_ALL_users():
    users = User.query.all()
+   if not users:
+      abort(404)
    #return jsonify({'users':users}), 201, {'Location': url_for('get_ALL_user', _external = True)}
    #return make_response(dumps(users))
    #return jsonify(dict(users))
@@ -121,13 +123,18 @@ def get_ALL_users():
         'password_clear' : user.password_clear
       }
    results.append(obj)
-   response = jsonify(results)
+   import json
+#   response = json.dumps([dict(r) for r in users])
+   #response = jsonify(users)
+   response = jsonify([i.serialize for i in users])
+   #response = jsonify(results)
    response.status_code = 200
    return response
 
 #http://localhost/api/users/123
 @app.route('/api/users/<int:user_id>', methods = ['GET']) #(retrieve user 123)
 def get_user(user_id):
+       app.logger.debug('metodo get')
        user = User.query.filter_by(id = user_id).first()
        if not user:
           # Raise an HTTPException with a 404 not found status code
@@ -164,7 +171,7 @@ def new_user():
     if User.query.filter_by(email = email).first() is not None:
         app.logger.debug('email ja existe')
         abort(400) # existing user registered with email
-    user = User(username = username,password = password, email=email)
+    user = User(username = username,password_clear = password, email=email)
     db.session.add(user)
     db.session.commit()
     return jsonify({ 'username': user.username }), 201, {'Location': url_for('get_user', user_id = user.id, _external = True)}
@@ -172,6 +179,7 @@ def new_user():
 #http://localhost/api/users/123
 @app.route('/api/users/<int:user_id>', methods = ['PUT']) #(update user 123, from data provided with the request)
 def update_user(user_id):
+   app.logger.debug('metodo put')
    user = User.query.filter_by(id = user_id).first()
    if not user:
       # Raise an HTTPException with a 404 not found status code
@@ -186,20 +194,17 @@ def update_user(user_id):
            'name' : user.name ,
            'email' : user.email , 
            'username' : user.username ,
-           'password_clear' : user.password_clear
-       }
-            response.status_code = 200
-            return response
+           'password_clear' : user.password_clear})
+   response.status_code = 200
+   return response
 
 
 #http://localhost/api/users/123
 @app.route('/api/users/<int:user_id>', methods = ['DELETE']) #(delete user 123, from data provided with the request)
 def delete_user(user_id):
-   user = User.query.filter_by(id = user_id).first()
-   if not user:
-      #Raise an HTTPException with a 404 not found status code
-      abort(404)
-   user_id = user.id
+   user = User.query.filter_by(id = user_id).first_or_404()
    db.session.delete(user)
    db.session.commit()
-   return { "message": "User {} deleted successfully".format(user_id)}, 200
+   response = jsonify({'message': 'User deleted successfully'})
+   response.status_code = 204
+   return response

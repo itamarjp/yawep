@@ -1,5 +1,6 @@
 from app import db
 from passlib.apps import custom_app_context as pwd_context
+from sqlalchemy.inspection import inspect
 
 class User(db.Model):
     __tablename__ = "users"
@@ -9,54 +10,18 @@ class User(db.Model):
     username = db.Column(db.String, unique=True)
     password_clear = db.Column(db.String)
     password_hash = db.Column(db.String(128))
-
     @property
-    def is_authenticated(self):
-        return True
-
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return str(self.id)
-
-    def hash_password(self, password):
-        self.password_hash = pwd_context.encrypt(password)
-
-    def verify_password(self, password):
-        return pwd_context.verify(password, self.password_hash)        
-
-    def __init__(self, username, password,email):
-        self.username = username
-        self.password = password
-        self.name = ''
-        self.email = email
-        self.password_clear = ''
-        self.password_hash = self.hash_password(password)
-
-#    def __repr__(self):
-#        return "<User %r>" % self.username
-
-#    def __repr__(self):
-#        return {
-#        'name' :  self.name ,
-#        'email' :  self.email ,
-#        'username':  self.username ,
-#        'password_clear' : self.password_clear ,
-#        'password_hash' : self.password_hash
-#        }
-
     def serialize(self):
-        return Serializer.serialize(self)
-    
-    @staticmethod
-    def serialize_list(l):
-        return [m.serialize() for m in l]
+        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
+
+        return {
+           'id' : self.id ,
+           'name' : self.name ,
+           'email' :  self.email,
+           'username' : self.username,
+           'password_clear' : self.password_clear,
+           'password_hash' : self.password_hash
+           }
 
 class Domain(db.Model):
     __tablename__ = "domains"
