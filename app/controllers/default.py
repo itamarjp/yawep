@@ -52,13 +52,14 @@ def logout():
     flash("Logged out.")
     return redirect(url_for("login"))
 
-@app.route('/api/resource')
+@app.route('/api/login',methods=['POST'])
 @auth.login_required
 def get_resource():
-    return jsonify({ 'data': 'Hello, %s!' % g.user.username })
+    return jsonify({ 'message': 'Hello there !' })
 
 @auth.verify_password
 def verify_password(username, password):
+    app.logger.debug('tentativa de login {0}, {1}'.format(username, password ))
     user = User.query.filter_by(username = username).first()
     if not user or not user.verify_password(password):
         return False
