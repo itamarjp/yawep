@@ -18,7 +18,7 @@ class User(db.Model):
            'name' : self.name ,
            'email' :  self.email,
            'username' : self.username,
-           'password' : self.password,
+#          'password' : self.password,
            }
 
     def save(self):
@@ -42,6 +42,25 @@ class Domains(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     name = db.Column(db.Text)
+    @property
+    def serialize(self):
+        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
+
+        return {
+           'id' : self.id ,
+           'name' : self.name ,
+           'email' :  self.email,
+           'username' : self.username,
+#          'password' : self.password,
+           }
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 class Emails(db.Model):
     __tablename__ = "emails"
