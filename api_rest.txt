@@ -1,0 +1,41 @@
+#removendo
+curl -i -X DELETE http://127.0.0.1:5000/api/users/1
+
+#consultando TODOS
+curl -u x:x -i -X GET http://127.0.0.1:5000/api/users
+curl -u x:x -i -X GET http://127.0.0.1:5000/api/domains
+curl -u x:x -i -X GET http://127.0.0.1:5000/api/databases
+curl -u x:x -i -X GET http://127.0.0.1:5000/api/ftpaccounts
+curl -u x:x -i -X GET http://127.0.0.1:5000/api/emails
+
+#consultando somente 1
+curl -i -X GET http://127.0.0.1:5000/api/users/2
+
+
+#criando
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"xitamar@ispbrasil.com.br", "username":"xxmiguel","password":"python"}' http://127.0.0.1:5000/api/users
+
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"mail.ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
+
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
+
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"www.ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
+
+
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , "databasename":"xxx", "username": "x", "password":"x"}' http://127.0.0.1:5000/api/databases
+
+
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , "username":"x=x", "password":"x"}' http://127.0.0.1:5000/api/ftpaccounts
+
+
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , "username":"itamarjp", "password":"x"}' http://127.0.0.1:5000/api/emails
+
+ssh -o 'ProxyCommand ssh -p 19000 root@online.ispbrasil.com.br nc %h %p' root@192.168.122.74 
+ssh -p 19000 root@online.ispbrasil.com.br -L 5901:localhost:5900
+                <select ng-model="reviewCtrl.review.stars" class="form-control" ng-options="stars for stars in [5,4,3,2,1]" title="Stars">
+                  <option value="">Rate the Product</option>
+                </select>
+
+
+      this.review = {'createdOn': Date.now()};
+
