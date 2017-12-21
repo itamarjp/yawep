@@ -85,7 +85,7 @@ def get_ALL_users():
    return response
 
 #http://localhost/api/users/123
-@app.route('/api/users/<int:user_id>', methods = ['GET']) #(retrieve user 123)
+@app.route('/api/users/<int:id>', methods = ['GET']) #(retrieve user 123)
 @auth.login_required
 def get_user(id):
        app.logger.debug('metodo get')
@@ -116,7 +116,7 @@ def new_user():
     return jsonify(user.serialize), 201, {'Location': url_for('get_user', user_id = user.id, _external = True)}
 
 #http://localhost/api/users/123
-@app.route('/api/users/<int:user_id>', methods = ['PUT']) #(update user 123, from data provided with the request)
+@app.route('/api/users/<int:id>', methods = ['PUT']) #(update user 123, from data provided with the request)
 @auth.login_required
 def update_user(id):
    app.logger.debug('metodo put')
@@ -132,7 +132,7 @@ def update_user(id):
 
 
 #http://localhost/api/users/123
-@app.route('/api/users/<int:user_id>', methods = ['DELETE']) #(delete user 123, from data provided with the request)
+@app.route('/api/users/<int:id>', methods = ['DELETE']) #(delete user 123, from data provided with the request)
 @auth.login_required
 def delete_user(id):
    user = User.query.filter_by(id = id).first_or_404()
@@ -155,7 +155,7 @@ def get_ALL_domains():
    return response
 
 #http://localhost/api/domains/123
-@app.route('/api/domains/<int:domain_id>', methods = ['GET']) #(retrieve domain 123)
+@app.route('/api/domains/<int:id>', methods = ['GET']) #(retrieve domain 123)
 @auth.login_required
 def get_domain(id):
        app.logger.debug('metodo get')
@@ -180,7 +180,7 @@ def new_domain():
     return jsonify(domain.serialize), 201, {'Location': url_for('get_domain', domain_id = domain.id, _external = True)}
 
 #http://localhost/api/domains/123
-@app.route('/api/domains/<int:domain_id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
+@app.route('/api/domains/<int:id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
 @auth.login_required
 def update_domain(id):
    app.logger.debug('metodo put')
@@ -194,7 +194,7 @@ def update_domain(id):
 
 
 #http://localhost/api/domains/123
-@app.route('/api/domains/<int:domain_id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
+@app.route('/api/domains/<int:id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
 @auth.login_required
 def delete_domain(id):
    domain = Domains.query.filter_by(id = id).first_or_404()
@@ -215,7 +215,7 @@ def get_ALL_emails():
    return response
 
 #http://localhost/api/emails/123
-@app.route('/api/emails/<int:email_id>', methods = ['GET']) #(retrieve email 123)
+@app.route('/api/emails/<int:id>', methods = ['GET']) #(retrieve email 123)
 @auth.login_required
 def get_email(id):
        app.logger.debug('metodo get')
@@ -242,7 +242,7 @@ def new_email():
 
 
 #http://localhost/api/emails/123
-@app.route('/api/emails/<int:email_id>', methods = ['PUT']) #(update email 123, from data provided with the request)
+@app.route('/api/emails/<int:id>', methods = ['PUT']) #(update email 123, from data provided with the request)
 @auth.login_required
 def update_email(id):
    app.logger.debug('metodo put')
@@ -256,7 +256,7 @@ def update_email(id):
 
 
 #http://localhost/api/emails/123
-@app.route('/api/emails/<int:email_id>', methods = ['DELETE']) #(delete email 123, from data provided with the request)
+@app.route('/api/emails/<int:id>', methods = ['DELETE']) #(delete email 123, from data provided with the request)
 @auth.login_required
 def delete_email(id):
    email = Emails.query.filter_by(id = id).first_or_404()
@@ -279,7 +279,7 @@ def get_ALL_ftpaccounts():
    return response
 
 #http://localhost/api/ftpaccounts/123
-@app.route('/api/ftpaccounts/<int:domain_id>', methods = ['GET']) #(retrieve domain 123)
+@app.route('/api/ftpaccounts/<int:id>', methods = ['GET']) #(retrieve domain 123)
 @auth.login_required
 def get_ftpaccount(id):
        app.logger.debug('metodo get')
@@ -305,7 +305,7 @@ def new_ftpaccount():
     return jsonify(ftpaccount.serialize), 201, {'Location': url_for('get_ftpaccount', domain_id = domain_id, _external = True)}
 
 #http://localhost/api/ftpaccounts/123
-@app.route('/api/ftpaccounts/<int:domain_id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
+@app.route('/api/ftpaccounts/<int:id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
 @auth.login_required
 def update_ftpaccount(id):
    app.logger.debug('metodo put')
@@ -319,7 +319,7 @@ def update_ftpaccount(id):
 
 
 #http://localhost/api/ftpaccounts/123
-@app.route('/api/ftpaccounts/<int:domain_id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
+@app.route('/api/ftpaccounts/<int:id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
 @auth.login_required
 def delete_ftpaccount(id):
    ftpaccount = FtpAccounts.query.filter_by(id = id).first_or_404()
@@ -340,7 +340,7 @@ def get_ALL_databases():
    return response
 
 #http://localhost/api/databases/123
-@app.route('/api/databases/<int:domain_id>', methods = ['GET']) #(retrieve domain 123)
+@app.route('/api/databases/<int:id>', methods = ['GET']) #(retrieve domain 123)
 @auth.login_required
 def get_databases(id):
        app.logger.debug('metodo get')
@@ -367,7 +367,7 @@ def new_databases():
     return jsonify(database.serialize), 201, {'Location': url_for('get_databases', domain_id = domain_id, _external = True)}
 
 #http://localhost/api/databases/123
-@app.route('/api/databases/<int:domain_id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
+@app.route('/api/databases/<int:id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
 @auth.login_required
 def update_databases(id):
    app.logger.debug('metodo put')
@@ -381,11 +381,11 @@ def update_databases(id):
 
 
 #http://localhost/api/databases/123
-@app.route('/api/databases/<int:domain_id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
+@app.route('/api/databases/<int:id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
 @auth.login_required
 def delete_databases(id):
-   domain = Databases.query.filter_by(id = id).first_or_404()
-   domain.delete()
+   database = Databases.query.filter_by(id = id).first_or_404()
+   database.delete()
    response = jsonify({'message': 'databases deleted successfully'})
    response.status_code = 204
    return response

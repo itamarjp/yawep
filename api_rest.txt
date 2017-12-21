@@ -1,34 +1,42 @@
-#removendo
-curl -i -X DELETE http://127.0.0.1:5000/api/users/1
+#criando usuarios
+curl --noproxy 127.0.0.1 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar1@ispbrasil.com.br", "username":"x","password":"x"}' http://127.0.0.1:5000/api/users
+curl --noproxy 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar2@ispbrasil.com.br", "username":"xx","password":"xx"}' http://127.0.0.1:5000/api/users
+curl --noproxy 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar3@ispbrasil.com.br", "username":"xxx","password":"xxx"}' http://127.0.0.1:5000/api/users
+
+
+#criando dominios
+curl --noproxy 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"mail.ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
+curl --noproxy 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
+curl --noproxy 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":3 , "name":"www.ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
+
+
+#criando banco
+curl --noproxy 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "databasename":"xxx", "username": "x", "password":"x"}' http://127.0.0.1:5000/api/databases
+
+#criando conta de ftp 
+curl --noproxy 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , "username":"xxx", "password":"x"}' http://127.0.0.1:5000/api/ftpaccounts
+
+#criando conta de email 
+curl --noproxy 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":3 , "username":"itamarjp", "password":"x"}' http://127.0.0.1:5000/api/emails
 
 #consultando TODOS
-curl -u x:x -i -X GET http://127.0.0.1:5000/api/users
-curl -u x:x -i -X GET http://127.0.0.1:5000/api/domains
-curl -u x:x -i -X GET http://127.0.0.1:5000/api/databases
-curl -u x:x -i -X GET http://127.0.0.1:5000/api/ftpaccounts
-curl -u x:x -i -X GET http://127.0.0.1:5000/api/emails
-
-#consultando somente 1
-curl -i -X GET http://127.0.0.1:5000/api/users/2
+curl -u x:x --noproxy 127.0.0.1 -i -X GET http://127.0.0.1:5000/api/users
+curl -u x:x --noproxy 127.0.0.1 -i -X GET http://127.0.0.1:5000/api/domains
+curl -u x:x --noproxy 127.0.0.1 -i -X GET http://127.0.0.1:5000/api/databases
+curl -u x:x --noproxy 127.0.0.1 -i -X GET http://127.0.0.1:5000/api/ftpaccounts
+curl -u x:x --noproxy 127.0.0.1 -i -X GET http://127.0.0.1:5000/api/emails
 
 
-#criando
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"xitamar@ispbrasil.com.br", "username":"xxmiguel","password":"python"}' http://127.0.0.1:5000/api/users
 
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"mail.ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
-
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
-
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"www.ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
-
-
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , "databasename":"xxx", "username": "x", "password":"x"}' http://127.0.0.1:5000/api/databases
+#removendo 1
+curl -u x:x --noproxy 127.0.0.1 -i -X DELETE  http://127.0.0.1:5000/api/databases/1
+curl -u x:x --noproxy 127.0.0.1 -i -X DELETE  http://127.0.0.1:5000/api/ftpaccounts/1
+curl -u x:x --noproxy 127.0.0.1 -i -X DELETE  http://127.0.0.1:5000/api/emails/1
+curl -u x:x --noproxy 127.0.0.1 -i -X DELETE  http://127.0.0.1:5000/api/domains/1
+curl -u x:x --noproxy 127.0.0.1 -i -X DELETE http://127.0.0.1:5000/api/users/1
 
 
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , "username":"x=x", "password":"x"}' http://127.0.0.1:5000/api/ftpaccounts
 
-
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , "username":"itamarjp", "password":"x"}' http://127.0.0.1:5000/api/emails
 
 ssh -o 'ProxyCommand ssh -p 19000 root@online.ispbrasil.com.br nc %h %p' root@192.168.122.74 
 ssh -p 19000 root@online.ispbrasil.com.br -L 5901:localhost:5900
