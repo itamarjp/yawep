@@ -9,6 +9,11 @@ from flask_login import login_user
 from flask_login import logout_user
 
 from app.models.tables import User
+from app.models.tables import Domains
+from app.models.tables import Emails
+from app.models.tables import Databases
+from app.models.tables import FtpAccounts
+
 from app.models.forms import LoginForm
 from app.models.forms import NewUserForm
 
@@ -82,9 +87,9 @@ def get_ALL_users():
 #http://localhost/api/users/123
 @app.route('/api/users/<int:user_id>', methods = ['GET']) #(retrieve user 123)
 @auth.login_required
-def get_user(user_id):
+def get_user(id):
        app.logger.debug('metodo get')
-       user = User.query.filter_by(id = user_id).first_or_404()
+       user = User.query.filter_by(id = id).first_or_404()
        response = jsonify(user.serialize)
        response.status_code = 200
        return response
@@ -113,9 +118,9 @@ def new_user():
 #http://localhost/api/users/123
 @app.route('/api/users/<int:user_id>', methods = ['PUT']) #(update user 123, from data provided with the request)
 @auth.login_required
-def update_user(user_id):
+def update_user(id):
    app.logger.debug('metodo put')
-   user = User.query.filter_by(id = user_id).first_or_404()
+   user = User.query.filter_by(id = id).first_or_404()
    user.name = str(request.json.get('name', ''))
    user.email = str(request.json.get('email', ''))
    user.username = str(request.json.get('username', ''))
@@ -129,8 +134,8 @@ def update_user(user_id):
 #http://localhost/api/users/123
 @app.route('/api/users/<int:user_id>', methods = ['DELETE']) #(delete user 123, from data provided with the request)
 @auth.login_required
-def delete_user(user_id):
-   user = User.query.filter_by(id = user_id).first_or_404()
+def delete_user(id):
+   user = User.query.filter_by(id = id).first_or_404()
    user.delete()
    response = jsonify({'message': 'User deleted successfully'})
    response.status_code = 204
@@ -152,9 +157,9 @@ def get_ALL_domains():
 #http://localhost/api/domains/123
 @app.route('/api/domains/<int:domain_id>', methods = ['GET']) #(retrieve domain 123)
 @auth.login_required
-def get_domain(domain_id):
+def get_domain(id):
        app.logger.debug('metodo get')
-       domain = Domains.query.filter_by(id = domain_id).first_or_404()
+       domain = Domains.query.filter_by(id = id).first_or_404()
        response = jsonify(domain.serialize)
        response.status_code = 200
        return response
@@ -167,19 +172,19 @@ def new_domain():
     if user_id is None or name is None:
         app.logger.debug('missing arguments')
         abort(400) # missing arguments
-    if Domainsquery.filter_by(name = name).first() is not None:
+    if Domains.query.filter_by(name = name).first() is not None:
         app.logger.debug('dominio ja existe')
         abort(400) # existing domain
     domain = Domains(name = name,  user_id = user_id)
     domain.save()
-    return jsonify(Domainsserialize), 201, {'Location': url_for('get_domain', domain_id = domain.id, _external = True)}
+    return jsonify(domain.serialize), 201, {'Location': url_for('get_domain', domain_id = domain.id, _external = True)}
 
 #http://localhost/api/domains/123
 @app.route('/api/domains/<int:domain_id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
 @auth.login_required
-def update_domain(domain_id):
+def update_domain(id):
    app.logger.debug('metodo put')
-   domain = Domains.query.filter_by(id = domain_id).first_or_404()
+   domain = Domains.query.filter_by(id = id).first_or_404()
    domain.name = str(request.json.get('name', ''))
    domain.user_id = str(request.json.get('user_id', ''))
    db.session.commit()
@@ -191,15 +196,197 @@ def update_domain(domain_id):
 #http://localhost/api/domains/123
 @app.route('/api/domains/<int:domain_id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
 @auth.login_required
-def delete_domain(domain_id):
-   domain = Domains.query.filter_by(id = domain_id).first_or_404()
+def delete_domain(id):
+   domain = Domains.query.filter_by(id = id).first_or_404()
    domain.delete()
    response = jsonify({'message': 'domain deleted successfully'})
    response.status_code = 204
    return response
 
+#http://localhost/api/emails
+@app.route('/api/emails', methods = ['GET']) #(retrieve list)
+@auth.login_required
+def get_ALL_emails():
+   emails = Emails.query.all()
+   if not emails:
+      abort(404)
+   response = jsonify([i.serialize for i in emails])
+   response.status_code = 200
+   return response
+
+#http://localhost/api/emails/123
+@app.route('/api/emails/<int:email_id>', methods = ['GET']) #(retrieve email 123)
+@auth.login_required
+def get_email(id):
+       app.logger.debug('metodo get')
+       email = Emails.query.filter_by(id = id).first_or_404()
+       response = jsonify(email.serialize)
+       response.status_code = 200
+       return response
+
+@app.route('/api/emails', methods = ['POST'])  #(create a new email, from data provided with the request)
+@auth.login_required
+def new_email():
+    domain_id =  str(request.json.get('domain_id', ''))
+    username =  str(request.json.get('username', ''))
+    password =  str(request.json.get('password', ''))
+    if username is None or username is None:
+        app.logger.debug('missing arguments')
+        abort(400) # missing arguments
+    if Emails.query.filter_by(username = username).first() is not None:
+        app.logger.debug('conta de email ja existe')
+        abort(400) # existing domain
+    emailaccount = Emails(domain_id = domain_id, username = username,  password = password)
+    emailaccount.save()
+    return jsonify(emailaccount.serialize), 201, {'Location': url_for('get_email', email_id = domain_id, _external = True)}
+
+
+#http://localhost/api/emails/123
+@app.route('/api/emails/<int:email_id>', methods = ['PUT']) #(update email 123, from data provided with the request)
+@auth.login_required
+def update_email(id):
+   app.logger.debug('metodo put')
+   email = Emails.query.filter_by(id = id).first_or_404()
+   email.name = str(request.json.get('name', ''))
+   email.user_id = str(request.json.get('user_id', ''))
+   db.session.commit()
+   response = jsonify(email.serialize)
+   response.status_code = 200
+   return response
+
+
+#http://localhost/api/emails/123
+@app.route('/api/emails/<int:email_id>', methods = ['DELETE']) #(delete email 123, from data provided with the request)
+@auth.login_required
+def delete_email(id):
+   email = Emails.query.filter_by(id = id).first_or_404()
+   email.delete()
+   response = jsonify({'message': 'email deleted successfully'})
+   response.status_code = 204
+   return response
 
 
 
+#http://localhost/api/ftpaccounts
+@app.route('/api/ftpaccounts', methods = ['GET']) #(retrieve list)
+@auth.login_required
+def get_ALL_ftpaccounts():
+   ftpaccounts = FtpAccounts.query.all()
+   if not ftpaccounts:
+      abort(404)
+   response = jsonify([i.serialize for i in ftpaccounts])
+   response.status_code = 200
+   return response
 
+#http://localhost/api/ftpaccounts/123
+@app.route('/api/ftpaccounts/<int:domain_id>', methods = ['GET']) #(retrieve domain 123)
+@auth.login_required
+def get_ftpaccount(id):
+       app.logger.debug('metodo get')
+       domain = FtpAccounts.query.filter_by(id = id).first_or_404()
+       response = jsonify(ftpaccount.serialize)
+       response.status_code = 200
+       return response
+
+@app.route('/api/ftpaccounts', methods = ['POST'])  #(create a new domain, from data provided with the request)
+@auth.login_required
+def new_ftpaccount():
+    domain_id =  str(request.json.get('domain_id', ''))
+    username =  str(request.json.get('username', ''))
+    password =  str(request.json.get('password', ''))
+    if username is None or username is None:
+        app.logger.debug('missing arguments')
+        abort(400) # missing arguments
+    if FtpAccounts.query.filter_by(username = username).first() is not None:
+        app.logger.debug('conta ftp ja existe')
+        abort(400) # existing domain
+    ftpaccount = FtpAccounts(domain_id = domain_id, username = username,  password = password)
+    ftpaccount.save()
+    return jsonify(ftpaccount.serialize), 201, {'Location': url_for('get_ftpaccount', domain_id = domain_id, _external = True)}
+
+#http://localhost/api/ftpaccounts/123
+@app.route('/api/ftpaccounts/<int:domain_id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
+@auth.login_required
+def update_ftpaccount(id):
+   app.logger.debug('metodo put')
+   ftpaccount = FtpAccounts.query.filter_by(id = domain_id).first_or_404()
+   ftpaccount.name = str(request.json.get('name', ''))
+   ftpaccount.user_id = str(request.json.get('user_id', ''))
+   db.session.commit()
+   response = jsonify(ftpaccount.serialize)
+   response.status_code = 200
+   return response
+
+
+#http://localhost/api/ftpaccounts/123
+@app.route('/api/ftpaccounts/<int:domain_id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
+@auth.login_required
+def delete_ftpaccount(id):
+   ftpaccount = FtpAccounts.query.filter_by(id = id).first_or_404()
+   ftpaccount.delete()
+   response = jsonify({'message': 'domain deleted successfully'})
+   response.status_code = 204
+   return response
+
+#http://localhost/api/databases
+@app.route('/api/databases', methods = ['GET']) #(retrieve list)
+@auth.login_required
+def get_ALL_databases():
+   databases = Databases.query.all()
+   if not databases:
+      abort(404)
+   response = jsonify([i.serialize for i in databases])
+   response.status_code = 200
+   return response
+
+#http://localhost/api/databases/123
+@app.route('/api/databases/<int:domain_id>', methods = ['GET']) #(retrieve domain 123)
+@auth.login_required
+def get_databases(id):
+       app.logger.debug('metodo get')
+       database = Databases.query.filter_by(id = id).first_or_404()
+       response = jsonify(domain.serialize)
+       response.status_code = 200
+       return response
+
+@app.route('/api/databases', methods = ['POST'])  #(create a new database, from data provided with the request)
+@auth.login_required
+def new_databases():
+    domain_id =  str(request.json.get('domain_id', ''))
+    databasename =  str(request.json.get('databasename', ''))
+    username =  str(request.json.get('username', ''))
+    password =  str(request.json.get('password', ''))
+    if domain_id is None or databasename is None:
+        app.logger.debug('missing arguments')
+        abort(400) # missing arguments
+    if Databases.query.filter_by(databasename = databasename).first() is not None:
+        app.logger.debug('banco ja existe')
+        abort(400) # existing domain
+    database = Databases(domain_id = domain_id, databasename = databasename, username = username, password = password)
+    database.save()
+    return jsonify(database.serialize), 201, {'Location': url_for('get_databases', domain_id = domain_id, _external = True)}
+
+#http://localhost/api/databases/123
+@app.route('/api/databases/<int:domain_id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
+@auth.login_required
+def update_databases(id):
+   app.logger.debug('metodo put')
+   domain = Databases.query.filter_by(id = id).first_or_404()
+   domain.name = str(request.json.get('name', ''))
+   domain.user_id = str(request.json.get('user_id', ''))
+   db.session.commit()
+   response = jsonify(domain.serialize)
+   response.status_code = 200
+   return response
+
+
+#http://localhost/api/databases/123
+@app.route('/api/databases/<int:domain_id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
+@auth.login_required
+def delete_databases(id):
+   domain = Databases.query.filter_by(id = id).first_or_404()
+   domain.delete()
+   response = jsonify({'message': 'databases deleted successfully'})
+   response.status_code = 204
+   return response
 

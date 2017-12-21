@@ -68,6 +68,26 @@ class Emails(db.Model):
     domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
     username = db.Column(db.Text)
     password = db.Column(db.Text)
+    @property
+    def serialize(self):
+        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
+
+        return {
+           'id' : self.id ,
+           'name' : self.name ,
+           'email' :  self.email,
+           'username' : self.username,
+#          'password' : self.password,
+           }
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
 
 class FtpAccounts(db.Model):
     __tablename__ = "ftpaccounts"
@@ -75,6 +95,25 @@ class FtpAccounts(db.Model):
     domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
     username = db.Column(db.Text)
     password = db.Column(db.Text)
+    @property
+    def serialize(self):
+        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
+
+        return {
+           'id' : self.id ,
+           'name' : self.name ,
+           'email' :  self.email,
+           'username' : self.username,
+#          'password' : self.password,
+           }
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 class Databases(db.Model):
     __tablename__ = "databases"
@@ -83,3 +122,23 @@ class Databases(db.Model):
     databasename = db.Column(db.Text)
     username = db.Column(db.Text)
     password = db.Column(db.Text)
+    @property
+    def serialize(self):
+        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
+
+        return {
+           'id' : self.id ,
+           'name' : self.name ,
+           'email' :  self.email,
+           'username' : self.username,
+#          'password' : self.password,
+           }
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
