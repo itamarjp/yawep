@@ -1,39 +1,41 @@
 #criando usuarios
-curl 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar1@ispbrasil.com.br", "username":"x","password":"x"}' http://127.0.0.1:5000/api/users
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar2@ispbrasil.com.br", "username":"xx","password":"xx"}' http://127.0.0.1:5000/api/users
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar3@ispbrasil.com.br", "username":"xxx","password":"xxx"}' http://127.0.0.1:5000/api/users
+curl 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar1@ispbrasil.com.br","username":"x","password":"x"}' http://painel.ispbrasil.com.br:5000/api/users
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar2@ispbrasil.com.br", "username":"xx","password":"xx"}' http://painel.ispbrasil.com.br:5000/api/users
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar3@ispbrasil.com.br", "username":"xxx","password":"xxx"}' http://painel.ispbrasil.com.br:5000/api/users
 
 
 #criando dominios
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"mail.ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":3 , "name":"www.ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"mail.ispbrasil.com.br"}' http://painel.ispbrasil.com.br:5000/api/domains
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"ispbrasil.com.br"}' http://painel.ispbrasil.com.br:5000/api/domains
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":3 , "name":"www.ispbrasil.com.br"}' http://painel.ispbrasil.com.br:5000/api/domains
 
 
 #criando banco
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "databasename":"xxx", "username": "x", "password":"x"}' http://127.0.0.1:5000/api/databases
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "databasename":"x", "username": "x", "password":"x"}' http://painel.ispbrasil.com.br:5000/api/databases
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "databasename":"xx", "username": "x", "password":"x"}' http://painel.ispbrasil.com.br:5000/api/databases
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "databasename":"xxx", "username": "x", "password":"x"}' http://painel.ispbrasil.com.br:5000/api/databases
 
 #criando conta de ftp 
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , "username":"xxx", "password":"x"}' http://127.0.0.1:5000/api/ftpaccounts
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , "username":"xxx", "password":"x"}' http://painel.ispbrasil.com.br:5000/api/ftpaccounts
 
 #criando conta de email 
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":3 , "username":"itamarjp", "password":"x"}' http://127.0.0.1:5000/api/emails
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":3 , "username":"itamarjp", "password":"x"}' http://painel.ispbrasil.com.br:5000/api/emails
 
 #consultando TODOS
-curl -u x:x -i -X GET http://127.0.0.1:5000/api/users
-curl -u x:x -i -X GET http://127.0.0.1:5000/api/domains
-curl -u x:x -i -X GET http://127.0.0.1:5000/api/databases
-curl -u x:x -i -X GET http://127.0.0.1:5000/api/ftpaccounts
-curl -u x:x -i -X GET http://127.0.0.1:5000/api/emails
+curl -u x:x -i -X GET http://painel.ispbrasil.com.br:5000/api/users
+curl -u x:x -i -X GET http://painel.ispbrasil.com.br:5000/api/domains
+curl -u x:x -i -X GET http://painel.ispbrasil.com.br:5000/api/databases
+curl -u x:x -i -X GET http://painel.ispbrasil.com.br:5000/api/ftpaccounts
+curl -u x:x -i -X GET http://painel.ispbrasil.com.br:5000/api/emails
 
 
 
 #removendo 1
-curl -u x:x -i -X DELETE  http://127.0.0.1:5000/api/databases/1
-curl -u x:x -i -X DELETE  http://127.0.0.1:5000/api/ftpaccounts/1
-curl -u x:x -i -X DELETE  http://127.0.0.1:5000/api/emails/1
-curl -u x:x -i -X DELETE  http://127.0.0.1:5000/api/domains/1
-curl -u x:x -i -X DELETE http://127.0.0.1:5000/api/users/1
+curl -u x:x -i -X DELETE  http://painel.ispbrasil.com.br:5000/api/databases/1
+curl -u x:x -i -X DELETE  http://painel.ispbrasil.com.br:5000/api/ftpaccounts/1
+curl -u x:x -i -X DELETE  http://painel.ispbrasil.com.br:5000/api/emails/1
+curl -u x:x -i -X DELETE  http://painel.ispbrasil.com.br:5000/api/domains/1
+curl -u x:x -i -X DELETE http://painel.ispbrasil.com.br:5000/api/users/1
 
 
 
@@ -46,4 +48,9 @@ ssh -p 19000 root@online.ispbrasil.com.br -L 5901:localhost:5900
 
 
       this.review = {'createdOn': Date.now()};
+
+
+
+sudo rabbitmqctl list_queues
+
 
