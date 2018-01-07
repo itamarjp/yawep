@@ -189,7 +189,7 @@ def new_domain():
         abort(400) # existing domain
     domain = Domains(name = name,  user_id = user_id)
     domain.save()
-    return jsonify(domain.serialize), 201, {'Location': url_for('get_domain', domain_id = domain.id, _external = True)}
+    return jsonify(domain.serialize), 201, {'Location': url_for('get_domain', id = domain.id, _external = True)}
 
 #http://localhost/api/domains/123
 @app.route('/api/domains/<int:id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
@@ -377,7 +377,7 @@ def new_databases():
     database = Databases(domain_id = domain_id, databasename = databasename, username = username, password = password)
     database.save()
     send_async_database_task(database.serialize)
-    return jsonify(database.serialize), 201, {'Location': url_for('get_databases', domain_id = domain_id, _external = True)}
+    return jsonify(database.serialize), 201, {'Location': url_for('get_databases', id = database.id, _external = True)}
 
 #http://localhost/api/databases/123
 @app.route('/api/databases/<int:id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
