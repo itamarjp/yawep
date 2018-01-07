@@ -31,12 +31,13 @@ from flask import make_response
 import pika
 
 @async
-def send_async_database_task(msg):
+def send_async_linux_task(msg , action , queue):
  connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
  channel = connection.channel()
- channel.queue_declare(queue='databases')
- channel.basic_publish(exchange='',routing_key='databases', body='{0}'.format(msg) )
- print("database task created {0}'".format(msg))
+ channel.queue_declare(queue=queue)
+ msg.update({"action": action})
+ channel.basic_publish(exchange='',routing_key=queue, body='{0}'.format(msg) )
+ print("Linux task {} {}'".format(queue, msg))
  connection.close()
 
 @login_manager.user_loader
@@ -376,7 +377,7 @@ def new_databases():
         abort(400) # existing domain
     database = Databases(domain_id = domain_id, databasename = databasename, username = username, password = password)
     database.save()
-    send_async_database_task(database.serialize)
+    send_async_linux_task(msg = database.serialize, queue="databases", action = "new")
     return jsonify(database.serialize), 201, {'Location': url_for('get_databases', id = database.id, _external = True)}
 
 #http://localhost/api/databases/123
@@ -398,6 +399,7 @@ def update_databases(id):
 @auth.login_required
 def delete_databases(id):
    database = Databases.query.filter_by(id = id).first_or_404()
+   send_async_linux_task(msg = database.serialize, queue="databases", action = "delete")
    database.delete()
    response = jsonify({'message': 'databases deleted successfully'})
    response.status_code = 204
