@@ -10,4 +10,4 @@ def after_request(response):
   return response
 
 if __name__ == '__main__':
-  app.run(port=5000, debug=True)
+  app.run(host='::', port=5000, debug=True)
