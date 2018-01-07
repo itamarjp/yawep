@@ -125,7 +125,7 @@ def new_user():
     user = User(name = name,  email = email, username = username)
     user.hash_password(password)
     user.save()
-    return jsonify(user.serialize), 201, {'Location': url_for('get_user', user_id = user.id, _external = True)}
+    return jsonify(user.serialize), 201, {'Location': url_for('get_user', id = user.id, _external = True)}
 
 #http://localhost/api/users/123
 @app.route('/api/users/<int:id>', methods = ['PUT']) #(update user 123, from data provided with the request)
