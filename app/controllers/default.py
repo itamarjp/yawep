@@ -23,7 +23,7 @@ auth = HTTPBasicAuth()
 from flask import request
 from flask import jsonify
 from flask import abort
-from .decorators import async
+from app.decorators import async
 
 from json import dumps
 from flask import make_response
