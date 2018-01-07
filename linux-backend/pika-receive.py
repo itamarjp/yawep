@@ -13,6 +13,7 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost')
 channel = connection.channel()
 
 channel.queue_declare(queue='databases')
+channel.queue_declare(queue='domains')
 
 def runsql(sql, cursor):
  print("executing sql:\n {}".format(sql))
@@ -23,8 +24,13 @@ def runsql(sql, cursor):
   print("falhou:")
   print(sql)
 
-def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
+
+
+def callback_domains(ch, method, properties, body):
+    print(" [x] DM Received %r" % body)
+
+def callback_databases(ch, method, properties, body):
+    print(" [x] DB Received %r" % body)
     temp = body.replace("'", "\"")
     x = json.loads(temp)
     #print (type(x))
@@ -57,9 +63,8 @@ def callback(ch, method, properties, body):
     cursor.close()
     cnx.close()
 
-channel.basic_consume(callback,
-                      queue='databases',
-                      no_ack=True)
+channel.basic_consume(callback_databases,queue='databases', no_ack=True)
+channel.basic_consume(callback_domains,queue='domains', no_ack=True)
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()
