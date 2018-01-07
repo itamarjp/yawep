@@ -22,3 +22,4 @@ six==1.10.0
 SQLAlchemy==1.1.15
 Werkzeug==0.12.2
 WTForms==2.1
+pika==0.11.2

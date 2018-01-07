@@ -23,9 +23,21 @@ auth = HTTPBasicAuth()
 from flask import request
 from flask import jsonify
 from flask import abort
+from .decorators import async
 
 from json import dumps
 from flask import make_response
+
+import pika
+
+@async
+def send_async_database_task(msg):
+ connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+ channel = connection.channel()
+ channel.queue_declare(queue='databases')
+ channel.basic_publish(exchange='',routing_key='databases', body='{0}'.format(msg) )
+ print("database task created {0}'".format(msg))
+ connection.close()
 
 @login_manager.user_loader
 def load_user(id):
@@ -364,6 +376,7 @@ def new_databases():
         abort(400) # existing domain
     database = Databases(domain_id = domain_id, databasename = databasename, username = username, password = password)
     database.save()
+    send_async_database_task(database.serialize)
     return jsonify(database.serialize), 201, {'Location': url_for('get_databases', domain_id = domain_id, _external = True)}
 
 #http://localhost/api/databases/123
