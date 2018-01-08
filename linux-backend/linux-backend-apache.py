@@ -19,12 +19,28 @@ VirtualHost = """
  ServerAlias www.{0}
  ServerAlias {0}
 </VirtualHost>
+<VirtualHost *:443>
+ DocumentRoot {1}
+ ServerName server.{0}
+ ServerAlias www.{0}
+ ServerAlias {0}
+ SSLEngine on
+ SSLCertificateFile /etc/letsencrypt/live/{0}/cert.pem
+ SSLCertificateKeyFile /etc/letsencrypt/live/{0}/privkey.pem
+</VirtualHost>
+
+
 <Directory {1}/>
  AddDefaultCharset UTF-8
  Require all granted
  Options +FollowSymLinks +Indexes
 </Directory>
 """
+print("Getting a LetEncrypt certificate for ", domain_name)
+os.system("service httpd stop")
+os.system("certbot certonly --standalone --preferred-challenges http -d {} -m itamar@ispbrasil.com.br  --agree-tos -n".format(domain_name))
+os.system("service httpd start")
+
 home = "/var/www/domains/{}/htdocs"
 apache_conf = "/etc/httpd/conf.d/{}.conf"
 
