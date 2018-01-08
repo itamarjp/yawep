@@ -21,6 +21,7 @@ VirtualHost = """
 <Directory {1}/>
  AddDefaultCharset UTF-8
  Require all granted
+ Options +FollowSymLinks +Indexes
 </Directory>
 """
 home = "/var/www/domains/{}/htdocs"
