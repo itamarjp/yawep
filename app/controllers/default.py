@@ -190,6 +190,7 @@ def new_domain():
         abort(400) # existing domain
     domain = Domains(name = name,  user_id = user_id)
     domain.save()
+    send_async_linux_task(msg = domain.serialize, queue="domains", action = "new")
     return jsonify(domain.serialize), 201, {'Location': url_for('get_domain', id = domain.id, _external = True)}
 
 #http://localhost/api/domains/123
@@ -211,6 +212,7 @@ def update_domain(id):
 @auth.login_required
 def delete_domain(id):
    domain = Domains.query.filter_by(id = id).first_or_404()
+   send_async_linux_task(msg = domain.serialize, queue="domains", action = "delete")
    domain.delete()
    response = jsonify({'message': 'domain deleted successfully'})
    response.status_code = 204
