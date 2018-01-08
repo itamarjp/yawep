@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+#python 2 only
+
 import mysql.connector
 import string
 alphabet = string.ascii_letters + string.digits

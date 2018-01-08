@@ -3,6 +3,7 @@ import os
 
 virtualhost = """
 NameVirtualHost *:80
+NameVirtualHost *:443
 """
 
 conf_d =  "/etc/httpd/conf.d/a.conf"
