@@ -1,0 +1,4 @@
+---
+- import_playbook: wakeonlan.yml
+- import_playbook: collect.yml
+- import_playbook: rdesktop.yml

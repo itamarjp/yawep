@@ -1,0 +1,27 @@
+- name: enable services
+  hosts: all
+  gather_facts: no
+  tasks:
+
+    - name: enable multiple services
+      systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      with_items:
+        - httpd
+        - proftpd
+        - dovecot
+        - postgresql
+        - mariadb
+        - rabbitmq-server
+        - postfix
+
+
+    - name: disable multiple services
+      systemd:
+        name: "{{ item }}"
+        state: stopped
+        enabled: no
+      with_items:
+        - firewalld

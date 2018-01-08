@@ -1,0 +1,87 @@
+- name: install dependencies
+  hosts: all
+  gather_facts: yes
+  tasks:
+
+    - name: install the latest version of epel-release
+      yum:
+       name: epel-release
+       state: latest
+      when:
+       - ansible_distribution == "CentOS"
+       - ansible_distribution_major_version == "7"
+
+
+    - name: install multiple packages
+      yum:
+        name:  "{{ item }}"
+        state: present
+      with_items:
+        - httpd
+        - mod_ssl
+        - mod_wsgi
+        - phpmyadmin
+        - proftpd
+        - dovecot
+        - postgresql-server
+        - php
+        - php-pdo
+        - php-cli
+        - php-pgsql
+        - php-gd
+        - php-xml
+        - php-opcache
+        - mariadb-server
+        - rabbitmq-server
+        - certbot
+        - python-pika
+        - postfix
+        - mc
+        - net-tools
+        - mysql-connector-python
+        - mosh
+        - git
+        - psmisc
+        #- php-mysqlnd
+
+    - name: install python34-virtualenv in centos 7 
+      yum:
+       name: python34-virtualenv
+       state: present
+      when:
+       - ansible_distribution == "CentOS"
+       - ansible_distribution_major_version == "7"
+
+    - name: install python34-pika in centos 7 
+      yum:
+       name: python34-pika
+       state: present
+      when:
+       - ansible_distribution == "CentOS"
+       - ansible_distribution_major_version == "7"
+
+    - name: install python3-pika in Fedora 
+      yum:
+       name: python3-pika
+       state: present
+      when:
+       - ansible_distribution == "Fedora"
+       - ansible_distribution_major_version >= "27"
+
+
+
+
+    - name: install python3-virtualenv in fedora
+      yum:
+       name: python3-virtualenv
+       state: present
+      when:
+       - ansible_distribution == "Fedora"
+       - ansible_distribution_major_version >= "27"
+
+    - name: upgrade all packages
+      yum:
+       name: '*'
+       state: latest
+
+
