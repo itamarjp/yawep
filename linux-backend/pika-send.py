@@ -1,9 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 import pika
 
-queue = sys.argv[1]
-msg = sys.argv[2]
+if (len(sys.argv) < 3 ):
+ print("usage:\n","./pika-send.py domains test-message")
+ sys.exit(1)
+queue = sys.argv[0]
+msg = sys.argv[1]
+
+
 
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 channel = connection.channel()
