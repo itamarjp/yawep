@@ -36,10 +36,6 @@ VirtualHost = """
  Options +FollowSymLinks +Indexes
 </Directory>
 """
-print("Getting a LetEncrypt certificate for ", domain_name)
-os.system("service httpd stop")
-os.system("certbot certonly --standalone --preferred-challenges http -d {} -m itamar@ispbrasil.com.br  --agree-tos -n".format(domain_name))
-os.system("service httpd start")
 
 home = "/var/www/domains/{}/htdocs"
 apache_conf = "/etc/httpd/conf.d/{}.conf"
@@ -64,6 +60,10 @@ def callback(ch, method, properties, body):
   file.write(virtualhost)
   file.close()
   os.chown(homedir, getpwnam('ftp').pw_uid, getpwnam('apache').pw_gid)
+  print("Getting a LetEncrypt certificate for ", domain_name)
+  os.system("service httpd stop")
+  os.system("certbot certonly --standalone --preferred-challenges http -d {} -m itamar@ispbrasil.com.br  --agree-tos -n".format(domain_name))
+
  if action == "delete":
   print("Removing domain", domain_name)
   try:
