@@ -15,10 +15,10 @@ channel.queue_declare(queue='domains')
 VirtualHost = """
 <VirtualHost *:80>
  DocumentRoot {1}
- ServerName server.{0}
  ServerAlias www.{0}
  ServerAlias {0}
 </VirtualHost>
+
 <VirtualHost *:443>
  DocumentRoot {1}
  ServerName server.{0}
@@ -27,6 +27,7 @@ VirtualHost = """
  SSLEngine on
  SSLCertificateFile /etc/letsencrypt/live/{0}/cert.pem
  SSLCertificateKeyFile /etc/letsencrypt/live/{0}/privkey.pem
+ SSLCertificateChainFile /etc/letsencrypt/live/{0}/fullchain.pem
 </VirtualHost>
 
 
@@ -35,6 +36,7 @@ VirtualHost = """
  Require all granted
  Options +FollowSymLinks +Indexes
 </Directory>
+
 """
 print("Getting a LetEncrypt certificate for ", domain_name)
 os.system("service httpd stop")
