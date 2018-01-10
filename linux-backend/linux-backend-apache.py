@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import pika
 import json
 import sys
@@ -46,7 +46,7 @@ apache_conf = "/etc/httpd/conf.d/{}.conf"
 
 def callback(ch, method, properties, body):
  print(" [x] DM Received %r" % body)
- temp = body.replace("'".encode("utf-8"), "\"".encode("utf-8")).decode("utf-8") 
+ temp = body.replace(b"'" ,  b'"').decode("utf-8") 
  x = json.loads(temp)
  #print (type(x))
  domain_name =  x['name']
