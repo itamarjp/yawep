@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import pika
 import json
 import sys
@@ -15,10 +15,10 @@ channel.queue_declare(queue='domains')
 VirtualHost = """
 <VirtualHost *:80>
  DocumentRoot {1}
- ServerName server.{0}
  ServerAlias www.{0}
  ServerAlias {0}
 </VirtualHost>
+
 <VirtualHost *:443>
  DocumentRoot {1}
  ServerName server.{0}
@@ -27,6 +27,7 @@ VirtualHost = """
  SSLEngine on
  SSLCertificateFile /etc/letsencrypt/live/{0}/cert.pem
  SSLCertificateKeyFile /etc/letsencrypt/live/{0}/privkey.pem
+ SSLCertificateChainFile /etc/letsencrypt/live/{0}/fullchain.pem
 </VirtualHost>
 
 
@@ -35,6 +36,7 @@ VirtualHost = """
  Require all granted
  Options +FollowSymLinks +Indexes
 </Directory>
+
 """
 
 home = "/var/www/domains/{}/htdocs"
@@ -42,7 +44,7 @@ apache_conf = "/etc/httpd/conf.d/{}.conf"
 
 def callback(ch, method, properties, body):
  print(" [x] DM Received %r" % body)
- temp = body.replace("'".encode("utf-8"), "\"".encode("utf-8")).decode("utf-8") 
+ temp = body.replace(b"'" ,  b'"').decode("utf-8") 
  x = json.loads(temp)
  #print (type(x))
  domain_name =  x['name']
