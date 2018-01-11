@@ -19,7 +19,8 @@ def callback(ch, method, properties, body):
  temp = body.replace(b"'" ,  b'"').decode("utf-8") 
  x = json.loads(temp)
  #print (type(x))
- domain_name =  x['name']
+ domain_name =  x['domain_name']
+ print(domain_name)
  action = x['action']
  homedir = home.format(domain_name)
  conf_d = apache_conf.format(domain_name)
