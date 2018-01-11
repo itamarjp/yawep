@@ -294,11 +294,11 @@ def get_ALL_ftpaccounts():
    return response
 
 #http://localhost/api/ftpaccounts/123
-@app.route('/api/ftpaccounts/<int:id>', methods = ['GET']) #(retrieve domain 123)
+@app.route('/api/ftpaccounts/<int:id>', methods = ['GET']) #(retrieve item 123)
 @auth.login_required
 def get_ftpaccount(id):
        app.logger.debug('metodo get')
-       domain = FtpAccounts.query.filter_by(id = id).first_or_404()
+       ftpaccount = FtpAccounts.query.filter_by(id = id).first_or_404()
        response = jsonify(ftpaccount.serialize)
        response.status_code = 200
        return response
@@ -317,6 +317,12 @@ def new_ftpaccount():
         abort(400) # existing domain
     ftpaccount = FtpAccounts(domain_id = domain_id, username = username,  password = password)
     ftpaccount.save()
+    msg = ftpaccount.serialize.copy()
+    domain = Domains.query.filter_by(id = ftpaccount.domain_id).first
+    app.logger.debug('domain name = ', domain.name)
+    #domain.serialize
+    send_async_linux_task(msg = msg, queue="ftpaccounts", action = "new")
+    msg.update({"domain_name": "test1.ispbrasil.com.br"})
     return jsonify(ftpaccount.serialize), 201, {'Location': url_for('get_ftpaccount', domain_id = domain_id, _external = True)}
 
 #http://localhost/api/ftpaccounts/123
