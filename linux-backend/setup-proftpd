@@ -2,14 +2,18 @@ service proftpd stop
 
 echo "ftp:x:50:" > /etc/group.ftp
 
-sed -i -e 's/AuthUserFile .*/AuthUserFile \/etc\/passwd.ftp/' /etc/proftpd.conf
-sed -i -e 's/AuthGroupFile .*/AuthGroupFile \/etc\/group.ftp/' /etc/proftpd.conf
-sed -i -e 's/RequireValidShell .*/RequireValidShell off/' /etc/proftpd.conf
+[ -f "/etc/passwd.ftp" ] || echo "" > /etc/passwd.ftp
 
-sed -i -e 's/DirFakeUser .*/DirFakeUser on ~/' /etc/proftpd.conf
+sed -i '/^AuthUserFile/{h;s/=.*/=\/etc\/passwd.ftp/};${x;/^$/{s//AuthUserFile \/etc\/passwd.ftp/;H};x}'  /etc/proftpd.conf
+sed -i '/^AuthGroupFile/{h;s/=.*/=\/etc\/group.ftp/};${x;/^$/{s//AuthGroupFile \/etc\/group.ftp/;H};x}'  /etc/proftpd.conf
 
-sed -i -e 's/DirFakeGroup .*/DirFakeGroup on ~/' /etc/proftpd.conf
 
-sed -i -e 's/AuthOrder .*/AuthOrder                       mod_auth_file.c/' /etc/proftpd.conf
+sed -i '/^RequireValidShell/{h;s/.*/RequireValidShell off/};${x;/^$/{s//RequireValidShell off/;H};x}'  /etc/proftpd.conf
+
+sed -i '/^DirFakeUser/{h;s/.*/DirFakeUser on \~/};${x;/^$/{s//DirFakeUser on ~/;H};x}'  /etc/proftpd.conf
+sed -i '/^DirFakeGroup/{h;s/.*/DirFakeGroup on \~/};${x;/^$/{s//DirFakeGroup on ~/;H};x}'  /etc/proftpd.conf
+
+
+
 
 service proftpd start
