@@ -1,0 +1,15 @@
+service proftpd stop
+
+echo "ftp:x:50:" > /etc/group.ftp
+
+sed -i -e 's/AuthUserFile .*/AuthUserFile \/etc\/passwd.ftp/' /etc/proftpd.conf
+sed -i -e 's/AuthGroupFile .*/AuthGroupFile \/etc\/group.ftp/' /etc/proftpd.conf
+sed -i -e 's/RequireValidShell .*/RequireValidShell off/' /etc/proftpd.conf
+
+sed -i -e 's/DirFakeUser .*/DirFakeUser on ~/' /etc/proftpd.conf
+
+sed -i -e 's/DirFakeGroup .*/DirFakeGroup on ~/' /etc/proftpd.conf
+
+sed -i -e 's/AuthOrder .*/AuthOrder                       mod_auth_file.c/' /etc/proftpd.conf
+
+service proftpd start
