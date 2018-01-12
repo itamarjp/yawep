@@ -35,16 +35,30 @@ def callback(ch, method, properties, body):
   home = "/var/www/domains/{}/htdocs".format(domain_name)
   password_line = "{}:{}:14:50:{}:{}:/sbin/nologin\n".format(domain_name, hashed_password, nome , home)
 
-  file = tempfile.NamedTemporaryFile(delete=False)
+  file2 = tempfile.NamedTemporaryFile(delete=False)
+  file1 = open(passwd_ftp)
+  for line in file1:
+        file2.write(line)
   #file = open(conf_d,"w")
-  file.write(password_line.encode('utf-8'))
-  file.close()
-  shutil.move(file.name, passwd_ftp)
+  file2.write(password_line.encode('utf-8'))
+  file1.close
+  file2.close()
+  shutil.move(file2.name, passwd_ftp)
   #os.chown(homedir, getpwnam('ftp').pw_uid, getpwnam('apache').pw_gid)
   #print("Getting a LetEncrypt certificate for ", domain_name)
 
- #if action == "delete":
-  #print("Removing domain", domain_name)
+ if action == "delete":
+  print("Removing domain", domain_name)
+  file1 = open(passwd_ftp)
+  file2 = tempfile.NamedTemporaryFile(delete=False)
+  for line in file1:
+    (user_name, hashed_password , uid, gid, gecos, homedir, usershell) = line1.split(':')
+    if (username != user_name):
+     file2.write(line)
+  file1.close()
+  file2.close()
+  shutil.move(file2.name, passwd_ftp)
+
   #try:
    #print("Removing apache config file", conf_d)
    #os.unlink(conf_d)

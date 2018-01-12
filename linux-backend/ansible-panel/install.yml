@@ -11,7 +11,6 @@
        - ansible_distribution == "CentOS"
        - ansible_distribution_major_version == "7"
 
-
     - name: install multiple packages
       yum:
         name:  "{{ item }}"
@@ -42,6 +41,7 @@
         - mosh
         - git
         - psmisc
+        - ftp
         #- php-mysqlnd
 
     - name: install python34-virtualenv in centos 7 
