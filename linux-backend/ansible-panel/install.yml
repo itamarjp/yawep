@@ -42,6 +42,7 @@
         - git
         - psmisc
         - ftp
+        - roundcubemail
         #- php-mysqlnd
 
     - name: install python34-virtualenv in centos 7 
