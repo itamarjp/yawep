@@ -319,10 +319,9 @@ def new_ftpaccount():
     ftpaccount.save()
     msg = ftpaccount.serialize.copy()
     domain = Domains.query.filter_by(id = ftpaccount.domain_id).first()
-    print(domain.name)
-    app.logger.debug('domain name = ', domain.name)
+    app.logger.debug("domain name = {}".format(domain.name))
     #domain.serialize
-    msg.update({"domain_name": "test1.ispbrasil.com.br"})
+    msg.update({"domain_name": domain.name})
     send_async_linux_task(msg = msg, queue="ftpaccounts", action = "new")
     return jsonify(ftpaccount.serialize), 201, {'Location': url_for('get_ftpaccount', id = ftpaccount.id, _external = True)}
 
