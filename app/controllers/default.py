@@ -318,12 +318,13 @@ def new_ftpaccount():
     ftpaccount = FtpAccounts(domain_id = domain_id, username = username,  password = password)
     ftpaccount.save()
     msg = ftpaccount.serialize.copy()
-    domain = Domains.query.filter_by(id = ftpaccount.domain_id).first
+    domain = Domains.query.filter_by(id = ftpaccount.domain_id).first()
+    print(domain.name)
     app.logger.debug('domain name = ', domain.name)
     #domain.serialize
-    send_async_linux_task(msg = msg, queue="ftpaccounts", action = "new")
     msg.update({"domain_name": "test1.ispbrasil.com.br"})
-    return jsonify(ftpaccount.serialize), 201, {'Location': url_for('get_ftpaccount', domain_id = domain_id, _external = True)}
+    send_async_linux_task(msg = msg, queue="ftpaccounts", action = "new")
+    return jsonify(ftpaccount.serialize), 201, {'Location': url_for('get_ftpaccount', id = ftpaccount.id, _external = True)}
 
 #http://localhost/api/ftpaccounts/123
 @app.route('/api/ftpaccounts/<int:id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
