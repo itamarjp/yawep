@@ -37,7 +37,6 @@
         - postfix
         - mc
         - net-tools
-        - mysql-connector-python
         - mosh
         - git
         - psmisc
@@ -70,7 +69,21 @@
        - ansible_distribution_major_version >= "27"
 
 
+    - name: install python34-mysql centos 7
+      yum:
+       name: python34-mysql
+       state: present
+      when:
+       - ansible_distribution == "CentOS"
+       - ansible_distribution_major_version == "7"
 
+    - name: install python3-mysql Fedora 
+      yum:
+       name: python3-mysql
+       state: present
+      when:
+       - ansible_distribution == "Fedora"
+       - ansible_distribution_major_version >= "27"
 
     - name: install python3-virtualenv in fedora
       yum:
