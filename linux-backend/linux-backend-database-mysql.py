@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import pika
 import json
 import MySQLdb
@@ -18,8 +18,8 @@ def runsql(sql, cursor):
  print("executing sql:\n {}".format(sql))
  try:
   cursor.execute(sql)
- except mysql.connector.Error as err:
-  print(err)
+ except _mysql.Error as e:
+  print ("Error %d: %s" % (e.args[0], e.args[1]))
   print("falhou:")
   print(sql)
 
@@ -35,9 +35,8 @@ def callback(ch, method, properties, body):
     action = x['action']
     try:
       cnx = MySQLdb.connect(user='root',host='127.0.0.1', password = mysql_password, database='mysql')
-
-    except _mysql.Error, e:
-       print "Error %d: %s" % (e.args[0], e.args[1])
+    except _mysql.Error as e:
+     print ("Error %d: %s" % (e.args[0], e.args[1]))
 
     cursor = cnx.cursor()
     if action == "new":
