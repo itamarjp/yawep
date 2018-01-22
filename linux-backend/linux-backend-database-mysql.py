@@ -18,7 +18,7 @@ def runsql(sql, cursor):
  print("executing sql:\n {}".format(sql))
  try:
   cursor.execute(sql)
- except _mysql.Error as e:
+ except mysql.Error as e:
   print ("Error %d: %s" % (e.args[0], e.args[1]))
   print("falhou:")
   print(sql)
@@ -26,7 +26,7 @@ def runsql(sql, cursor):
 
 def callback(ch, method, properties, body):
     print(" [x] DB Received %r" % body)
-    temp = body.replace("'", "\"")
+    temp = body.replace(b"'" ,  b'"').decode("utf-8")
     x = json.loads(temp)
     #print (type(x))
     username =  x['username']
@@ -35,7 +35,7 @@ def callback(ch, method, properties, body):
     action = x['action']
     try:
       cnx = MySQLdb.connect(user='root',host='127.0.0.1', password = mysql_password, database='mysql')
-    except _mysql.Error as e:
+    except mysql.Error as e:
      print ("Error %d: %s" % (e.args[0], e.args[1]))
 
     cursor = cnx.cursor()
