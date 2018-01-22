@@ -1,2 +1,2 @@
 [painel]
-painel.ispbrasil.com.br ansible_connection=ssh        ansible_user=root
+painel.ispbrasil.com.br transport=paramiko ansible_connection=ssh ansible_user=root
