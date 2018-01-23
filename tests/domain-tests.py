@@ -2,8 +2,10 @@
 import requests
 import json
 import time
+import config
 
-url = 'http://painel.ispbrasil.com.br:5000/api/domains'
+url = "{}{}".format(config.read_config("url"),"/domains")
+
 while True:
  r = requests.get(url, auth=('x', 'x'))
  print(r.status_code)
@@ -15,4 +17,5 @@ while True:
 
  print ("Adding a new domain")
  y = requests.post(url, json = {"user_id":"1" , "name":"test1.ispbrasil.com.br"}, auth=('x', 'x'))
+ print("pausing for 10secs")
  time.sleep(10)
