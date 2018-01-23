@@ -4,7 +4,7 @@ import json
 import time
 import config
 
-url = "{}{}".format(config.read_config("url"),"/databases")
+url = "{}{}".format(config.key("url"),"/databases")
 
 while True:
  r = requests.get(url, auth=('x', 'x'))
