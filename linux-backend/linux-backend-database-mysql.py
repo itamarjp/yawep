@@ -25,7 +25,7 @@ def runsql(sql, cursor):
 
 
 def callback(ch, method, properties, body):
-    print(" [x] DB Received %r" % body)
+    print(" [x] DB Received: " % body)
     temp = body.replace(b"'" ,  b'"').decode("utf-8")
     x = json.loads(temp)
     #print (type(x))
@@ -55,7 +55,9 @@ def callback(ch, method, properties, body):
 channel.basic_consume(callback , queue='databases', no_ack=True)
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
-channel.start_consuming()
-
-
-
+try:
+ channel.start_consuming()
+except KeyboardInterrupt:
+ print("Closing")
+ channel.close()
+ connection.close()
