@@ -253,7 +253,7 @@ def new_email():
         abort(400) # existing domain
     emailaccount = Emails(domain_id = domain_id, username = username,  password = password)
     emailaccount.save()
-    return jsonify(emailaccount.serialize), 201, {'Location': url_for('get_email', email_id = domain_id, _external = True)}
+    return jsonify(emailaccount.serialize), 201, {'Location': url_for('get_email', id = emailccount.id, _external = True)}
 
 
 #http://localhost/api/emails/123
