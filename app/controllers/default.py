@@ -1,21 +1,14 @@
 from flask import render_template
-from flask import flash
-from flask import redirect
 from flask import url_for
 from app import app
 from app import db
 from app import login_manager
-from flask_login import login_user
-from flask_login import logout_user
 
 from app.models.tables import User
 from app.models.tables import Domains
 from app.models.tables import Emails
 from app.models.tables import Databases
 from app.models.tables import FtpAccounts
-
-from app.models.forms import LoginForm
-from app.models.forms import NewUserForm
 
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
