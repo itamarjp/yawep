@@ -1,8 +1,5 @@
 var app = angular.module('myApp',['ngRoute','basicAuthModule']);
 
-
-
-
 app.controller('MyController', ['$scope', function($scope) {
 
   $scope.userPanel = 0;
@@ -10,7 +7,7 @@ app.controller('MyController', ['$scope', function($scope) {
   $scope.userDomains = 0;
   $scope.userEmails = 0; 
   $scope.userFtpAccounts = 0;
-    
+
   $scope.showLogin = function() {
     $scope.userLogin = 1;
     $scope.userPanel = 0;
@@ -30,7 +27,6 @@ $scope.showUser = function() {
   };
 
 $scope.showDomains = function() {
-    
     $scope.userLogin = 0;
     $scope.userPanel = 0;
     $scope.userDomains = 1;
@@ -40,7 +36,6 @@ $scope.showDomains = function() {
   };
 
 $scope.showEmails = function() {
-    
     $scope.userLogin = 0;
     $scope.userPanel = 0;
     $scope.userDomains = 0;
@@ -50,7 +45,6 @@ $scope.showEmails = function() {
   };
 
 $scope.showFtpAccounts = function() {
-    
     $scope.userLogin = 0;
     $scope.userPanel = 0;
     $scope.userDomains = 0;
@@ -60,7 +54,6 @@ $scope.showFtpAccounts = function() {
   };
   
 $scope.showDatabases = function() {
-    
     $scope.userLogin = 0;
     $scope.userPanel = 0;
     $scope.userDomains = 0;
@@ -68,8 +61,6 @@ $scope.showDatabases = function() {
     $scope.userFtpAccounts = 0;
     $scope.userDatabases = 1;   
   };
-  
-  
 
 
 }]);
