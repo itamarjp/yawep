@@ -1,0 +1,18 @@
+
+When it comes to software, database systems are beneficial in many ways. They offer us to keep our data organized and a fast way to access them. However as the number of components in a software project increases, it gets harder to preserve the organized structure. In situations like this, visualizing the scheme helps to understand the structure and the relations between the tables.
+
+PostgreSQL Autodoc provides simple tools for description of the PostgreSQL databases in various formats such as HTML, DocBook, Dia and GraphViz. Although I do not have a complicated database scheme in my 
+
+# dnf -y install postgresql-server postgresql_autodoc graphviz
+
+$ postgresql_autodoc -t dot -h hostname -u username -d databasename --password
+
+$ dot -Tpng databasename.dot -o image.png
+
+
+
+	
+ postgresql_autodoc -t dot -h localhost -u postgres -d webpanel
+ 
+ 
+ dot -Tpng webpanel.dot -o webpanel.png

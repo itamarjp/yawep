@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
+
+<script src="/LocarWeb/includes/angular.min.js"></script>
+
+<link rel="stylesheet" href="/LocarWeb/includes/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+<title>Cadastro de Usuário</title>
+
+
+<legend>Cadastro de Usuário</legend>
+
+
+<div class="row">
+<div class="form-group">
+  <label class="col-md-4 control-label" for="nome">Nome:</label>  
+  <div class="col-md-4">
+  <input id="nome" name="nome" type="text" placeholder="Nome" class="form-control input-md">    
+  </div>
+</div>
+</div>
+
+<div class="row">
+<div class="form-group">
+  <label class="col-md-4 control-label" for="email">e-mail:</label>  
+  <div class="col-md-4">
+  <input id="email" name="email" type="text" placeholder="e-mail" class="form-control input-md" required="">    
+  </div>
+</div>
+</div>
+
+<div class="row">
+<div class="form-group">
+  <label class="col-md-4 control-label" for="senha">Senha:</label>
+  <div class="col-md-4">
+    <input id="senha" name="senha" type="password" placeholder="Senha" class="form-control input-md" required="">    
+  </div>
+</div>
+</div>
+
+<div class="row">
+<div class="form-group">
+  <label class="col-md-4 control-label" for="Enviar"></label>
+  <div class="col-md-4">
+    <button id="Enviar" name="Enviar" onclick="loadDoc();" class="btn btn-primary">Efetuar Cadastro</button>
+  </div>
+</div>
+</div>
+
+<div id="Processando" style="display: none" align="center">
+<img src="/LocarWeb/imagens/Processing.gif">
+</div>
+
+<script>
+function loadDoc() {
+	Busy(true);
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', 'http://127.0.0.1:8080/LocarWeb/Usuario/New', true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhr.onreadystatechange = function() {
+	   if (xhr.readyState == 4 && xhr.status == 200) {
+		   //alert(xhr.responseText);
+		   if (xhr.responseText.indexOf("OK") > -1){
+				alert('Dados Incluidos com Sucesso');
+				window.location = "/LocarWeb/";
+		   }
+		   else{
+				alert('ERRO:'+this.responseText);   
+		   }
+	   }
+	   Busy(false);	   
+	};
+	var nome = document.getElementById("nome").value;
+	var email = document.getElementById("email").value;
+	var senha = document.getElementById("senha").value;
+	
+	var data = 'nome=' + encodeURIComponent(nome);
+	data +=  '&email=' + encodeURIComponent(email);
+	data +=  '&senha=' + encodeURIComponent(senha);	
+	xhr.send(data);
+	
+
+}
+function Busy(Status) {
+	if (Status){
+    document.getElementById("Processando").style.display = "inline";
+	}
+	else {
+		document.getElementById("Processando").style.display = "none";
+	}
+
+}
+
+</script>
+
+
+
+
+
+
+</head>
+<body>
+
+</body>
+</html>

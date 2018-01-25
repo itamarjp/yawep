@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
+<script src="/LocarWeb/includes/angular.min.js"></script>
+<script src="/LocarWeb/includes/jquery.min.js"></script>
+<script src="/LocarWeb/includes/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/LocarWeb/includes/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+<body>
+
+
+
+<div ng-app="myApp" ng-controller="customersCtrl"> 
+
+<table>
+<td ng-repeat="x in names">
+ <div class="alert alert-info" ng-if="$index % 2 == 0"  style="width:400px;">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{names[$index].codigo}}</strong> {{ names[$index].Valor | currency }}  {{ names[$index].descricao }}
+  </div>
+
+</td>
+
+<td ng-if="$index % 2 == 1 && names[$index + 1].descricao != null">
+<div class="alert alert-info"  style="width:400px;">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>{{names[$index].codigo}}</strong> {{ names[$index].Valor | currency }}  {{ names[$index].descricao }}
+</div>
+
+</td>
+</tr>
+</table>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+	  $http.get("http://127.0.0.1:8080/LocarWeb/Anuncios/ListAll")
+	  .then(function (response) {$scope.names = response.data;});
+});
+</script>
+
+</body>
+</html>
+
