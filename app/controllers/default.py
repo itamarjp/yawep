@@ -44,31 +44,6 @@ def send_async_linux_task(msg , action , queue):
 def load_user(id):
     return User.query.filter_by(id=id).first()
 
-@app.route("/index")
-@app.route("/home")
-@app.route("/")
-def index():
-    return render_template('index.html')
-
-
-@app.route("/login", methods=['POST', 'GET'])
-def login():
-    form_login = LoginForm()
-    if form_login.validate_on_submit():
-        user = User.query.filter_by(username=form_login.username.data).first()
-        if user and user.password == form_login.password.data:
-            login_user(user)
-            return redirect(url_for("index"))
-            flash("Logged in.")
-        else:
-            flash("Ivalid login.")
-    return render_template('login.html', form=form_login)
-
-@app.route("/logout")
-def logout():
-    logout_user()
-    flash("Logged out.")
-    return redirect(url_for("login"))
 
 @app.route('/api/login',methods=['POST'])
 @auth.login_required
@@ -77,7 +52,7 @@ def get_resource():
 
 @auth.verify_password
 def verify_password(username, password):
-    app.logger.debug('tentativa de login {0}, {1}'.format(username, password ))
+    app.logger.debug('tentativa de login {}, {}'.format(username, password ))
     user = User.query.filter_by(username = username).first()
     if username == 'x' and password =='x':
        return True
