@@ -24,6 +24,7 @@
         - dovecot
         - postgresql-server
         - php
+        - php-fpm
         - php-pdo
         - php-cli
         - php-pgsql
@@ -45,51 +46,29 @@
         - screen
         #- php-mysqlnd
 
-    - name: install python34-virtualenv in centos 7 
+    - name: install multiple packages on centos 7+
       yum:
-       name: python34-virtualenv
-       state: present
+        name:  "{{ item }}"
+        state: present
+      with_items:
+        - python34-virtualenv
+        - python34-pika
+        - python34-mysql
+        - python34-pg8000
       when:
        - ansible_distribution == "CentOS"
        - ansible_distribution_major_version == "7"
 
-    - name: install python34-pika in centos 7 
-      yum:
-       name: python34-pika
-       state: present
-      when:
-       - ansible_distribution == "CentOS"
-       - ansible_distribution_major_version == "7"
 
-    - name: install python3-pika in Fedora 
+    - name: install multiple packages on Fedora 27+
       yum:
-       name: python3-pika
-       state: present
-      when:
-       - ansible_distribution == "Fedora"
-       - ansible_distribution_major_version >= "27"
-
-
-    - name: install python34-mysql centos 7
-      yum:
-       name: python34-mysql
-       state: present
-      when:
-       - ansible_distribution == "CentOS"
-       - ansible_distribution_major_version == "7"
-
-    - name: install python3-mysql Fedora
-      yum:
-       name: python3-mysql
-       state: present
-      when:
-       - ansible_distribution == "Fedora"
-       - ansible_distribution_major_version >= "27"
-
-    - name: install python3-virtualenv in fedora
-      yum:
-       name: python3-virtualenv
-       state: present
+        name:  "{{ item }}"
+        state: present
+      with_items:
+        - python3-virtualenv
+        - python3-pika
+        - python3-mysql
+        - python3-pg8000
       when:
        - ansible_distribution == "Fedora"
        - ansible_distribution_major_version >= "27"
@@ -98,5 +77,3 @@
       yum:
        name: '*'
        state: latest
-
-
