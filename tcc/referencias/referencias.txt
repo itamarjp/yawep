@@ -1,0 +1,30 @@
+https://stackoverflow.com/questions/22025260/creating-password-using-python-passlib - passwordtype
+http://flask.pocoo.org/docs/0.12/quickstart/
+http://flask.pocoo.org/docs/0.12/.latex/Flask.pdf
+http://sqlalchemy-utils.readthedocs.io/en/latest/data_types.html#module-sqlalchemy_utils.types.password
+https://flask-restful.readthedocs.io/en/latest/quickstart.html
+https://github.com/cbbrowne/autodoc
+https://scotch.io/tutorials/build-a-restful-api-with-flask-the-tdd-way
+http://flask-sqlalchemy.pocoo.org/2.3/queries/#deleting-records
+https://scotch.io/tutorials/build-a-restful-api-with-flask-the-tdd-way
+https://blog.miguelgrinberg.com/post/restful-authentication-with-flask
+http://websystique.com/spring-security/angularjs-basic-authentication-using-spring-security/
+https://github.com/xelita/angular-basic-auth
+https://stackoverflow.com/questions/34413732/add-http-basic-authentication-to-this-http-get-in-angularjs
+https://blog.miguelgrinberg.com/category/REST
+https://blog.miguelgrinberg.com/post/writing-a-javascript-rest-client
+
+let header = new HttpHeaders().set("Authorization", "Basic "+btoa(username+':'+password));    
+
+JWT
+
+JWT stands for JSON Web Token and is a token format used in authorization headers. This token helps you to design communication between two systems in a secure way. Let's rephrase JWT as the "bearer token" for the purposes of this tutorial. A bearer token consists of three parts: header, payload, and signature.
+https://code.tutsplus.com/tutorials/token-based-authentication-with-angularjs-nodejs--cms-22543
+
+
+http://modwsgi.readthedocs.io/en/develop/configuration-directives/WSGIPassAuthorization.html
+https://github.com/miguelgrinberg/Flask-HTTPAuth/issues/48
+
+https://github.com/miguelgrinberg/Flask-HTTPAuth/tree/master/examples
+
+dnf -y --releasever=26 -- setopt=deltarpm=false distro-sync

@@ -1,0 +1,94 @@
+<html ng-app="helloApp">
+<head>
+<title>Hello AngularJS - Search Table - Filter Example</title>
+<script src="includes/angular.min.js"></script>
+<link rel="stylesheet" href="includes/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="includes/bootstrap-3.3.6-dist/css/bootstrap-theme.min.css"">
+<script src="includes/jquery.min.js"></script>
+<script src="includes/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+<script src="includes/bootbox.min.js"></script>
+<script src="includes/example.js"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
+
+</head>
+
+<script>
+var app = angular.module('helloApp', []);
+app.controller('CompanyCtrl', function($scope, $http) {
+	  $http.get("http://127.0.0.1:8080Anuncios/ListAll")
+	  .then(function (response) {$scope.companies = response.data;});
+
+	  $scope.greaterThan = function(prop, val){
+		    return function(item){
+		      return item[prop] > val;
+		    }
+		}	  
+	  
+	  
+});
+</script>
+
+
+<!-- Controller name goes here -->
+
+<body ng-controller="CompanyCtrl">
+		
+<form class="form-inline" role="form">
+  <div class="form-group">
+    <label for="descricao">Busca por Bairro:</label>
+    <input type="text" ng-model="query.bairro" ng-model="query.bairro" class="form-control" id="descricao">
+  </div>
+  <div class="form-group">
+    <label for="descricao">Busca por Descrição:</label>
+    <input type="text" ng-model="query.descricao" ng-model="query.bairro" class="form-control" id="descricao">
+  </div>
+  <div class="form-group">
+    <label for="valor1">Valor Minimo:</label>
+    <input type="number" class="form-control" id="valor1" ng-model="valor1">
+  </div>
+  <div class="form-group">
+    <label for="valor2">Valor Maximo:</label>
+    <input type="number" class="form-control" id="valor2" ng-model="valor2">
+  </div>
+</form>
+
+			
+<table class="table">
+	<tr>
+		<th>Codigo
+		</th>
+		<th>Valor
+		</th>
+		<th>bairro	
+		</th>
+		<th>descricao</th>
+		<th>Action
+		</th>
+	</tr>
+	<tr ng-repeat="company in companies  | filter: query:strict">
+		<td>
+		{{company.codigo}}
+		</td>
+		<td>
+		{{company.Valor}}
+		</td>
+		<td>
+		{{company.bairro}}
+		</td>
+		<td>
+		{{company.descricao}}
+		</td>
+		
+		<td>
+		<input type="button" value="Detalhes" class="btn btn-primary" ng-click="removeRow(company.name)"/>
+		</td>
+	</tr>
+</table>
+			
+</body>
+</html>
+
+
+
+			
+

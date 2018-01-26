@@ -1,8 +1,8 @@
-#!/usr/bin/env python
-#python 2 only
+#!/usr/bin/env python3
 
-import mysql.connector
+import MySQLdb
 import string
+
 alphabet = string.ascii_letters + string.digits
 try:
  import secrets
@@ -16,15 +16,9 @@ file.write(password)
 file.close()
 
 try:
-  cnx = mysql.connector.connect(user='root',host='127.0.0.1', database='mysql')
-
-except mysql.connector.Error as err:
-  if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-    print("Something is wrong with your user name or password")
-  elif err.errno == errorcode.ER_BAD_DB_ERROR:
-    print("Database does not exist")
-  else:
-    print(err)
+  cnx = MySQLdb.connect(user='root',host='127.0.0.1', database='mysql')
+except mysql.Error as e:
+  print ("Error %d: %s" % (e.args[0], e.args[1]))
 
 cursor = cnx.cursor()
 
