@@ -6,6 +6,8 @@ var ApiUrl = "http://127.0.0.1:5000/api/";
 
 $scope.showurl = function(url){
     $scope.template = url;
+    if (url==0){this.getUsers();}
+    if (url==0){this.getDomains();}
 };
 
 $scope.Logged = 0;
@@ -95,7 +97,7 @@ $scope.Logout = function() {
      $http.get(ApiUrl + "users" ).then(function (response) {$scope.users = response.data;});
   };
 
-    $scope.editUsers = function (id) {
+    $scope.editUser = function (id) {
           $http.get(ApiUrl + "users/" + id ).then(function (response) {$scope.newuser = response.data;});
     };
 
