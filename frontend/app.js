@@ -1,92 +1,46 @@
-var app = angular.module("myApp",["ngRoute","basicAuthModule"]);
+var app = angular.module('myApp',['ngRoute','basicAuthModule']);
 
-app.controller("MyController", ["$scope", function($scope, $http, basicAuthService) {
+app.controller('MyController', function($scope,$http,basicAuthService) {
 
 var ApiUrl = "http://127.0.0.1:5000/api/";
 
-$scope.userPanel = 0;
-$scope.userLogin = 0;
-$scope.userDomains = 0;
-$scope.userEmails = 0; 
-$scope.userFtpAccounts = 0;
+$scope.alo="buceta";
 
-$scope.showLogin = function() {
-    $scope.userLogin = 1;
-    $scope.userPanel = 0;
-    $scope.userDomains = 0;
-    $scope.userEmails = 0;
-    $scope.userFtpAccounts = 0;
-    $scope.userDatabases = 0;
+$scope.showurl = function(url){
+    $scope.template_url = url;
 };
 
-$scope.showUser = function() {
-    $scope.userLogin = 0;
-    $scope.userPanel = 1;
-    $scope.userDomains = 0;
-    $scope.userEmails = 0;
-    $scope.userFtpAccounts = 0;
-    $scope.userDatabases = 0;
-};
-
-$scope.showDomains = function() {
-    $scope.userLogin = 0;
-    $scope.userPanel = 0;
-    $scope.userDomains = 1;
-    $scope.userEmails = 0;
-    $scope.userFtpAccounts = 0;   
-    $scope.userDatabases = 0;
-};
-
-$scope.showEmails = function() {
-    $scope.userLogin = 0;
-    $scope.userPanel = 0;
-    $scope.userDomains = 0;
-    $scope.userEmails = 1;
-    $scope.userFtpAccounts = 0;   
-    $scope.userDatabases = 0;  
-};
-
-$scope.showFtpAccounts = function() {
-    $scope.userLogin = 0;
-    $scope.userPanel = 0;
-    $scope.userDomains = 0;
-    $scope.userEmails = 0;
-    $scope.userFtpAccounts = 1;
-    $scope.userDatabases = 0;   
-};
-  
-$scope.showDatabases = function() {
-    $scope.userLogin = 0;
-    $scope.userPanel = 0;
-    $scope.userDomains = 0;
-    $scope.userEmails = 0;
-    $scope.userFtpAccounts = 0;
-    $scope.userDatabases = 1;   
+$scope.redirect = function(url){
+    window.location = url;
 };
 
 
-
-$scope.LoginData = {};
-
-
-$scope.processLogin = function () {
- console.log("login = " + $scope.LoginData.username);
- console.log("password = " + $scope.LoginData.password);
- localStorage.username = $scope.LoginData.username;
- localStorage.password  = $scope.LoginData.password;
-};
-
-
-   var authData = {username: localStorage.username, password: localStorage.password};
+$scope.Login = function() {
+  localStorage.username = $scope.username;
+  localStorage.password  = $scope.password;
+  //if $scope.showurl('login.html');
+ console.log($scope.username);
+ console.log($scope.password);
+   var authData = {username: $scope.username, password: $scope.password};
    var successCB = function(response) {
-            console.log("ok x");
+       // Work with extra data coming from the remote server
+       //$scope.generatedKey = response.data.generatedKey;
+      $scope.template_url = "user-panel.html";
+      $scope.alo="BUCETAO";
+
+     // alert('ok');
    };
    var failureCB = function(error) {
-            console.log("falhou");
+      $scope.showurl('login.html');
+
    };
-   x = ApiUrl + "login";
-   
-   //basicAuthService.login(x, authData, successCB, failureCB);
+   var x = ApiUrl + "login";
+   basicAuthService.login(x , authData, successCB, failureCB);
+};
+
+//$scope.Login();
+
+
 
   $scope.getDomains = function () {  
      $http.get(ApiUrl + "domains" ).then(function (response) {$scope.domains = response.data;});
@@ -161,51 +115,6 @@ $scope.processLogin = function () {
         };
         
 
-
-app.directive("userPanel", function(){
-return {
-    restrict: "E",
-    templateUrl: "user-panel.html"
-    };
-});
-
-app.directive("userDomains", function(){
-return {
-    restrict: "E",
-    templateUrl: "user-domains.html" ,
-    controllerAs: "MyController"
-    };
-});
-
-app.directive("userEmails", function(){
-return {
-    restrict: "E",
-    templateUrl: "user-emails.html" ,
-    };
-});
-
-
-app.directive("userLogin", function(){
-return {
-    restrict: "E",
-    templateUrl: "login.htm" ,
-    };
-});
-
-app.directive("userDatabases", function(){
-return {
-    restrict: "E",
-    templateUrl: "user-databases.html" ,
-    };
-});
-
-app.directive("userFtpaccounts", function(){
-return {
-    restrict: "E",
-    templateUrl: "user-ftp-accounts.html" ,
-    };
-});
-
 app.config(function($routeProvider){
     $routeProvider.when("/login", {
         controller:"ContactController",
@@ -233,5 +142,5 @@ app.config(function($routeProvider){
 });
 
 
-}]);
+});
 

@@ -1,38 +1,22 @@
-<html>
-<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
-
-<link rel="stylesheet" href="includes/css/bootstrap.min.css">
-
-
-<form class="form-horizontal" action="/LocarWeb/Login" method="POST">
-<fieldset>
-<br><br><br>
-<!-- Text input-->
+<form class="form-horizontal">
 <div class="form-group">
   <label class="col-md-4 control-label" for="username">Username</label>
   <div class="col-md-4">
-  <input id="username" name="username" type="text" placeholder="UserName" class="form-control input-md" required="">
-    
+  <input ng-model="username" autocomplete="username" type="text" class="form-control input-md" required="">
   </div>
 </div>
 
-<!-- Password input-->
 <div class="form-group">
   <label class="col-md-4 control-label" for="password">Password:</label>
   <div class="col-md-4">
-    <input id="password" name="password" type="password" placeholder="Password" class="form-control input-md" required="">
-    
+    <input ng-model="password" autocomplete="current_password" type="password" class="form-control input-md" required="">
   </div>
 </div>
 
-<!-- Button -->
 <div class="form-group">
   <label class="col-md-4 control-label" for="singlebutton"></label>
   <div class="col-md-4">
-    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Login</button>
+    <button ng-click="Login()" class="btn btn-primary">Login</button>
   </div>
 </div>
-
-</fieldset>
 </form>
-</html>

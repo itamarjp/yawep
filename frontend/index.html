@@ -1,7 +1,98 @@
-Usuario: xxx
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp" ng-controller="MyController">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
+<title>WebHosting Control Panel</title>
+<link href="includes/css/bootstrap.min.css" rel="stylesheet">
+<script src="includes/js/jquery-3.3.1.js"></script>
+<script src="includes/js/bootstrap.min.js"></script>
+<script src="includes/js/angular.min.js"></script>
+<script src="includes/js/angular-route.js"></script>
+<script src="includes/js/angularBase64.js"></script>
+<script src="includes/js/angularBasicAuth.js"></script>
+<script src="app.js"></script>
+</html>
+Usuario: {{username}} Logout
 <br><br>
 Gerenciamento de Usuarios
 <br>
 Gerenciamento de Dominios
 <br><br>
-Sair
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+  <body>
+
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="">a={{username}}</a></li>
+            <li><a href="" ng-click="showurl('login.html')">login</a></li>
+            <li><a href="">Settings</a></li>
+            <li><a href="">Profile</a></li>
+            <li><a href="">{{alo}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="" ng-click="showurl('user-panel.html')">Usuarios</a></li>
+            <li><a href="" ng-click="showurl('user-domains.html')">Dominios</a></li>
+            <li><a href="" ng-click="showurl('user-emails.html')" >E-mails</a></li>
+            <li><a href="" ng-click="showurl('user-databases.html')">Banco de dados</a></li>
+            <li><a href="" ng-click="showurl('user-ftpaccounts.html')">Contas de FTP</a></li>
+
+          </ul>
+        </div>
+        <div class="col-sm-9 col-md-10 main">
+          <div class="row placeholders">
+                <div>
+                <form class="form-horizontal">
+<div class="form-group">
+  <label class="col-md-4 control-label" for="username">Username</label>
+  <div class="col-md-4">
+  <input ng-model="username" autocomplete="username" type="text" class="form-control input-md" required="">
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="password">Password:</label>
+  <div class="col-md-4">
+    <input ng-model="password" autocomplete="current_password" type="password" class="form-control input-md" required="">
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-md-4 control-label" for="singlebutton"></label>
+  <div class="col-md-4">
+    <button ng-click="Login()" class="btn btn-primary">Login</button>
+  </div>
+</div>
+</form>
+
+                
+                
+                </div>
+          </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </body>
