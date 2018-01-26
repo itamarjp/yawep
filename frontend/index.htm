@@ -3,14 +3,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
 <title>WebHosting Control Panel</title>
-<link href="dashboard.css" rel="stylesheet">
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/angular.min.js"></script>
-<script src="js/angular-route.js"></script>
-<script src="js/angularBase64.js"></script>
-<script src="js/angularBasicAuth.js"></script>
+<link href="includes/css/bootstrap.min.css" rel="stylesheet">
+<script src="includes/js/jquery-3.3.1.js"></script>
+<script src="includes/js/bootstrap.min.js"></script>
+<script src="includes/js/angular.min.js"></script>
+<script src="includes/js/angular-route.js"></script>
+<script src="includes/js/angularBase64.js"></script>
+<script src="includes/js/angularBasicAuth.js"></script>
 <script src="app.js"></script>
 </head>
 
@@ -32,7 +31,7 @@
             <li><a href="#">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#">Profile</a></li>
-            <li><a href="#">{{LoginData.username}}</a></li>
+            <li><a href="#">{{1+1}}</a></li>
           </ul>
         </div>
       </div>
@@ -62,12 +61,12 @@
         <div class="col-sm-9 col-md-10 main">
           <h1 class="page-header">Dashboard</h1>
           <div class="row placeholders">
-					<user-panel ng-show="userPanel"></user-panel>
-					<user-login ng-show="userLogin"></user-login>
-					<user-domains ng-show="userDomains"></user-domains>
-					<user-emails ng-show="userEmails"></user-emails>
-					<user-databases ng-show="userDatabases"></user-databases>
-					<user-ftpaccounts ng-show="userFtpAccounts"></user-ftpaccounts>
+                    <user-panel ng-show="userPanel"></user-panel>
+                    <user-login ng-show="userLogin"></user-login>
+                    <user-domains ng-show="userDomains"></user-domains>
+                    <user-emails ng-show="userEmails"></user-emails>
+                    <user-databases ng-show="userDatabases"></user-databases>
+                    <user-ftpaccounts ng-show="userFtpAccounts"></user-ftpaccounts>
           </div>
 
           </div>

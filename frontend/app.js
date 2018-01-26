@@ -85,13 +85,13 @@ $scope.processLogin = function () {
             console.log("falhou");
    };
    x = ApiUrl + "login";
-   basicAuthService.login(x, authData, successCB, failureCB);
+   
+   //basicAuthService.login(x, authData, successCB, failureCB);
 
   $scope.getDomains = function () {  
      $http.get(ApiUrl + "domains" ).then(function (response) {$scope.domains = response.data;});
      console.log($scope.domains);
   };     
-  $scope.getDomains();
 
    
     $scope.editDomain = function (id) {
@@ -165,11 +165,7 @@ $scope.processLogin = function () {
 app.directive("userPanel", function(){
 return {
     restrict: "E",
-    templateUrl: "user-panel.html" ,
-    controller: function(){
-
-    } ,
-    controllerAs: "panels"
+    templateUrl: "user-panel.html"
     };
 });
 
@@ -177,10 +173,7 @@ app.directive("userDomains", function(){
 return {
     restrict: "E",
     templateUrl: "user-domains.html" ,
-    controller: function(){
-
-    } ,
-    controllerAs: "domainsControllerxx"
+    controllerAs: "MyController"
     };
 });
 
@@ -188,10 +181,6 @@ app.directive("userEmails", function(){
 return {
     restrict: "E",
     templateUrl: "user-emails.html" ,
-    controller: function(){
-
-    } ,
-    controllerAs: "emailsControllerxx"
     };
 });
 
@@ -199,11 +188,7 @@ return {
 app.directive("userLogin", function(){
 return {
     restrict: "E",
-    templateUrl: "login.html" ,
-    controller: function(){
-
-    } ,
-    controllerAs: "login"
+    templateUrl: "login.htm" ,
     };
 });
 
@@ -211,10 +196,6 @@ app.directive("userDatabases", function(){
 return {
     restrict: "E",
     templateUrl: "user-databases.html" ,
-    controller: function(){
-
-    } ,
-    controllerAs: "userdatabaes"
     };
 });
 
@@ -222,10 +203,6 @@ app.directive("userFtpaccounts", function(){
 return {
     restrict: "E",
     templateUrl: "user-ftp-accounts.html" ,
-    controller: function(){
-
-    } ,
-    controllerAs: "login"
     };
 });
 
