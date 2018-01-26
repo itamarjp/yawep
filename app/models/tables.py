@@ -1,6 +1,7 @@
 from app import db
 from passlib.apps import custom_app_context as pwd_context
 from sqlalchemy.inspection import inspect
+from sqlalchemy.ext.hybrid import hybrid_property
 
 class User(db.Model):
     __tablename__ = "users"
@@ -11,14 +12,16 @@ class User(db.Model):
     password = db.Column(db.String(128))
     @property
     def serialize(self):
-        return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
+        #return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
 
         return {
            'id' : self.id ,
            'name' : self.name ,
            'email' :  self.email,
            'username' : self.username,
+           'domains': self.domains.serialize,
 #          'password' : self.password,
+
            }
 
     def save(self):
@@ -35,7 +38,9 @@ class User(db.Model):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password)
 
-
+    @hybrid_property
+    def domains(self):
+        return Domains.query.filter_by(id = self.id).first()
 
 class Domains(db.Model):
     __tablename__ = "domains"
@@ -53,6 +58,13 @@ class Domains(db.Model):
            'username' : self.username,
 #          'password' : self.password,
            }
+
+    def __repr__(self):
+        return '<Domain {}>'.format(self.name)
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    def toJSON(self):
+      return '<Domain {}>'.format(self.name)
 
     def save(self):
         db.session.add(self)
