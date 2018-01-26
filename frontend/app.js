@@ -4,41 +4,40 @@ app.controller('MyController', function($scope,$http,basicAuthService) {
 
 var ApiUrl = "http://127.0.0.1:5000/api/";
 
-$scope.alo="buceta";
-
 $scope.showurl = function(url){
-    $scope.template_url = url;
+    $scope.template = url;
 };
 
-$scope.redirect = function(url){
-    window.location = url;
-};
-
+$scope.Logged = 0;
 
 $scope.Login = function() {
   localStorage.username = $scope.username;
-  localStorage.password  = $scope.password;
-  //if $scope.showurl('login.html');
+  localStorage.password = $scope.password;
  console.log($scope.username);
  console.log($scope.password);
    var authData = {username: $scope.username, password: $scope.password};
    var successCB = function(response) {
-       // Work with extra data coming from the remote server
-       //$scope.generatedKey = response.data.generatedKey;
-      $scope.template_url = "user-panel.html";
-      $scope.alo="BUCETAO";
-
-     // alert('ok');
+      $scope.Logged = 1;
+      $scope.template = 'login'
    };
    var failureCB = function(error) {
-      $scope.showurl('login.html');
-
+      $scope.Logged = 0;
+      $scope.template = 'login'
    };
    var x = ApiUrl + "login";
    basicAuthService.login(x , authData, successCB, failureCB);
 };
 
-//$scope.Login();
+
+$scope.Logout = function() {
+  localStorage.username = "";
+  localStorage.password = "";
+  $scope.username ="";
+  $scope.password ="";
+  $scope.Logged = 0;
+};
+
+
 
 
 
