@@ -1,1 +1,0 @@
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"mail.ispbrasil.com.br"}' http://127.0.0.1:5000/api/domains

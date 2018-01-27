@@ -7,7 +7,10 @@ var ApiUrl = "http://127.0.0.1:5000/api/";
 $scope.showurl = function(url){
     $scope.template = url;
     if (url==0){this.getUsers();}
-    if (url==0){this.getDomains();}
+    if (url==1){this.getDomains();}
+    if (url==2){this.getEmails();}
+    if (url==3){this.getDatabases();}
+    if (url==4){this.getFTP();}
 };
 
 $scope.Logged = 0;
@@ -37,6 +40,7 @@ $scope.Logout = function() {
   $scope.username ="";
   $scope.password ="";
   $scope.Logged = 0;
+  $scope.template = -1;
 };
 
 
@@ -66,7 +70,34 @@ $scope.Logout = function() {
             $http.put(ApiUrl + "domains/" + $scope.newdomain.id ,$scope.newdomain).then(function (response) {$scope.newdomain = {};$scope.getDomains();});
             }
         };
-        
+
+
+  $scope.getDatabases = function () {  
+     $http.get(ApiUrl + "databases" ).then(function (response) {$scope.databases = response.data;});
+     console.log($scope.databases);
+  };
+
+    $scope.editDatabase = function (id) {
+          $http.get(ApiUrl + "databases/" + id ).then(function (response) {$scope.newdb = response.data;});
+    };
+
+
+    $scope.deleteDatabase = function (id) {
+        $http.delete(ApiUrl + "databases/" + id ).then(function (response) {$scope.newdb = {};$scope.getDatabases();});
+    };
+
+    $scope.saveDatabase = function () {
+         console.log($scope.newdb);
+            if ($scope.newdb.id === null) {  
+             $http.post(ApiUrl + "databases",$scope.newdb.id).then(function (response) {$scope.newdb = {};$scope.getDatabases();});
+         } else {
+            $http.put(ApiUrl + "databases/" + $scope.newdb.id ,$scope.newdb).then(function (response) {$scope.newdb = {};$scope.getDatabases();});
+            }
+        };
+
+
+
+
 
 
 
@@ -114,33 +145,31 @@ $scope.Logout = function() {
             $http.put(ApiUrl + "users/" + $scope.newuser.id ,$scope.newuser).then(function (response) {$scope.newuser = {};$scope.getUsers();});
             }
         };
-        
 
-app.config(function($routeProvider){
-    $routeProvider.when("/login", {
-        controller:"ContactController",
-        templateUrl: "login.html"
-    })
-    .when("/books", {
-        controller:"BooksController",
-        templateUrl: "views/books.html"
-    })
-    .when("/books/details/:id",{
-        controller:"BooksController",
-        templateUrl: "views/book_details.html"
-    })
-    .when("/books/add",{
-        controller:"BooksController",
-        templateUrl: "views/add_book.html"
-    })
-    .when("/books/edit/:id",{
-        controller:"BooksController",
-        templateUrl: "views/edit_book.html"
-    })
-    .otherwise({
-        redirectTo: "/"
-    });
-});
+
+
+  $scope.getFTP = function () {  
+     $http.get(ApiUrl + "ftpaccounts" ).then(function (response) {$scope.ftpaccounts = response.data;});
+  };
+
+    $scope.editFTP = function (id) {
+          $http.get(ApiUrl + "ftpaccounts/" + id ).then(function (response) {$scope.newftp = response.data;});
+    };
+
+
+    $scope.deleteFTP = function (id) {
+        $http.delete(ApiUrl + "ftpaccounts/" + id ).then(function (response) {$scope.newftp = {};$scope.getFTP();});
+    };
+
+    $scope.saveUser = function () {
+         console.log($scope.ftpaccounts);
+            if ($scope.newftp.id === null) {  
+             $http.post(ApiUrl + "ftpaccounts",$scope.newftp).then(function (response) {$scope.newuser = {};$scope.getFTP();});                      
+         } else {
+            $http.put(ApiUrl + "ftpaccounts/" + $scope.newftp.id ,$scope.newftp).then(function (response) {$scope.newftp = {};$scope.getFTP();});
+            }
+        };
+
 
 
 });

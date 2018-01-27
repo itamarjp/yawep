@@ -58,6 +58,7 @@ def verify_password(username, password):
 @app.route('/api/users', methods = ['GET']) #(retrieve list)
 @auth.login_required
 def get_ALL_users():
+   app.logger.debug("Hello, %s!" % auth.username())
    users = User.query.all()
    if not users:
       abort(404)
@@ -69,7 +70,6 @@ def get_ALL_users():
 @app.route('/api/users/<int:id>', methods = ['GET']) #(retrieve user 123)
 @auth.login_required
 def get_user(id):
-       app.logger.debug('metodo get')
        user = User.query.filter_by(id = id).first_or_404()
        response = jsonify(user.serialize)
        response.status_code = 200
