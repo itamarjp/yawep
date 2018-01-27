@@ -54,3 +54,16 @@ ssh -p 19000 root@online.ispbrasil.com.br -L 5901:localhost:5900
 sudo rabbitmqctl list_queues
 
 
+
+from app.models.tables import User
+from app.models.tables import Domains
+from app.models.tables import Emails
+from app.models.tables import Databases
+from app.models.tables import FtpAccounts
+
+users = User.query.all()
+domains = Domain.query.all()
+
+d = Domains.query.filter(Domains.user_id == 1).all()
+
+

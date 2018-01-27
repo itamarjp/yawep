@@ -1,4 +1,4 @@
-alembic==0.9.6
+alembic==0.9.7
 appdirs==1.4.3
 click==6.7
 Flask==0.12.2
