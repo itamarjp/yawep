@@ -24,6 +24,7 @@
   <a ng-click="showurl(2)">E-Mails</a>
   <a ng-click="showurl(3)">Databases</a>
   <a ng-click="showurl(4)">Ftp</a>
+   <a ng-click="showurl(5)">TTT</a>
   <a ng-click="Logout()">Logout</a>
 </div>
 
@@ -102,11 +103,13 @@
         <thead>
             <tr>
                 <th>Domain Name</th>
+                <th>Owner</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="domain in domains">
+                <td>{{ domain.name }}</td>
                 <td>{{ domain.name }}</td>
                 <td> <a href="javascript:void(0)" ng-click="editDomain(domain.id)">edit</a> | <a href="javascript:void(0)" ng-click="deleteDomain(domain.id)">delete</a>
                 </td>
@@ -178,6 +181,7 @@
         <br/>	
         <input type="button" value="Save" ng-click="saveDatabase()" class="btn btn-primary" />
     </form>
+    Exibindo Contas de FTP do dominio: {{selectedDomain}}
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
@@ -195,6 +199,21 @@
     </table>
 </div>
 
+
+<div id=userpanel  ng-show="template==5">
+    <table class="table">
+            <tr>
+                <th>Domain Name</th>
+		<th>Domain Name</th>
+            </tr>
+            <tr ng-repeat="domain in domains">
+                <td><a ng-click="selectDomain(domain)">{{ domain.name }}</a></td>
+            </tr>
+	     <tr>
+		<select ng-options="item as item.name for item in domains track by item.id" ng-model="selectedDomain"></select>
+	     </tr>
+    </table>
+</div>
 
 
 

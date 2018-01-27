@@ -22,6 +22,8 @@ curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , 
 curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":3 , "username":"itamarjp", "password":"x"}' http://localhost:5000/api/emails
 
 #consultando TODOS
+curl -u x:x -i -X GET http://localhost:5000/api/me
+
 curl -u x:x -i -X GET http://localhost:5000/api/users
 curl -u x:x -i -X GET http://localhost:5000/api/domains
 curl -u x:x -i -X GET http://localhost:5000/api/databases
@@ -62,8 +64,9 @@ from app.models.tables import Databases
 from app.models.tables import FtpAccounts
 
 users = User.query.all()
-domains = Domain.query.all()
+domains = Domains.query.all()
 
 d = Domains.query.filter(Domains.user_id == 1).all()
 
-
+session.query(User).join("addresses")
+Domains.query.join("users").all()

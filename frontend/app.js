@@ -11,6 +11,11 @@ $scope.showurl = function(url){
     if (url==2){this.getEmails();}
     if (url==3){this.getDatabases();}
     if (url==4){this.getFTP();}
+    if (url==5){
+    this.getDomains();
+    
+    }
+    
 };
 
 $scope.Logged = 0;
@@ -44,13 +49,18 @@ $scope.Logout = function() {
 };
 
 
-
-
-
   $scope.getDomains = function () {  
      $http.get(ApiUrl + "domains" ).then(function (response) {$scope.domains = response.data;});
      console.log($scope.domains);
-  };     
+  };
+
+  $scope.selectDomain = function (domain,template) {
+     alert(domain.name);
+     $scope.selectedDomain=domain;
+     $scope.template=template;
+     console.log(domain.name);
+  }; 
+
 
    
     $scope.editDomain = function (id) {
@@ -97,10 +107,6 @@ $scope.Logout = function() {
 
 
 
-
-
-
-
   $scope.getEmails = function () {  
      $http.get(ApiUrl + "emails" ).then(function (response) {$scope.emails = response.data;});
      console.log($scope.emails);
@@ -112,7 +118,7 @@ $scope.Logout = function() {
 
     $scope.deleteEmail = function (id) {
         $http.delete(ApiUrl + "emails/" + id ).then(function (response) {$scope.newemail = {};$scope.getEmails();});
-    };
+1    };
 
     $scope.saveEmail = function () {
          console.log($scope.newemail);
@@ -170,7 +176,4 @@ $scope.Logout = function() {
             }
         };
 
-
-
 });
-

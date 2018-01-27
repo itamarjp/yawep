@@ -2,6 +2,7 @@ from app import db
 from passlib.apps import custom_app_context as pwd_context
 from sqlalchemy.inspection import inspect
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import relationship
 
 class User(db.Model):
     __tablename__ = "users"
@@ -10,6 +11,7 @@ class User(db.Model):
     email = db.Column(db.String, unique=True)
     username = db.Column(db.String, unique=True)
     password = db.Column(db.String(128))
+    xdomains = relationship("Domains")
     @property
     def serialize(self):
         #return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
@@ -19,7 +21,7 @@ class User(db.Model):
            'name' : self.name ,
            'email' :  self.email,
            'username' : self.username,
-           'domains': self.domains.serialize,
+#           'domains': self.domains.serialize,
 #          'password' : self.password,
 
            }
@@ -38,9 +40,9 @@ class User(db.Model):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password)
 
-    @hybrid_property
-    def domains(self):
-        return Domains.query.filter_by(id = self.id).first()
+    #@hybrid_property
+    #def domains(self):
+    #    return Domains.query.filter_by(id = self.id).first()
 
 class Domains(db.Model):
     __tablename__ = "domains"

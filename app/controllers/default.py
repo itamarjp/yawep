@@ -43,6 +43,17 @@ def load_user(id):
 def get_resource():
     return jsonify({ 'message': 'Hello %s !' % auth.username()})
 
+
+#http://localhost/api/users/me
+@app.route('/api/users/me', methods = ['GET']) #(return info about currently logged in user)
+@auth.login_required
+def get_user_me():
+       user = User.query.filter_by(username = auth.username()).first_or_404()
+       response = jsonify(user.serialize)
+       response.status_code = 200
+       return response
+
+
 @auth.verify_password
 def verify_password(username, password):
     app.logger.debug('tentativa de login {}, {}'.format(username, password ))

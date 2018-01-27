@@ -83,7 +83,11 @@ def callback(ch, method, properties, body):
 channel.basic_consume(callback , queue='domains', no_ack=True)
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
-channel.start_consuming()
-
+try:
+ channel.start_consuming()
+except KeyboardInterrupt:
+ print("Closing")
+ channel.close()
+ connection.close()
 
 

@@ -27,7 +27,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 from app.controllers import default
-from app.models import tables, forms
+from app.models import tables
 
 db.create_all(app=app)
 
