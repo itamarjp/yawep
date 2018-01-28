@@ -95,7 +95,7 @@
     <form class="well">
         <label>Name</label>
         <input type="text" name="name" ng-model="newdomain.name" />
-        <input type="hidden" ng-model="newdomain.id" />        
+        <input type="hidden" ng-model="newdomain.id" />
         <br/>	
         <input type="button" value="Save" ng-click="saveDomain()" class="btn btn-primary" />
     </form>
@@ -111,7 +111,7 @@
             <tr ng-repeat="domain in domains">
                 <td>{{ domain.name }}</td>
                 <td>{{ domain.owner }}</td>
-                <td> <a href="javascript:void(0)" ng-click="editDomain(domain.id)">edit</a> | <a href="javascript:void(0)" ng-click="deleteDomain(domain.id)">delete</a>
+                <td><a href="" ng-show="{{domain.removable == 0 }}"ng-click="deleteDomain(domain.id)">delete</a>
                 </td>
             </tr>
         </tbody>
@@ -133,13 +133,11 @@
             <tr>
                 <th>E-Mail</th>
                 <th>Action</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="email in emails">
-                <td>{{ email.username }}</td>
-                <td>{{ email.username }}</td>
+                <td>{{ email.full_email}}</td>
                 <td> <a href="javascript:void(0)" ng-click="editEmail(email.id)">edit</a> | <a href="javascript:void(0)" ng-click="deleteEmail(email.id)">delete</a>
 
                 </td>
