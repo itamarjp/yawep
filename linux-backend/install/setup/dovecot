@@ -1,0 +1,53 @@
+telnet 0 110
+user fmaster
++OK Password required.
+pass password
++OK logged in.
+quit
+netcat mail.yourdomain.com 143
+a login fmaster password
+a OK LOGIN Ok.
+a logout
+
+Next you will need to edit /etc/dovecot/conf.d/10-master.conf. Change the following:
+
+service auth {
+  # auth_socket_path points to this userdb socket by default. It's typically
+  # used by dovecot-lda, doveadm, possibly imap process, etc. Its default
+  # permissions make it readable only by root, but you may need to relax these
+  # permissions. Users that have access to this socket are able to get a list
+  # of all usernames and get results of everyone's userdb lookups.
+  unix_listener auth-userdb {
+    #mode = 0600
+    #user = 
+    #group = 
+  }
+
+  # Postfix smtp-auth
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    user = postfix
+    group = postfix
+  }
+
+auth_mechanisms = plain login
+
+
+dovecot
+10-mail.conf
+
++mail_location = maildir:~
++#mail_uid = 89
++#mail_gid = 89
++mail_access_groups = dovecot
++mmap_disable = yes
+-first_valid_uid = 89
+
+
+10-ssl.conf
+-ssl_cert = < /etc/letsencrypt/live/mail.ispbrasil.com.br/fullchain.pem
+-ssl_key = < /etc/letsencrypt/live/mail.ispbrasil.com.br/privkey.pem
+
+20-imap.conf	
+-  mail_max_userip_connections = 150
+

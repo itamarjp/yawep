@@ -6,12 +6,6 @@ sudo postconf -e 'virtual_alias_maps= hash:/etc/postfix/virtual'
 sudo postmap /etc/postfix/virtual
 
 
-telnet 0 110
-user fmaster
-+OK Password required.
-pass password
-+OK logged in.
-quit
 
 +disable_vrfy_command = yes
 +home_mailbox = Maildir/
@@ -38,10 +32,7 @@ quit
 +smtpd_sasl_type = dovecot
 
 
-netcat mail.yourdomain.com 143
-a login fmaster password
-a OK LOGIN Ok.
-a logout
+
 sudo postconf -e "virtual_alias_domains = fossedu.org linuxelabs.com"
 sudo postconf -e "virtual_alias_maps = hash:/etc/postfix/virtual"
 sudo postconf -e 'smtp_tls_security_level = may'
@@ -69,45 +60,4 @@ sudo postconf -e 'myhostname = mail.example.com'
 sudo postconf -e 'smtpd_tls_CAfile = /etc/ssl/certs/cacert.pem'
 
 
-Next you will need to edit /etc/dovecot/conf.d/10-master.conf. Change the following:
-
-service auth {
-  # auth_socket_path points to this userdb socket by default. It's typically
-  # used by dovecot-lda, doveadm, possibly imap process, etc. Its default
-  # permissions make it readable only by root, but you may need to relax these
-  # permissions. Users that have access to this socket are able to get a list
-  # of all usernames and get results of everyone's userdb lookups.
-  unix_listener auth-userdb {
-    #mode = 0600
-    #user = 
-    #group = 
-  }
-
-  # Postfix smtp-auth
-  unix_listener /var/spool/postfix/private/auth {
-    mode = 0660
-    user = postfix
-    group = postfix
-  }
-
-auth_mechanisms = plain login
-
-
-dovecot
-10-mail.conf
-
-+mail_location = maildir:~
-+#mail_uid = 89
-+#mail_gid = 89
-+mail_access_groups = dovecot
-+mmap_disable = yes
--first_valid_uid = 89
-
-
-10-ssl.conf
--ssl_cert = < /etc/letsencrypt/live/mail.ispbrasil.com.br/fullchain.pem
--ssl_key = < /etc/letsencrypt/live/mail.ispbrasil.com.br/privkey.pem
-
-20-imap.conf	
--  mail_max_userip_connections = 150
 
