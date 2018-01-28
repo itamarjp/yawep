@@ -9,7 +9,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 #engine = create_engine('sqlite:///' + os.path.join(basedir, 'storage.db'), convert_unicode=True)
 
-engine = create_engine('postgresql+psycopg2://postgres:password@localhost/webpanel'), convert_unicode=True)
+#engine = create_engine('postgresql+psycopg2://postgres:password@localhost/webpanel'), convert_unicode=True)
+engine = create_engine('postgresql+pg8000://postgres:password@localhost/webpanel'), convert_unicode=True)
 
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 Base = declarative_base()

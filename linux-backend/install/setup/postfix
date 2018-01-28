@@ -1,0 +1,113 @@
+ sudo postconf -e "home_mailbox = Maildir/"
+sudo postconf -e "mydestination = mail.fossedu.org, localhost.localdomain, localhost, yourdomain.com"
+sudo postconf -e "inet_interfaces = all"
+
+sudo postconf -e 'virtual_alias_maps= hash:/etc/postfix/virtual'
+sudo postmap /etc/postfix/virtual
+
+
+telnet 0 110
+user fmaster
++OK Password required.
+pass password
++OK logged in.
+quit
+
++disable_vrfy_command = yes
++home_mailbox = Maildir/
++inet_interfaces = all
++message_size_limit = 80920000
+
+
++mydomain = ispbrasil.com.br
++myhostname = mail.ispbrasil.com.br
++smtpd_tls_cert_file = /etc/letsencrypt/live/mail.ispbrasil.com.br/fullchain.pem
++smtpd_tls_ciphers = medium
++smtpd_tls_key_file = /etc/letsencrypt/live/mail.ispbrasil.com.br/privkey.pem
++virtual_alias_maps = hash:/etc/postfix/virtual
++virtual_gid_maps = static:97
++virtual_mailbox_base = /var/mail/vhosts
++virtual_mailbox_domains = /etc/postfix/virtual_domains
++virtual_mailbox_limit = 102400000
++virtual_mailbox_maps = hash:/etc/postfix/vmailbox
++virtual_minimum_uid = 89
++virtual_uid_maps = static:97
++smtpd_sasl_auth_enable = yes
++smtpd_sasl_path = private/auth
++smtpd_sasl_service = smtp
++smtpd_sasl_type = dovecot
+
+
+netcat mail.yourdomain.com 143
+a login fmaster password
+a OK LOGIN Ok.
+a logout
+sudo postconf -e "virtual_alias_domains = fossedu.org linuxelabs.com"
+sudo postconf -e "virtual_alias_maps = hash:/etc/postfix/virtual"
+sudo postconf -e 'smtp_tls_security_level = may'
+sudo postconf -e 'smtpd_tls_security_level = may'
+sudo postconf -e 'smtpd_tls_auth_only = no'
+sudo postconf -e 'smtp_tls_note_starttls_offer = yes'
+sudo postconf -e 'smtpd_tls_key_file = /etc/ssl/private/smtpd.key'
+sudo postconf -e 'smtpd_tls_cert_file = /etc/ssl/certs/smtpd.crt'
+sudo postconf -e 'smtpd_tls_CAfile = /etc/ssl/certs/cacert.pem'
+sudo postconf -e 'smtpd_tls_loglevel = 1'
+sudo postconf -e 'smtpd_tls_received_header = yes'
+sudo postconf -e 'smtpd_tls_session_cache_timeout = 3600s'
+sudo postconf -e 'tls_random_source = dev:/dev/urandom'
+sudo postconf -e 'myhostname = server1.example.com' # remember to change this to yours
+
+sudo postconf -e 'smtp_tls_security_level = may'
+sudo postconf -e 'smtpd_tls_security_level = may'
+sudo postconf -e 'smtp_tls_note_starttls_offer = yes'
+sudo postconf -e 'smtpd_tls_key_file = /etc/ssl/private/server.key'
+sudo postconf -e 'smtpd_tls_cert_file = /etc/ssl/certs/server.crt'
+sudo postconf -e 'smtpd_tls_loglevel = 1'
+sudo postconf -e 'smtpd_tls_received_header = yes'
+sudo postconf -e 'myhostname = mail.example.com'
+
+sudo postconf -e 'smtpd_tls_CAfile = /etc/ssl/certs/cacert.pem'
+
+
+Next you will need to edit /etc/dovecot/conf.d/10-master.conf. Change the following:
+
+service auth {
+  # auth_socket_path points to this userdb socket by default. It's typically
+  # used by dovecot-lda, doveadm, possibly imap process, etc. Its default
+  # permissions make it readable only by root, but you may need to relax these
+  # permissions. Users that have access to this socket are able to get a list
+  # of all usernames and get results of everyone's userdb lookups.
+  unix_listener auth-userdb {
+    #mode = 0600
+    #user = 
+    #group = 
+  }
+
+  # Postfix smtp-auth
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    user = postfix
+    group = postfix
+  }
+
+auth_mechanisms = plain login
+
+
+dovecot
+10-mail.conf
+
++mail_location = maildir:~
++#mail_uid = 89
++#mail_gid = 89
++mail_access_groups = dovecot
++mmap_disable = yes
+-first_valid_uid = 89
+
+
+10-ssl.conf
+-ssl_cert = < /etc/letsencrypt/live/mail.ispbrasil.com.br/fullchain.pem
+-ssl_key = < /etc/letsencrypt/live/mail.ispbrasil.com.br/privkey.pem
+
+20-imap.conf	
+-  mail_max_userip_connections = 150
+
