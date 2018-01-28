@@ -5,9 +5,12 @@ import time
 import config
 
 url = "{}{}".format(config.key("url"),"/domains")
+username = config.key("username")
+password = config.key("password")
+
 
 while True:
- r = requests.get(url, auth=('x', 'x'))
+ r = requests.get(url, auth=(username, password))
  print(r.status_code)
  if (r.status_code < 400):
   for x in r.json():

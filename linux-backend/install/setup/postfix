@@ -93,4 +93,21 @@ service auth {
 auth_mechanisms = plain login
 
 
+dovecot
+10-mail.conf
+
++mail_location = maildir:~
++#mail_uid = 89
++#mail_gid = 89
++mail_access_groups = dovecot
++mmap_disable = yes
+-first_valid_uid = 89
+
+
+10-ssl.conf
+-ssl_cert = < /etc/letsencrypt/live/mail.ispbrasil.com.br/fullchain.pem
+-ssl_key = < /etc/letsencrypt/live/mail.ispbrasil.com.br/privkey.pem
+
+20-imap.conf	
+-  mail_max_userip_connections = 150
 
