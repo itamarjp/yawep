@@ -25,7 +25,7 @@ def runsql(sql, cursor):
 
 
 def callback(ch, method, properties, body):
-    print(" [x] DB Received: " % body)
+    print(" [x] DB Received: %s" % body)
     temp = body.replace(b"'" ,  b'"').decode("utf-8")
     x = json.loads(temp)
     #print (type(x))
