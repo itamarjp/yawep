@@ -6,8 +6,8 @@ curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar3
 
 #criando dominios
 curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"mail.ispbrasil.com.br"}' http://localhost:5000/api/domains
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":2 , "name":"ispbrasil.com.br"}' http://localhost:5000/api/domains
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":3 , "name":"www.ispbrasil.com.br"}' http://localhost:5000/api/domains
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"ispbrasil.com.br"}' http://localhost:5000/api/domains
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"www.ispbrasil.com.br"}' http://localhost:5000/api/domains
 
 
 #criando banco
@@ -64,6 +64,8 @@ from app.models.tables import Databases
 from app.models.tables import FtpAccounts
 
 users = User.query.all()
+users[0].domain_count
+
 domains = Domains.query.all()
 
 d = Domains.query.filter(Domains.user_id == 1).all()
