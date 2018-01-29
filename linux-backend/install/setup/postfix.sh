@@ -22,8 +22,7 @@ touch /etc/postfix/virtual_domains
 postmap /etc/postfix/virtual_domains
 postconf -e "smtpd_tls_cert_file = /etc/letsencrypt/live/painel.ispbrasil.com.br/fullchain.pem"
 postconf -e "smtpd_tls_key_file = /etc/letsencrypt/live/painel.ispbrasil.com.br/privkey.pem"
-#fixme
-postconf -e 'smtpd_tls_CAfile = /etc/ssl/certs/cacert.pem' 
+postconf -e "smtpd_tls_CAfile = /etc/letsencrypt/live/painel.ispbrasil.com.br/fullchain.pem"
 postconf -e "myhostname = painel.ispbrasil.com.br"
 postconf -e 'smtpd_tls_received_header = yes'
 postconf -e 'smtp_tls_security_level = may'
@@ -31,8 +30,7 @@ postconf -e 'smtpd_tls_security_level = may'
 postconf -e 'smtpd_tls_loglevel = 1'
 postconf -e 'smtpd_tls_received_header = yes'
 postconf -e 'smtp_tls_note_starttls_offer = yes'
-
-postconf -e "smtpd_sasl_auth_enable = yes"
+postconf -e "smtpd_sasl_auth_enable = no"
 postconf -e "smtpd_sasl_path = private/auth"
 postconf -e "smtpd_sasl_service = smtp"
 postconf -e "smtpd_sasl_type = dovecot"
