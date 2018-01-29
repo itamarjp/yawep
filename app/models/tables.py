@@ -41,6 +41,10 @@ class User(db.Model):
     def removable(self):
       return len(self.domains)
 
+    def __repr__(self):
+        return "{}\n".format(self.serialize)
+
+
 class Domains(db.Model):
     __tablename__ = "domains"
     id = db.Column(db.Integer, primary_key=True)
@@ -48,7 +52,7 @@ class Domains(db.Model):
     name = db.Column(db.Text)
 
     emails = relationship("Emails", backref="domain")
-    ftpaccounts = relationship("FtpAccounts", backref="domain")
+    ftpaccounts = relationship("Ftpaccounts", backref="domain")
     databases = relationship("Databases", backref="domain")
 
     @property
@@ -76,9 +80,6 @@ class Domains(db.Model):
     def removable(self):
       return len(self.emails) + len(self.ftpaccounts) + len(self.databases)
 
-    def __repr__(self):
-        return '<Domain {}>'.format(self.name)
-
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -86,6 +87,9 @@ class Domains(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def __repr__(self):
+        return "{}\n".format(self.serialize)
 
 class Emails(db.Model):
     __tablename__ = "emails"
@@ -115,8 +119,11 @@ class Emails(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def __repr__(self):
+        return "{}\n".format(self.serialize)
 
-class FtpAccounts(db.Model):
+
+class Ftpaccounts(db.Model):
     __tablename__ = "ftpaccounts"
     id = db.Column(db.Integer, primary_key=True)
     domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
@@ -139,6 +146,9 @@ class FtpAccounts(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+    def __repr__(self):
+        return "{}\n".format(self.serialize)
+
 
 class Databases(db.Model):
     __tablename__ = "databases"
@@ -164,3 +174,6 @@ class Databases(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def __repr__(self):
+        return "{}\n".format(self.serialize)

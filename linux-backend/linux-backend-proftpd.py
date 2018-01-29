@@ -36,13 +36,13 @@ def add_ftp(username, password, domain_name ):
   shutil.move(file2.name, passwd_ftp)
 
 def remove_ftp(username):
-  print("Removing username {} from FTP".format(usernamename))
+  print("Removing username {} from FTP".format(username))
   file1 = open(passwd_ftp)
   file2 = tempfile.NamedTemporaryFile(delete=False)
   for line in file1:
-    (user_name, hashed_password , uid, gid, gecos, homedir, usershell) = line1.split(':')
+    (user_name, hashed_password , uid, gid, gecos, homedir, usershell) = line.split(':')
     if (username != user_name):
-     file2.write(line)
+     file2.write(line.encode('utf-8'))
   file1.close()
   file2.close()
   shutil.move(file2.name, passwd_ftp)

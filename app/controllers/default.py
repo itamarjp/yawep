@@ -8,7 +8,7 @@ from app.models.tables import User
 from app.models.tables import Domains
 from app.models.tables import Emails
 from app.models.tables import Databases
-from app.models.tables import FtpAccounts
+from app.models.tables import Ftpaccounts
 
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
@@ -261,8 +261,8 @@ def delete_email(id):
 #http://localhost/api/ftpaccounts
 @app.route('/api/ftpaccounts', methods = ['GET']) #(retrieve list)
 @auth.login_required
-def get_ALL_ftpaccounts():
-   ftp = FtpAccounts.query.all()
+def get_ALL_Ftpaccounts():
+   ftp = Ftpaccounts.query.all()
    if not ftp:
       abort(404)
    response = jsonify([i.serialize for i in ftp])
@@ -273,7 +273,7 @@ def get_ALL_ftpaccounts():
 @app.route('/api/ftpaccounts/<int:id>', methods = ['GET']) #(retrieve item 123)
 @auth.login_required
 def get_ftpaccount(id):
-       ftp = FtpAccounts.query.filter_by(id = id).first_or_404()
+       ftp = Ftpaccounts.query.filter_by(id = id).first_or_404()
        response = jsonify(ftp.serialize)
        response.status_code = 200
        return response
@@ -287,10 +287,10 @@ def new_ftpaccount():
     if username is None or username is None:
         app.logger.debug('missing arguments')
         abort(400) # missing arguments
-    if FtpAccounts.query.filter_by(username = username).first() is not None:
+    if Ftpaccounts.query.filter_by(username = username).first() is not None:
         app.logger.debug('conta ftp ja existe')
         abort(400) # existing domain
-    ftp = FtpAccounts(domain_id = domain_id, username = username,  password = password)
+    ftp = Ftpaccounts(domain_id = domain_id, username = username,  password = password)
     ftp.save()
     send_async_linux_task(msg = ftp.serialize, queue="ftpaccounts", action = "new")
     return jsonify(ftp.serialize), 201, {'Location': url_for('get_ftpaccount', id = ftp.id, _external = True)}
@@ -299,7 +299,7 @@ def new_ftpaccount():
 @app.route('/api/ftpaccounts/<int:id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
 @auth.login_required
 def update_ftpaccount(id):
-   ftpaccount = FtpAccounts.query.filter_by(id = domain_id).first_or_404()
+   ftpaccount = Ftpaccounts.query.filter_by(id = domain_id).first_or_404()
    ftpaccount.name = str(request.json.get('name', ''))
    ftpaccount.user_id = str(request.json.get('user_id', ''))
    db.session.commit()
@@ -312,7 +312,7 @@ def update_ftpaccount(id):
 @app.route('/api/ftpaccounts/<int:id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
 @auth.login_required
 def delete_ftpaccount(id):
-   ftp = FtpAccounts.query.filter_by(id = id).first_or_404()
+   ftp = Ftpaccounts.query.filter_by(id = id).first_or_404()
    send_async_linux_task(msg = ftp.serialize, queue="ftpaccounts", action = "delete")
    ftp.delete()
    response = jsonify({'message': 'domain deleted successfully'})
