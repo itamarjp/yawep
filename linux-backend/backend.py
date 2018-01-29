@@ -5,6 +5,7 @@ from pwd import getpwnam
 
 def make_web_home(homedir):
   try:
+   print("Creating web directory {}".format(homedir))
    os.makedirs(homedir,exist_ok=True)
   except:
    print("error creating directory {}".format(homedir))
@@ -22,6 +23,7 @@ def remove_web_home(homedir):
 
 def make_mail_home(homedir):
   try:
+   print("Creating mail directory {}".format(homedir))  
    os.makedirs(homedir,exist_ok=True)
   except:
    print("error creating directory {}".format(homedir))

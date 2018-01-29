@@ -17,12 +17,11 @@ channel.queue_declare(queue = queue)
 def runsql(sql, cursor):
  print("executing sql:\n {}".format(sql))
  try:
-  cursor.execute(sql)
- except mysql.Error as e:
-  print ("Error %d: %s" % (e.args[0], e.args[1]))
-  print("falhou:")
-  print(sql)
-
+   cursor.execute(sql)
+ except (MySQLdb.Error, MySQLdb.Warning) as e:
+   print(e)
+   print("falhou:")
+   print(sql)
 
 def callback(ch, method, properties, body):
     print(" [x] DB Received: %s" % body)

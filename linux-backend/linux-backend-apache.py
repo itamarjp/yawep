@@ -68,7 +68,7 @@ def callback(ch, method, properties, body):
    os.unlink(conf_d)
   except:
    pass
-  backend.remove_web_home(homedir[:-7])
+  backend.remove_web_home(homedir)
  os.system("service httpd restart")
  time.sleep(10)
 
