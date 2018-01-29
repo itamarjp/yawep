@@ -1,3 +1,4 @@
+service postfix stop
 postconf -e "home_mailbox = Maildir/"
 postconf -e "inet_interfaces = all"
 postconf -e "message_size_limit = 80920000"
@@ -32,5 +33,4 @@ postconf -e "smtpd_sasl_path = private/auth"
 postconf -e "smtpd_sasl_service = smtp"
 postconf -e "smtpd_sasl_type = dovecot"
 
-
-
+service postfix start

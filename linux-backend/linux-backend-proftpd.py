@@ -17,38 +17,23 @@ channel.queue_declare(queue='ftpaccounts')
 
 passwd_ftp = "/etc/passwd.ftp"
 
-def callback(ch, method, properties, body):
- print(" [x] DF Received %r" % body)
- temp = body.replace(b"'" ,  b'"').decode("utf-8") 
- x = json.loads(temp)
- username = x['username']
- password = x['password']
- domain_name =  x['domain_name']
- hashed_password = crypt.crypt(password)
- action = x['action']
- if action == "new":
-  #try:
-  # os.makedirs(homedir)
-  #except:
-  # pass
+def add_ftp(username, password, domain_name ):
+  hashed_password = crypt.crypt(password)
   nome = "ftp-user-{}".format(domain_name)
   home = "/var/www/domains/{}/htdocs".format(domain_name)
-  password_line = "{}:{}:14:50:{}:{}:/sbin/nologin\n".format(domain_name, hashed_password, nome , home)
-
-  file2 = tempfile.NamedTemporaryFile(delete=False)
+  password_line = "{}:{}:14:50:{}:{}:/sbin/nologin\n".format(username, hashed_password, nome , home)
   file1 = open(passwd_ftp)
+  file2 = tempfile.NamedTemporaryFile(delete=False)
   for line in file1:
+    (user_name, hashed_password , uid, gid, gecos, homedir, usershell) = line1.split(':')
         file2.write(line)
-  #file = open(conf_d,"w")
   file2.write(password_line.encode('utf-8'))
   file1.close
   file2.close()
   shutil.move(file2.name, passwd_ftp)
-  #os.chown(homedir, getpwnam('ftp').pw_uid, getpwnam('apache').pw_gid)
-  #print("Getting a LetEncrypt certificate for ", domain_name)
 
- if action == "delete":
-  print("Removing domain", domain_name)
+def remove_ftp(username):
+  print("Removing username {} from FTP".format(usernamename))
   file1 = open(passwd_ftp)
   file2 = tempfile.NamedTemporaryFile(delete=False)
   for line in file1:
@@ -59,13 +44,22 @@ def callback(ch, method, properties, body):
   file2.close()
   shutil.move(file2.name, passwd_ftp)
 
-  #try:
-   #print("Removing apache config file", conf_d)
-   #os.unlink(conf_d)
-  #except:
-    # pass
-  #print("Removing directory : " , homedir[:-7])
-  #shutil.rmtree(homedir[:-7] , ignore_errors=True)
+
+
+
+def callback(ch, method, properties, body):
+ print(" [x] DF Received %r" % body)
+ temp = body.replace(b"'" ,  b'"').decode("utf-8") 
+ x = json.loads(temp)
+ username = x['username']
+ password = x['password']
+ domain_name =  x['domain_name']
+ action = x['action']
+ 
+ if action == "new":
+  add_ftp(username, password, domain_name)
+ if action == "delete":
+  remove_ftp(username)
 
  os.system("service proftpd restart")
  time.sleep(10)

@@ -16,6 +16,32 @@ channel = connection.channel()
 channel.queue_declare(queue='emails')
 
 virtual_domains = "/etc/postfix/virtual_domains"
+def add_domain(domain_name):
+  print("adding domain {} to postfix".format(domain_name))
+  file1 = open(virtual_domains)
+  file2 = open(virtual_domains, "a")
+  found = 0
+  for line in file1:
+    if (line == domain_name):
+     found = 1
+     break
+  if (found == 0):
+    file2.write("{}\n".format(domain_name))
+  file1.close()
+  file2.close()
+
+def remove_domain(domain_name):
+  print("Removing domain {} from postfix".format(domain_name))
+  file1 = open(virtual_domains)
+  file2 = tempfile.NamedTemporaryFile(delete=False)
+  for line in file1:
+    if (line != domain_name):
+     file2.write(line)
+  file1.close()
+  file2.close()
+  shutil.move(file2.name, virtual_domains)
+
+
 
 
 def callback(ch, method, properties, body):
@@ -28,43 +54,12 @@ def callback(ch, method, properties, body):
  hashed_password = crypt.crypt(password)
  action = x['action']
  if action == "new":
-  nome = "ftp-user-{}".format(domain_name)
-  home = "/var/www/domains/{}/htdocs".format(domain_name)
-  password_line = "{}:{}:14:50:{}:{}:/sbin/nologin\n".format(domain_name, hashed_password, nome , home)
-
-  file2 = tempfile.NamedTemporaryFile(delete=False)
-  file1 = open(passwd_ftp)
-  for line in file1:
-        file2.write(line)
-  #file = open(conf_d,"w")
-  file2.write(password_line.encode('utf-8'))
-  file1.close
-  file2.close()
-  shutil.move(file2.name, passwd_ftp)
-  #os.chown(homedir, getpwnam('ftp').pw_uid, getpwnam('apache').pw_gid)
-  #print("Getting a LetEncrypt certificate for ", domain_name)
+  add_domain(domain_name)
 
  if action == "delete":
-  print("Removing domain", domain_name)
-  file1 = open(passwd_ftp)
-  file2 = tempfile.NamedTemporaryFile(delete=False)
-  for line in file1:
-    (user_name, hashed_password , uid, gid, gecos, homedir, usershell) = line1.split(':')
-    if (username != user_name):
-     file2.write(line)
-  file1.close()
-  file2.close()
-  shutil.move(file2.name, passwd_ftp)
+  remove_domain(domain_name)
 
-  #try:
-   #print("Removing apache config file", conf_d)
-   #os.unlink(conf_d)
-  #except:
-    # pass
-  #print("Removing directory : " , homedir[:-7])
-  #shutil.rmtree(homedir[:-7] , ignore_errors=True)
-
- os.system("service proftpd restart")
+ os.system("service postfix restart")
  time.sleep(10)
 
 
