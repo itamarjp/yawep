@@ -5,6 +5,9 @@ import sys
 import os
 import time
 import backend
+import socket
+
+
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
@@ -18,6 +21,15 @@ VirtualHost = """
  ServerAlias {0}
 </VirtualHost>
 
+<Directory {1}/>
+ AddDefaultCharset UTF-8
+ Require all granted
+ Options +FollowSymLinks +Indexes
+</Directory>
+
+"""
+
+VirtualHost_ssl = """
 <VirtualHost *:443>
  DocumentRoot {1}
  ServerName server.{0}
@@ -29,14 +41,11 @@ VirtualHost = """
  SSLCertificateChainFile /etc/letsencrypt/live/{0}/fullchain.pem
 </VirtualHost>
 
-
-<Directory {1}/>
- AddDefaultCharset UTF-8
- Require all granted
- Options +FollowSymLinks +Indexes
-</Directory>
-
 """
+
+
+
+
 
 home = "/var/www/domains/{}/htdocs"
 apache_conf = "/etc/httpd/conf.d/{}.conf"
@@ -51,15 +60,23 @@ def callback(ch, method, properties, body):
  homedir = home.format(domain_name)
  conf_d = apache_conf.format(domain_name)
  virtualhost = VirtualHost.format(domain_name , homedir)
+ virtualhostssl = VirtualHostssl.format(domain_name , homedir)
 
  if action == "new":
   backend.make_web_home(homedir)
   file = open(conf_d,"w")
   file.write(virtualhost)
+  my_ips = backend.resolvedns(socket.gethostname())
+  vhost_ips = backend.resolvedns(domain_name)
+  print(my_ips)
+  print(vhosts_ips)
+  print("new domain are in my ips {}".format(vhosts_ips in my_ips))
+  if (vhosts_ips in my_ips):
+     file.write(virtualhostssl)
+     print("Getting a LetEncrypt certificate for ", domain_name)
+     os.system("service httpd stop")
+     os.system("certbot certonly --standalone --preferred-challenges http -d {} -m itamar@ispbrasil.com.br  --agree-tos -n".format(domain_name))
   file.close()
-  print("Getting a LetEncrypt certificate for ", domain_name)
-  os.system("service httpd stop")
-  os.system("certbot certonly --standalone --preferred-challenges http -d {} -m itamar@ispbrasil.com.br  --agree-tos -n".format(domain_name))
 
  if action == "delete":
   print("Removing domain", domain_name)
