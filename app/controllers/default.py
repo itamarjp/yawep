@@ -111,7 +111,6 @@ def new_user():
 @app.route('/api/users/<int:id>', methods = ['PUT']) #(update user 123, from data provided with the request)
 @auth.login_required
 def update_user(id):
-   app.logger.debug('metodo put')
    user = User.query.filter_by(id = id).first_or_404()
    user.name = str(request.json.get('name', ''))
    user.email = str(request.json.get('email', ''))
@@ -150,7 +149,6 @@ def get_ALL_domains():
 @app.route('/api/domains/<int:id>', methods = ['GET']) #(retrieve domain 123)
 @auth.login_required
 def get_domain(id):
-       app.logger.debug('metodo get')
        domain = Domains.query.filter_by(id = id).first_or_404()
        response = jsonify(domain.serialize)
        response.status_code = 200
@@ -176,7 +174,6 @@ def new_domain():
 @app.route('/api/domains/<int:id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
 @auth.login_required
 def update_domain(id):
-   app.logger.debug('metodo put')
    domain = Domains.query.filter_by(id = id).first_or_404()
    domain.name = str(request.json.get('name', ''))
    domain.user_id = str(request.json.get('user_id', ''))
@@ -212,7 +209,6 @@ def get_ALL_emails():
 @app.route('/api/emails/<int:id>', methods = ['GET']) #(retrieve email 123)
 @auth.login_required
 def get_email(id):
-       app.logger.debug('metodo get')
        email = Emails.query.filter_by(id = id).first_or_404()
        response = jsonify(email.serialize)
        response.status_code = 200
@@ -230,16 +226,16 @@ def new_email():
     if Emails.query.filter_by(username = username).first() is not None:
         app.logger.debug('conta de email ja existe')
         abort(400) # existing domain
-    emailaccount = Emails(domain_id = domain_id, username = username,  password = password)
-    emailaccount.save()
-    return jsonify(emailaccount.serialize), 201, {'Location': url_for('get_email', id = emailaccount.id, _external = True)}
+    email = Emails(domain_id = domain_id, username = username,  password = password)
+    email.save()
+    send_async_linux_task(msg = email.serialize, queue="emails", action = "new")
+    return jsonify(email.serialize), 201, {'Location': url_for('get_email', id = email.id, _external = True)}
 
 
 #http://localhost/api/emails/123
 @app.route('/api/emails/<int:id>', methods = ['PUT']) #(update email 123, from data provided with the request)
 @auth.login_required
 def update_email(id):
-   app.logger.debug('metodo put')
    email = Emails.query.filter_by(id = id).first_or_404()
    email.name = str(request.json.get('name', ''))
    email.user_id = str(request.json.get('user_id', ''))
@@ -254,6 +250,7 @@ def update_email(id):
 @auth.login_required
 def delete_email(id):
    email = Emails.query.filter_by(id = id).first_or_404()
+   send_async_linux_task(msg = email.serialize, queue="emails", action = "delete")
    email.delete()
    response = jsonify({'message': 'email deleted successfully'})
    response.status_code = 204
@@ -276,7 +273,6 @@ def get_ALL_ftpaccounts():
 @app.route('/api/ftpaccounts/<int:id>', methods = ['GET']) #(retrieve item 123)
 @auth.login_required
 def get_ftpaccount(id):
-       app.logger.debug('metodo get')
        ftpaccount = FtpAccounts.query.filter_by(id = id).first_or_404()
        response = jsonify(ftpaccount.serialize)
        response.status_code = 200
@@ -294,21 +290,15 @@ def new_ftpaccount():
     if FtpAccounts.query.filter_by(username = username).first() is not None:
         app.logger.debug('conta ftp ja existe')
         abort(400) # existing domain
-    ftpaccount = FtpAccounts(domain_id = domain_id, username = username,  password = password)
-    ftpaccount.save()
-    msg = ftpaccount.serialize.copy()
-    domain = Domains.query.filter_by(id = ftpaccount.domain_id).first()
-    app.logger.debug("domain name = {}".format(domain.name))
-    #domain.serialize
-    msg.update({"domain_name": domain.name})
-    send_async_linux_task(msg = msg, queue="ftpaccounts", action = "new")
-    return jsonify(ftpaccount.serialize), 201, {'Location': url_for('get_ftpaccount', id = ftpaccount.id, _external = True)}
+    ftp = FtpAccounts(domain_id = domain_id, username = username,  password = password)
+    ftp.save()
+    send_async_linux_task(msg = ftp.serialize, queue="ftpaccounts", action = "new")
+    return jsonify(ftp.serialize), 201, {'Location': url_for('get_ftpaccount', id = ftp.id, _external = True)}
 
 #http://localhost/api/ftpaccounts/123
 @app.route('/api/ftpaccounts/<int:id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
 @auth.login_required
 def update_ftpaccount(id):
-   app.logger.debug('metodo put')
    ftpaccount = FtpAccounts.query.filter_by(id = domain_id).first_or_404()
    ftpaccount.name = str(request.json.get('name', ''))
    ftpaccount.user_id = str(request.json.get('user_id', ''))
@@ -322,8 +312,9 @@ def update_ftpaccount(id):
 @app.route('/api/ftpaccounts/<int:id>', methods = ['DELETE']) #(delete domain 123, from data provided with the request)
 @auth.login_required
 def delete_ftpaccount(id):
-   ftpaccount = FtpAccounts.query.filter_by(id = id).first_or_404()
-   ftpaccount.delete()
+   ftp = FtpAccounts.query.filter_by(id = id).first_or_404()
+   send_async_linux_task(msg = ftp.serialize, queue="ftpaccounts", action = "delete")
+   ftp.delete()
    response = jsonify({'message': 'domain deleted successfully'})
    response.status_code = 204
    return response
@@ -343,7 +334,6 @@ def get_ALL_databases():
 @app.route('/api/databases/<int:id>', methods = ['GET']) #(retrieve domain 123)
 @auth.login_required
 def get_databases(id):
-       app.logger.debug('metodo get')
        database = Databases.query.filter_by(id = id).first_or_404()
        response = jsonify(domain.serialize)
        response.status_code = 200
@@ -371,7 +361,6 @@ def new_databases():
 @app.route('/api/databases/<int:id>', methods = ['PUT']) #(update domain 123, from data provided with the request)
 @auth.login_required
 def update_databases(id):
-   app.logger.debug('metodo put')
    domain = Databases.query.filter_by(id = id).first_or_404()
    domain.name = str(request.json.get('name', ''))
    domain.user_id = str(request.json.get('user_id', ''))
