@@ -2,6 +2,7 @@ import os
 from pwd import getpwnam
 import shutil
 from pwd import getpwnam
+import dns.resolver
 
 def make_web_home(homedir):
   try:
@@ -37,3 +38,23 @@ def remove_mail_home(homedir):
   remove_web_home(homedir)
 
 
+def resolvedns(hostname):
+ iplist = []
+ try:
+   answersv4 = dns.resolver.query(hostname,'A')
+ except:
+  print ("no IPv4 records for {}".format(hostname))
+ else:
+   for ipv4 in answersv4:
+    print("{} points to {}".format(hostname,ipv4))
+    iplist.append("{}".format(ipv4))
+
+ try:
+  answersv6 = dns.resolver.query(hostname,'AAAA')
+ except:
+  print ("no IPv6 records for {}".format(hostname))
+ else:
+   for ipv6 in answersv6:
+    print("{} points to {}".format(hostname, ipv6))
+    iplist.append("{}".format(ipv6))
+ return iplist

@@ -55,6 +55,7 @@
         - python34-pika
         - python34-mysql
         - python34-pg8000
+        - python34-dns
       when:
        - ansible_distribution == "CentOS"
        - ansible_distribution_major_version == "7"
@@ -69,6 +70,7 @@
         - python3-pika
         - python3-mysql
         - python3-pg8000
+        - python3-dns
       when:
        - ansible_distribution == "Fedora"
        - ansible_distribution_major_version >= "27"
