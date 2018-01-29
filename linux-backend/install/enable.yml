@@ -17,7 +17,6 @@
         - rabbitmq-server
         - postfix
 
-
     - name: disable multiple services
       systemd:
         name: "{{ item }}"
@@ -25,3 +24,27 @@
         enabled: no
       with_items:
         - firewalld
+
+
+    - name: Install libselinux as prerequisite for SELinux Ansible module
+     yum:
+       name: "{{item}}"
+       state: latest
+     with_items:
+       - libselinux-python
+       - libsemanage-python
+
+    - name: Disable SELinux at next reboot
+      selinux:
+       state: disabled
+
+    - name: Set SELinux in permissive mode until the machine is rebooted
+      shell: setenforce 0
+      ignore_errors: true
+      changed_when: false
+
+    - name: restarting machine after selinux change
+      shell:  /bin/sleep 5 ; shutdown -r now "Ansible Selinux Changes"
+      when:
+          - reboot_required is defined
+          - reboot_required | bool
