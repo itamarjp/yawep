@@ -15,10 +15,10 @@ while True:
  if (r.status_code < 400):
   for x in r.json():
     print ("removing", x['id'],"domain = " ,x['name'])
-    x = requests.delete("%s/%s" % (url,x['id']), auth=('x', 'x'))
+    x = requests.delete("%s/%s" % (url,x['id']), auth=(username, password))
     #for key in x.keys(): print(key)
 
  print ("Adding a new domain")
- y = requests.post(url, json = {"user_id":"1" , "name":"test1.ispbrasil.com.br"}, auth=('x', 'x'))
+ y = requests.post(url, json = {"user_id":"1" , "name":"test1.ispbrasil.com.br"}, auth=(username, password))
  print("pausing for 10secs")
  time.sleep(10)

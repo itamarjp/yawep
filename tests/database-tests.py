@@ -14,10 +14,10 @@ while True:
  if (r.status_code < 400):
   for x in r.json():
     print ("removing", x['id'],"databasename = " ,x['databasename'])
-    x = requests.delete("%s/%s" % (url,x['id']), auth=('x', 'x'))
+    x = requests.delete("%s/%s" % (url,x['id']), auth=(username,password))
     #for key in x.keys(): print(key)
 
  print ("Adding a new database")
- y = requests.post(url, json = {"domain_id":"1" , "databasename":"x", "username": "x", "password":"x"}, auth=('x', 'x'))
+ y = requests.post(url, json = {"domain_id":"1" , "databasename":"x", "username": "x", "password":"x"}, auth=(username,password))
  print("pausing for 10secs")
  time.sleep(10)
