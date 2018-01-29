@@ -17,6 +17,36 @@ channel.queue_declare(queue = queue)
 
 virtual_domains = "/etc/postfix/virtual_domains"
 vmailbox = "/etc/postfix/vmailbox"
+dovecot = "/etc/dovecot/users"
+
+
+def add_dovecot(username ,password , full_email, domain_name):
+  print("adding email {} to dovecot domain {} ".format(full_email, domain_name))
+  backend.make_mail_home(mail_home.format(domain_name,username))
+  dovecotline = "{}:{{PLAIN}}{}:97:97::/var/mail/vhosts/{}/{}/".format(full_email,password,domain_name,username)
+  file1 = open(dovecot)
+  file2 = open(dovecot, "a")
+  found = 0
+  for line in file1:
+    if (line.strip() == dovecotline):
+     found = 1
+     break
+  if (found == 0):
+    file2.write("{}\n".format(dovecotline))
+  file1.close()
+  file2.close()
+
+def remove_dovecot(username ,password , full_email, domain_name):
+  print("Removing mailbox {} from dovecot domain {}".format(full_email , domain_name))
+  dovecotline = "{}:{{PLAIN}}{}:97:97::/var/mail/vhosts/{}/{}/".format(full_email,password,domain_name,username)
+  file1 = open(dovecot)
+  file2 = tempfile.NamedTemporaryFile(delete=False)
+  for line in file1:
+    if (line.strip() != dovecotline):
+     file2.write(line)
+  file1.close()
+  file2.close()
+  shutil.move(file2.name, dovecot)
 
 def add_mailbox(username ,full_email, domain_name):
   print("adding email {} to postfix domain {} ".format(full_email, domain_name))
@@ -91,10 +121,11 @@ def callback(ch, method, properties, body):
  if action == "new":
   add_domain(domain_name)
   add_mailbox(username ,full_email, domain_name)
-
+  add_dovecot(username ,password , full_email, domain_name)
  if action == "delete":
   remove_domain(domain_name)
   remove_mailbox(username ,full_email, domain_name)
+  remove_dovecot(username ,password , full_email, domain_name)
  os.system("service postfix restart")
  time.sleep(10)
 
