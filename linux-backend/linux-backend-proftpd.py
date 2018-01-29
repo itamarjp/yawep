@@ -21,7 +21,7 @@ def add_ftp(username, password, domain_name ):
   hashed_password = crypt.crypt(password)
   nome = "ftp-user-{}".format(domain_name)
   home = "/var/www/domains/{}/htdocs".format(domain_name)
-  backend.make_home(home)
+  backend.make_web_home(home)
   password_line = "{}:{}:14:50:{}:{}:/sbin/nologin\n".format(username, hashed_password, nome , home)
   file1 = open(passwd_ftp)
   file2 = tempfile.NamedTemporaryFile(delete=False)

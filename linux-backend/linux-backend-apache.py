@@ -53,7 +53,7 @@ def callback(ch, method, properties, body):
  virtualhost = VirtualHost.format(domain_name , homedir)
 
  if action == "new":
-  backend.make_home(homedir)
+  backend.make_web_home(homedir)
   file = open(conf_d,"w")
   file.write(virtualhost)
   file.close()
@@ -68,7 +68,7 @@ def callback(ch, method, properties, body):
    os.unlink(conf_d)
   except:
    pass
-  backend.remove_home(homedir[:-7])
+  backend.remove_web_home(homedir[:-7])
  os.system("service httpd restart")
  time.sleep(10)
 

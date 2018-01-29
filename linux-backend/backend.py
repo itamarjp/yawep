@@ -3,7 +3,7 @@ from pwd import getpwnam
 import shutil
 from pwd import getpwnam
 
-def make_home(homedir):
+def make_web_home(homedir):
   try:
    os.makedirs(homedir,exist_ok=True)
   except:
@@ -14,6 +14,6 @@ def make_home(homedir):
   except:
    print("error setting permissions on {}".format(homedir))
 
-def remove_home(homedir):
+def remove_web_home(homedir):
   print("Removing directory : " , homedir[:-7])
   shutil.rmtree(homedir[:-7] , ignore_errors=True)
