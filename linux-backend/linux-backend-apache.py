@@ -3,9 +3,8 @@ import pika
 import json
 import sys
 import os
-from pwd import getpwnam
 import time
-import shutil
+import backend
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
@@ -54,14 +53,10 @@ def callback(ch, method, properties, body):
  virtualhost = VirtualHost.format(domain_name , homedir)
 
  if action == "new":
-  try:
-   os.makedirs(homedir)
-  except:
-   pass
+  backend.make_home(homedir)
   file = open(conf_d,"w")
   file.write(virtualhost)
   file.close()
-  os.chown(homedir, getpwnam('ftp').pw_uid, getpwnam('apache').pw_gid)
   print("Getting a LetEncrypt certificate for ", domain_name)
   os.system("service httpd stop")
   os.system("certbot certonly --standalone --preferred-challenges http -d {} -m itamar@ispbrasil.com.br  --agree-tos -n".format(domain_name))
@@ -73,9 +68,7 @@ def callback(ch, method, properties, body):
    os.unlink(conf_d)
   except:
    pass
-  print("Removing directory : " , homedir[:-7])
-  shutil.rmtree(homedir[:-7] , ignore_errors=True)
-
+  backend.remove_home(homedir[:-7])
  os.system("service httpd restart")
  time.sleep(10)
 

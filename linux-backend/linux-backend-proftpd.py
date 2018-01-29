@@ -3,11 +3,11 @@ import pika
 import json
 import sys
 import os
-from pwd import getpwnam
 import time
 import shutil
 import crypt
 import tempfile
+import backend
 
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
@@ -21,12 +21,15 @@ def add_ftp(username, password, domain_name ):
   hashed_password = crypt.crypt(password)
   nome = "ftp-user-{}".format(domain_name)
   home = "/var/www/domains/{}/htdocs".format(domain_name)
+  backend.make_home(home)
   password_line = "{}:{}:14:50:{}:{}:/sbin/nologin\n".format(username, hashed_password, nome , home)
   file1 = open(passwd_ftp)
   file2 = tempfile.NamedTemporaryFile(delete=False)
   for line in file1:
-    (user_name, hashed_password , uid, gid, gecos, homedir, usershell) = line1.split(':')
-    file2.write(line)
+    (user_name, hashed_password , uid, gid, gecos, homedir, usershell) = line.split(':')
+    print("debug {}, {}".format(username, user_name))
+    if (username != user_name):
+     file2.write(line.encode('utf-8'))
   file2.write(password_line.encode('utf-8'))
   file1.close
   file2.close()
@@ -51,11 +54,14 @@ def callback(ch, method, properties, body):
  print(" [x] DF Received %r" % body)
  temp = body.replace(b"'" ,  b'"').decode("utf-8") 
  x = json.loads(temp)
- username = x['username']
- password = x['password']
- domain_name =  x['domain_name']
- action = x['action']
- 
+ try:
+  username = x['username']
+  password = x['password']
+  domain_name =  x['domain_name']
+  action = x['action']
+ except KeyError:
+  print("missing data in the msg")
+
  if action == "new":
   add_ftp(username, password, domain_name)
  if action == "delete":
