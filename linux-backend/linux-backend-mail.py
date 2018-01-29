@@ -3,7 +3,6 @@ import pika
 import json
 import sys
 import os
-from pwd import getpwnam
 import time
 import shutil
 import crypt
