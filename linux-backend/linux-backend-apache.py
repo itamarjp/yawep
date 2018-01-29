@@ -60,18 +60,19 @@ def callback(ch, method, properties, body):
  homedir = home.format(domain_name)
  conf_d = apache_conf.format(domain_name)
  virtualhost = VirtualHost.format(domain_name , homedir)
- virtualhostssl = VirtualHostssl.format(domain_name , homedir)
+ virtualhostssl = VirtualHost_ssl.format(domain_name , homedir)
 
  if action == "new":
   backend.make_web_home(homedir)
   file = open(conf_d,"w")
   file.write(virtualhost)
   my_ips = backend.resolvedns(socket.gethostname())
-  vhost_ips = backend.resolvedns(domain_name)
-  print(my_ips)
-  print(vhosts_ips)
-  print("new domain are in my ips {}".format(vhosts_ips in my_ips))
-  if (vhosts_ips in my_ips):
+  vhosts_ips = backend.resolvedns(domain_name)
+  print("my ips {}".format(my_ips))
+  print("new domain ips {}".format(vhosts_ips))
+  for ip in vhosts_ips:
+   if (ip in my_ips):
+     print("ip {} are in my ips {}, trying to get an ssl".format(ip,my_ips))
      file.write(virtualhostssl)
      print("Getting a LetEncrypt certificate for ", domain_name)
      os.system("service httpd stop")
