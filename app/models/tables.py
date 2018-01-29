@@ -95,7 +95,7 @@ class Emails(db.Model):
     password = db.Column(db.Text)
     @property
     def serialize(self):
-        keys = ['id','domain_id','username','full_email', 'domain_name']
+        keys = ['id','domain_id','username','full_email', 'domain_name','password']
         return {c: getattr(self, c) for c in keys }
 
     @property
@@ -125,7 +125,7 @@ class FtpAccounts(db.Model):
 
     @property
     def serialize(self):
-        keys = ['id','domain_id','username','domain_name']
+        keys = ['id','domain_id','username','domain_name','password']
         return {c: getattr(self, c) for c in keys }
 
     @property
@@ -149,7 +149,7 @@ class Databases(db.Model):
     password = db.Column(db.Text)
     @property
     def serialize(self):
-        keys = ['id','domain_id','username', 'databasename', 'domain_name']
+        keys = ['id','domain_id','username', 'databasename', 'domain_name','password']
         return {c: getattr(self, c) for c in keys }
 
     @property

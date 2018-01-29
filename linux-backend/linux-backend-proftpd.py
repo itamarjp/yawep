@@ -26,7 +26,7 @@ def add_ftp(username, password, domain_name ):
   file2 = tempfile.NamedTemporaryFile(delete=False)
   for line in file1:
     (user_name, hashed_password , uid, gid, gecos, homedir, usershell) = line1.split(':')
-        file2.write(line)
+    file2.write(line)
   file2.write(password_line.encode('utf-8'))
   file1.close
   file2.close()
