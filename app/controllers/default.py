@@ -262,10 +262,10 @@ def delete_email(id):
 @app.route('/api/ftpaccounts', methods = ['GET']) #(retrieve list)
 @auth.login_required
 def get_ALL_ftpaccounts():
-   ftpaccounts = FtpAccounts.query.all()
-   if not ftpaccounts:
+   ftp = FtpAccounts.query.all()
+   if not ftp:
       abort(404)
-   response = jsonify([i.serialize for i in ftpaccounts])
+   response = jsonify([i.serialize for i in ftp])
    response.status_code = 200
    return response
 
@@ -273,8 +273,8 @@ def get_ALL_ftpaccounts():
 @app.route('/api/ftpaccounts/<int:id>', methods = ['GET']) #(retrieve item 123)
 @auth.login_required
 def get_ftpaccount(id):
-       ftpaccount = FtpAccounts.query.filter_by(id = id).first_or_404()
-       response = jsonify(ftpaccount.serialize)
+       ftp = FtpAccounts.query.filter_by(id = id).first_or_404()
+       response = jsonify(ftp.serialize)
        response.status_code = 200
        return response
 
