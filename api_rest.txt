@@ -1,13 +1,13 @@
 #criando usuarios
-curl 127.0.0.1 -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar1@ispbrasil.com.br","username":"x","password":"x"}' http://localhost:5000/api/users
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar1@ispbrasil.com.br","username":"x","password":"x"}' http://localhost:5000/api/users
 curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar2@ispbrasil.com.br", "username":"xx","password":"xx"}' http://localhost:5000/api/users
 curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar3@ispbrasil.com.br", "username":"xxx","password":"xxx"}' http://localhost:5000/api/users
 
 
 #criando dominios
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"mail.ispbrasil.com.br"}' http://localhost:5000/api/domains
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"ispbrasil.com.br"}' http://localhost:5000/api/domains
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"www.ispbrasil.com.br"}' http://localhost:5000/api/domains
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"test1.ispbrasil.com.br"}' http://localhost:5000/api/domains
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"test2.ispbrasil.com.br"}' http://localhost:5000/api/domains
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "name":"test3.ispbrasil.com.br"}' http://localhost:5000/api/domains
 
 
 #criando banco
@@ -16,7 +16,7 @@ curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , 
 curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "databasename":"xxx", "username": "x", "password":"x"}' http://localhost:5000/api/databases
 
 #criando conta de ftp 
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":2 , "username":"xxx", "password":"x"}' http://localhost:5000/api/ftpaccounts
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "username":"x", "password":"x"}' http://localhost:5000/api/ftpaccounts
 
 #criando conta de email 
 curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":3 , "username":"itamarjp", "password":"x"}' http://localhost:5000/api/emails
@@ -63,6 +63,8 @@ from app.models.tables import Databases
 from app.models.tables import FtpAccounts
 
 users = User.query.all()
+ftp = FtpAccounts.query.all()
+domains = Domains.query.all()
 users[0].domain_count
 
 domains = Domains.query.all()
