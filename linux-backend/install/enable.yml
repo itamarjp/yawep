@@ -27,10 +27,10 @@
 
 
     - name: Install libselinux as prerequisite for SELinux Ansible module
-     yum:
-       name: "{{item}}"
-       state: latest
-     with_items:
+      yum:
+        name: "{{item}}"
+        state: present
+      with_items:
        - libselinux-python
        - libsemanage-python
 
@@ -43,8 +43,3 @@
       ignore_errors: true
       changed_when: false
 
-    - name: restarting machine after selinux change
-      shell:  /bin/sleep 5 ; shutdown -r now "Ansible Selinux Changes"
-      when:
-          - reboot_required is defined
-          - reboot_required | bool
