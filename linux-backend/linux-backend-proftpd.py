@@ -12,8 +12,8 @@ import backend
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
-
-channel.queue_declare(queue='ftpaccounts')
+queue = "ftpaccounts"
+channel.queue_declare(queue = queue)
 
 passwd_ftp = "/etc/passwd.ftp"
 
@@ -71,9 +71,9 @@ def callback(ch, method, properties, body):
  time.sleep(10)
 
 
-channel.basic_consume(callback , queue='ftpaccounts', no_ack=True)
+channel.basic_consume(callback , queue = queue , no_ack=True)
 
-print(' [*] Waiting for messages. To exit press CTRL+C')
+print("[*] Waiting for messages on queue {}. To exit press CTRL+C".format(queue))
 try:
  channel.start_consuming()
 except KeyboardInterrupt:

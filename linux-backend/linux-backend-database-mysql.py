@@ -11,8 +11,8 @@ file.close()
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 channel = connection.channel()
-
-channel.queue_declare(queue='databases')
+queue = "databases"
+channel.queue_declare(queue = queue)
 
 def runsql(sql, cursor):
  print("executing sql:\n {}".format(sql))
@@ -52,9 +52,9 @@ def callback(ch, method, properties, body):
     cursor.close()
     cnx.close()
 
-channel.basic_consume(callback , queue='databases', no_ack=True)
+channel.basic_consume(callback , queue = queue , no_ack=True)
 
-print(' [*] Waiting for messages. To exit press CTRL+C')
+print("[*] Waiting for messages on queue {}. To exit press CTRL+C".format(queue))
 try:
  channel.start_consuming()
 except KeyboardInterrupt:
