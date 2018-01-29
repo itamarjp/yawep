@@ -8,13 +8,17 @@ postconf -e "virtual_minimum_uid = 89"
 postconf -e "virtual_uid_maps = static:97"
 postconf -e "virtual_gid_maps = static:97"
 postconf -e 'virtual_alias_maps = hash:/etc/postfix/virtual'
+touch /etc/postfix/virtual
 postmap /etc/postfix/virtual
 postconf -e "virtual_mailbox_base = /var/mail/vhosts"
 postconf -e "virtual_mailbox_maps = hash:/etc/postfix/vmailbox"
+touch /etc/postfix/vmailbox
 postmap /etc/postfix/vmailbox
 postconf -e "virtual_alias_maps = hash:/etc/postfix/virtual"
+touch /etc/postfix/virtual
 postmap /etc/postfix/virtual
 postconf -e "virtual_mailbox_domains = /etc/postfix/virtual_domains"
+touch /etc/postfix/virtual_domains
 postmap /etc/postfix/virtual_domains
 postconf -e "smtpd_tls_cert_file = /etc/letsencrypt/live/painel.ispbrasil.com.br/fullchain.pem"
 postconf -e "smtpd_tls_key_file = /etc/letsencrypt/live/painel.ispbrasil.com.br/privkey.pem"
