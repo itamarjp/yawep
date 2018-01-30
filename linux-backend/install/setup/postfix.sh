@@ -34,5 +34,39 @@ postconf -e "smtpd_sasl_auth_enable = no"
 postconf -e "smtpd_sasl_path = private/auth"
 postconf -e "smtpd_sasl_service = smtp"
 postconf -e "smtpd_sasl_type = dovecot"
+postconf -e "smtpd_helo_required = yes"
+postconf -e "smtpd_delay_reject = yes"
+postconf -e "strict_rfc821_envelopes = yes"
+postconf -e "smtpd_helo_restrictions = permit_mynetworks, reject_non_fqdn_hostname,reject_invalid_hostname, reject_unknown_helo_hostname permit"
+
+
+smtpd_delay_reject = yes
+
+
+smtpd_recipient_restrictions =
+   permit_sasl_authenticated,
+   reject_invalid_hostname,
+   reject_non_fqdn_hostname,
+   reject_non_fqdn_sender,
+   reject_non_fqdn_recipient,
+   reject_unknown_sender_domain,
+   reject_unknown_recipient_domain,
+   permit_mynetworks,
+   permit
+
+smtpd_helo_restrictions = permit_mynetworks,
+     reject_non_fqdn_hostname,
+     reject_invalid_hostname,
+     permit
+
+smtpd_error_sleep_time = 1s
+smtpd_soft_error_limit = 10
+smtpd_hard_error_limit = 20
+
+
+
+
+
+
 
 service postfix start

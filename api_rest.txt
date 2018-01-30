@@ -13,7 +13,7 @@ curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"user_id":1 , "n
 #criando banco
 curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "databasename":"x", "username": "x", "password":"x"}' http://localhost:5000/api/databases
 curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "databasename":"xx", "username": "x", "password":"x"}' http://localhost:5000/api/databases
-curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "databasename":"xxx", "username": "x", "password":"x"}' http://localhost:5000/api/databases
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "databasename":"a", "username": "a", "password":"a"}' http://localhost:5000/api/databases
 
 #criando conta de ftp 
 curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"domain_id":1 , "username":"x", "password":"x"}' http://localhost:5000/api/ftpaccounts
