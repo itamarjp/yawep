@@ -1,0 +1,6 @@
+import backend
+import socket
+
+my_ips = backend.resolvedns(socket.gethostname())
+print(my_ips)
+print ('2001:bc8:24c5:103:9928:2ee2:891b:6a1e' in my_ips)
