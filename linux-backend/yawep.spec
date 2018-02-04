@@ -63,20 +63,20 @@ Yet Another Web Hosting Control Panel
 
 
 %build
-# % configure
-# % make_build
-
 
 %install
 mkdir -p %{buildroot}%{_sysconfdir}/dovecot/
 install -Dpm 644 linux-backend/install/setup/local.conf %{buildroot}/%{_sysconfdir}/dovecot/local.conf
+
+mkdir -p %{buildroot}%{_datarootdir}/yawep
+cp -r . %{buildroot}%{_datarootdir}/yawep
 
 
 %files
 # % license 
 %doc linux-backend/readme.txt
 %config(noreplace) %{_sysconfdir}/dovecot/local.conf
-
+%{buildroot}%{_datarootdir}/yawep/
 
 %changelog
 * Sun Feb  4 2018 itamar <itamar@ispbrasil.com.br>
