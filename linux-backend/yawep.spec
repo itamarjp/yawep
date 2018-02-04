@@ -1,5 +1,5 @@
 Name:           yawep
-Version:        1
+Version:        0.0.0
 Release:        1%{?dist}
 Summary:        Yet Another Web Hosting Control Panel
 
@@ -29,8 +29,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files
-%license add-license-file-here
-%doc add-docs-here
+#%license 
+#%doc add-docs-here
 
 
 
