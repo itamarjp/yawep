@@ -19,18 +19,18 @@ Yet Another Web Hosting Control Panel
 
 
 %build
-# %configure
-# %make_build
+# % configure
+# % make_build
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-# %make_install
+# make_install
 
 
 %files
-#%license 
-#%doc add-docs-here
+# % license 
+# % doc add-docs-here
 
 
 
