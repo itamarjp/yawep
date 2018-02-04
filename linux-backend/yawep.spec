@@ -25,12 +25,13 @@ Yet Another Web Hosting Control Panel
 
 %install
 rm -rf $RPM_BUILD_ROOT
-# make_install
+mkdir -p $RPM_BUILD_ROOT
+# make _install
 
 
 %files
 # % license 
-# % doc add-docs-here
+%doc linux-backend/readme.txt
 
 
 
