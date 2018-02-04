@@ -27,7 +27,7 @@ Yet Another Web Hosting Control Panel
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT
 # make _install
-
+touch $RPM_BUILD_ROOT/%{_sysconfdir}/dovecot/local.conf
 
 %files
 # % license 
