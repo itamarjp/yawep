@@ -65,7 +65,6 @@ Yet Another Web Hosting Control Panel
 %build
 
 %install
-mkdir -p %{buildroot}%{_sysconfdir}dovecot/
 install -Dpm 644 linux-backend/install/setup/local.conf %{buildroot}%{_sysconfdir}/dovecot/local.conf
 
 mkdir -p %{buildroot}%{_datarootdir}/yawep
