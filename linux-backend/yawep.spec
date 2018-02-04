@@ -1,3 +1,4 @@
+%global         debug_package %{nil}
 Name:           yawep
 Version:        0.0.0
 Release:        1%{?dist}
