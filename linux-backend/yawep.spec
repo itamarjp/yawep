@@ -67,10 +67,9 @@ Yet Another Web Hosting Control Panel
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/dovecot/
-# make _install
-touch $RPM_BUILD_ROOT%{_sysconfdir}/dovecot/local.conf
+mkdir -p %{buildroot}%{_sysconfdir}/dovecot/
+install -Dpm 644 linux-backend/install/setup/local.conf %{buildroot}/%{_sysconfdir}/dovecot/local.conf
+
 
 %files
 # % license 
