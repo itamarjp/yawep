@@ -68,6 +68,8 @@ Yet Another Web Hosting Control Panel
 install -Dpm 644 linux-backend/install/setup/local.conf %{buildroot}%{_sysconfdir}/dovecot/local.conf
 
 mkdir -p %{buildroot}%{_datarootdir}/yawep
+rm -rf tcc
+
 cp -r . %{buildroot}%{_datarootdir}/yawep
 
 
