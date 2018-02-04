@@ -8,8 +8,8 @@ License:        GPLv2+
 URL:            https://github.com/itamarjp/yawep
 Source0:        yawep.tar.gz
 
-BuildRequires:  php
-Requires:       php
+#BuildRequires:  php
+Requires:       httpd
 
 %description
 Yet Another Web Hosting Control Panel
