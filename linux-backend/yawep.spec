@@ -32,7 +32,7 @@ mkdir -p $RPM_BUILD_ROOT
 %files
 # % license 
 %doc linux-backend/readme.txt
-
+%config(noreplace) %{_sysconfdir}/dovecot/local.conf
 
 
 %changelog
