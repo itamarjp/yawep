@@ -79,7 +79,7 @@ Yet Another Web Hosting Control Panel
 install -Dpm 644 linux-backend/install/setup/local.conf %{buildroot}%{_sysconfdir}/dovecot/local.conf
 
 install -Dpm 644 linux-backend/systemd/linux-backend-apache.service %{buildroot}%{_unitdir}/linux-backend-apache.service
-install -Dpm 644 linux-backend/systemd/linux-backend-database-mysql.service %{buildroot}%{_unitdir}/linux-backend-database-mysql.service.service
+install -Dpm 644 linux-backend/systemd/linux-backend-database-mysql.service %{buildroot}%{_unitdir}/linux-backend-database-mysql.service
 install -Dpm 644 linux-backend/systemd/linux-backend-mail.service %{buildroot}%{_unitdir}/linux-backend-mail.service
 install -Dpm 644 linux-backend/systemd/linux-backend-proftpd.service %{buildroot}%{_unitdir}/linux-backend-proftpd.service
 
