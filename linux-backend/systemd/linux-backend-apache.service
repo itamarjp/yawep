@@ -1,0 +1,15 @@
+[Unit]
+Description=yawep linux backend apache script
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=forking
+PrivateNetwork=false
+ExecStart=/usr/share/yawep/linux-backend/linux-backend-apache.py
+KillMode=process
+KillSignal=SIGTERM
+SendSIGKILL=no
+RestartSec=5s

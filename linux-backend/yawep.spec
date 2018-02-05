@@ -9,6 +9,8 @@ License:        GPLv2+
 URL:            https://github.com/itamarjp/yawep
 Source0:        yawep.tar.gz
 
+BuildRequires: systemd
+
 Requires:       httpd
 Requires:       mod_ssl
 Requires:       mod_wsgi
@@ -73,7 +75,9 @@ Yet Another Web Hosting Control Panel
 %build
 
 %install
+
 install -Dpm 644 linux-backend/install/setup/local.conf %{buildroot}%{_sysconfdir}/dovecot/local.conf
+install -Dpm 644 linux-backend/systemd/linux-backend-apache.service %{buildroot}%{_unitdir}/
 
 mkdir -p %{buildroot}%{_datarootdir}/yawep
 rm -rf tcc
@@ -87,6 +91,7 @@ cp -r . %{buildroot}%{_datarootdir}/yawep
 %config(noreplace) %{_sysconfdir}/dovecot/local.conf
 %{_datarootdir}/yawep/
 %ghost %{_datarootdir}/yawep/storage.db
+%{_unitdir}/*.service
 
 %changelog
 * Sun Feb  4 2018 itamar <itamar@ispbrasil.com.br>
