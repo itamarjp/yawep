@@ -52,6 +52,14 @@ Requires:        python34-pika
 Requires:        python34-mysql
 Requires:        python34-pg8000
 Requires:        python34-dns
+Requires:        python-flask
+Requires:        python2-flask
+Requires:        python-flask-sqlalchemy
+Requires:        python-flask-script
+Requires:        python2-flask-migrate
+Requires:        python-flask-login
+Requires:        python-passlib
+Requires:        python2-flask-httpauth
 %endif
 
 
