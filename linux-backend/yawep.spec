@@ -3,13 +3,12 @@ Name:           yawep
 Version:        0.0.0
 Release:        1%{?dist}
 Summary:        Yet Another Web Hosting Control Panel
-
-
 License:        GPLv2+
 URL:            https://github.com/itamarjp/yawep
 Source0:        yawep.tar.gz
 
 BuildRequires: systemd
+%{?systemd_requires}
 
 Requires:       httpd
 Requires:       mod_ssl
@@ -71,6 +70,26 @@ Yet Another Web Hosting Control Panel
 %prep
 %autosetup
 
+
+%post
+%systemd_post linux-backend-apache.service
+%systemd_post linux-backend-database-mysql.service
+%systemd_post linux-backend-mail.service
+%systemd_post linux-backend-proftpd.service
+
+%preun
+%systemd_preun linux-backend-apache.service
+%systemd_preun linux-backend-database-mysql.service
+%systemd_preun linux-backend-mail.service
+%systemd_preun linux-backend-proftpd.service
+
+
+
+%postun
+%systemd_postun_with_restart linux-backend-apache.service
+%systemd_postun_with_restart linux-backend-database-mysql.service
+%systemd_postun_with_restart linux-backend-mail.service
+%systemd_postun_with_restart linux-backend-proftpd.service
 
 %build
 
