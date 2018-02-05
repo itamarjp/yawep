@@ -1,5 +1,3 @@
-service proftpd stop
-
 echo "ftp:x:50:" > /etc/group.ftp
 
 [ -f "/etc/passwd.ftp" ] || echo "" > /etc/passwd.ftp
@@ -12,8 +10,3 @@ sed -i '/^RequireValidShell/{h;s/.*/RequireValidShell off/};${x;/^$/{s//RequireV
 
 sed -i '/^DirFakeUser/{h;s/.*/DirFakeUser on \~/};${x;/^$/{s//DirFakeUser on ~/;H};x}'  /etc/proftpd.conf
 sed -i '/^DirFakeGroup/{h;s/.*/DirFakeGroup on \~/};${x;/^$/{s//DirFakeGroup on ~/;H};x}'  /etc/proftpd.conf
-
-
-
-
-service proftpd start
