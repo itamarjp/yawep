@@ -78,7 +78,7 @@ cp -r . %{buildroot}%{_datarootdir}/yawep
 %doc linux-backend/readme.txt
 %config(noreplace) %{_sysconfdir}/dovecot/local.conf
 %{_datarootdir}/yawep/
-%config(noreplace) %{_datarootdir}/yawep/storage.db
+%ghost %{_datarootdir}/yawep/storage.db
 
 %changelog
 * Sun Feb  4 2018 itamar <itamar@ispbrasil.com.br>
