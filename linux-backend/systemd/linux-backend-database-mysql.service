@@ -1,0 +1,13 @@
+[Unit]
+Description=yawep linux backend mysql script
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/share/yawep/linux-backend/linux-backend-mysql.py
+Restart=always
+TimeoutStartSec=10
+RestartSec=10
