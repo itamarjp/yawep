@@ -6,10 +6,8 @@ After=network.target
 WantedBy=multi-user.target
 
 [Service]
-Type=forking
-PrivateNetwork=false
+Type=idle
 ExecStart=/usr/share/yawep/linux-backend/linux-backend-apache.py
-KillMode=process
-KillSignal=SIGTERM
-SendSIGKILL=no
-RestartSec=5s
+Restart=always
+TimeoutStartSec=10
+RestartSec=10
