@@ -77,7 +77,7 @@ Yet Another Web Hosting Control Panel
 %install
 
 install -Dpm 644 linux-backend/install/setup/local.conf %{buildroot}%{_sysconfdir}/dovecot/local.conf
-install -Dpm 644 linux-backend/systemd/linux-backend-apache.service %{buildroot}%{_unitdir}/
+install -Dpm 644 linux-backend/systemd/linux-backend-apache.service %{buildroot}%{_unitdir}/linux-backend-apache.service
 
 mkdir -p %{buildroot}%{_datarootdir}/yawep
 rm -rf tcc
