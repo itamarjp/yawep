@@ -6,6 +6,7 @@ Summary:        Yet Another Web Hosting Control Panel
 License:        GPLv2+
 URL:            https://github.com/itamarjp/yawep
 Source0:        yawep.tar.gz
+BuildArch:      noarch
 
 BuildRequires: systemd
 %{?systemd_requires}
@@ -38,6 +39,7 @@ Requires:       psmisc
 Requires:       ftp
 Requires:       roundcubemail
 Requires:       screen
+Requires:       phpPgAdmin
 
 %if 0%{?fedora} >= 27
 Requires:        python3-virtualenv
