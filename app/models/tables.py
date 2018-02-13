@@ -8,9 +8,9 @@ from sqlalchemy import func, select
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    email = db.Column(db.String, unique=True)
-    username = db.Column(db.String, unique=True)
+    name = db.Column(db.String(80))
+    email = db.Column(db.String(80), unique=True)
+    username = db.Column(db.String(20), unique=True)
     password = db.Column(db.String(128))
     domains = relationship("Domains", backref="user")
 
@@ -49,7 +49,7 @@ class Domains(db.Model):
     __tablename__ = "domains"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    name = db.Column(db.Text)
+    name = db.Column(db.String(80))
 
     emails = relationship("Emails", backref="domain")
     ftpaccounts = relationship("Ftpaccounts", backref="domain")
@@ -95,8 +95,8 @@ class Emails(db.Model):
     __tablename__ = "emails"
     id = db.Column(db.Integer, primary_key=True)
     domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
-    username = db.Column(db.Text)
-    password = db.Column(db.Text)
+    username = db.Column(db.String(20))
+    password = db.Column(db.String(20))
     @property
     def serialize(self):
         keys = ['id','domain_id','username','full_email', 'domain_name','password']
@@ -127,8 +127,8 @@ class Ftpaccounts(db.Model):
     __tablename__ = "ftpaccounts"
     id = db.Column(db.Integer, primary_key=True)
     domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
-    username = db.Column(db.Text)
-    password = db.Column(db.Text)
+    username = db.Column(db.String(20))
+    password = db.Column(db.String(20))
 
     @property
     def serialize(self):
@@ -154,9 +154,9 @@ class Databases(db.Model):
     __tablename__ = "databases"
     id = db.Column(db.Integer, primary_key=True)
     domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
-    databasename = db.Column(db.Text)
-    username = db.Column(db.Text)
-    password = db.Column(db.Text)
+    databasename = db.Column(db.String(20))
+    username = db.Column(db.String(20))
+    password = db.Column(db.String(20))
     @property
     def serialize(self):
         keys = ['id','domain_id','username', 'databasename', 'domain_name','password']
