@@ -47,6 +47,7 @@ Requires:        python3-pika
 Requires:        python3-mysql
 Requires:        python3-pg8000
 Requires:        python3-dns
+Requires:        python3-flask-admin
 %endif
 
 %if 0%{?rhel}
@@ -63,6 +64,7 @@ Requires:        python2-flask-migrate
 Requires:        python-flask-login
 Requires:        python-passlib
 Requires:        python2-flask-httpauth
+Requires:        python-flask-admin
 %endif
 
 
