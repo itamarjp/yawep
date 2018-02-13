@@ -8,10 +8,10 @@ from sqlalchemy import func, select
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
-    email = db.Column(db.String(80), unique=True)
-    username = db.Column(db.String(20), unique=True)
-    password = db.Column(db.String(128))
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(80), unique=True, nullable=False )
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)
     domains = relationship("Domains", backref="user")
 
     @property
@@ -48,8 +48,8 @@ class User(db.Model):
 class Domains(db.Model):
     __tablename__ = "domains"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    name = db.Column(db.String(80))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    name = db.Column(db.String(80), nullable=False)
 
     emails = relationship("Emails", backref="domain")
     ftpaccounts = relationship("Ftpaccounts", backref="domain")
@@ -94,9 +94,9 @@ class Domains(db.Model):
 class Emails(db.Model):
     __tablename__ = "emails"
     id = db.Column(db.Integer, primary_key=True)
-    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
-    username = db.Column(db.String(20))
-    password = db.Column(db.String(20))
+    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'), nullable=False)
+    username = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(20), nullable=False)
     @property
     def serialize(self):
         keys = ['id','domain_id','username','full_email', 'domain_name','password']
@@ -126,9 +126,9 @@ class Emails(db.Model):
 class Ftpaccounts(db.Model):
     __tablename__ = "ftpaccounts"
     id = db.Column(db.Integer, primary_key=True)
-    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
-    username = db.Column(db.String(20))
-    password = db.Column(db.String(20))
+    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'), nullable=False)
+    username = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(20), nullable=False)
 
     @property
     def serialize(self):
@@ -153,10 +153,10 @@ class Ftpaccounts(db.Model):
 class Databases(db.Model):
     __tablename__ = "databases"
     id = db.Column(db.Integer, primary_key=True)
-    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
-    databasename = db.Column(db.String(20))
-    username = db.Column(db.String(20))
-    password = db.Column(db.String(20))
+    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'), nullable=False)
+    databasename = db.Column(db.String(20), nullable=False)
+    username = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(20), nullable=False)
     @property
     def serialize(self):
         keys = ['id','domain_id','username', 'databasename', 'domain_name','password']
