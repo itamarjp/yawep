@@ -20,7 +20,6 @@ packaging==16.8
 passlib==1.7.1
 pg8000==1.11.0
 pika==0.11.2
-psycopg2==2.7.3.2
 pyparsing==2.2.0
 python-dateutil==2.6.1
 python-editor==1.0.3
