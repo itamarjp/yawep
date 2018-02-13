@@ -56,7 +56,7 @@ Requires:        python34-virtualenv
 Requires:        python34-pika
 Requires:        python34-pg8000
 Requires:        python34-dns
-Requires:        python2-PyMySQL
+Requires:        python3-PyMySQL
 Requires:        python-flask
 Requires:        python2-flask
 Requires:        python-flask-sqlalchemy
