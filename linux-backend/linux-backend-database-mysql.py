@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#todo migrate to https://github.com/PyMySQL/PyMySQL
 import pika
 import json
 import MySQLdb
