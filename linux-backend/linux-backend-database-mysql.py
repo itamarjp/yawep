@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-#todo migrate to https://github.com/PyMySQL/PyMySQL
 import pika
 import json
-import MySQLdb
-
+import pymysql.cursors #https://github.com/PyMySQL/PyMySQL
 
 file = open("/root/.mysql_password","r")
 mysql_password = file.readline()
@@ -16,13 +14,11 @@ queue = "databases"
 channel.queue_declare(queue = queue)
 
 def runsql(sql, cursor):
- print("executing sql:\n {}".format(sql))
+ print("sql: {}".format(sql))
  try:
    cursor.execute(sql)
- except (MySQLdb.Error, MySQLdb.Warning) as e:
-   print(e)
-   print("falhou:")
-   print(sql)
+ except (pymysql.err.ProgrammingError,pymysql.err.OperationalError,pymysql.err.InternalError) as e:
+   print ("DB Error: {}".format(e))
 
 def callback(ch, method, properties, body):
     print(" [x] DB Received: %s" % body)
@@ -34,13 +30,16 @@ def callback(ch, method, properties, body):
     databasename = x['databasename']
     action = x['action']
     try:
-      cnx = MySQLdb.connect(user='root',host='127.0.0.1', password = mysql_password, database='mysql')
-    except mysql.Error as e:
-     print ("Error %d: %s" % (e.args[0], e.args[1]))
+     cnx = pymysql.connect(user='root',host='127.0.0.1', passwd = mysql_password, db='mysql')
+    except pymysql.err.OperationalError as e:
+     print ("DB Error: {}".format(e))
+     return
 
     cursor = cnx.cursor()
-    if action == "new":
+    if action == "new" or action =="edit":
      query =  "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(databasename)
+     runsql(query,cursor)
+     query =  ("DROP USER {}".format(username))
      runsql(query,cursor)
      query = "GRANT ALL ON {}.* TO {} IDENTIFIED BY '{}'".format(databasename, username, password)
      runsql(query,cursor)

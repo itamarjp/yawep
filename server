@@ -1,1 +1,1 @@
-python run.py runserver -h ::
+python3 run.py runserver -h ::

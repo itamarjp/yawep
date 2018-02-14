@@ -12,6 +12,7 @@ class User(db.Model):
     email = db.Column(db.String(80), unique=True, nullable=False )
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
+
     domains = relationship("Domains", backref="user")
 
     @property

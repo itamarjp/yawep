@@ -22,7 +22,7 @@ def after_request(response):
 
 app.config.from_object('config')
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(app,session_options={"expire_on_commit": False})
 migrate = Migrate(app, db)
 
 manager = Manager(app)
