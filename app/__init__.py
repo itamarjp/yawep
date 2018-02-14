@@ -63,16 +63,16 @@ class UserView(ModelView):
         super(UserView, self).__init__(User, session, **kwargs)
 
 class DomainsView(ModelView):
+    create_modal = True
+    edit_modal = True
     can_create = True
     can_delete = False
     page_size = 50
     can_set_page_size = True
     column_list = ['name']
     column_exclude_list = ['Databases','Emails','Ftpaccounts' ,'User',]
-    column_editable_list = ['name',]
+    column_editable_list = [] #popup edit
     form_excluded_columns = ['databases','emails','ftpaccounts' ,]
-
-
 
 #    column_searchable_list = ['name']
 #    column_select_related_list = (User.id)
@@ -96,8 +96,14 @@ class DomainsView(ModelView):
         form.user.render_kw = {'readonly': True}
         form.name.render_kw = {'readonly': True}
 
-    create_modal = True
-    edit_modal = True
+    def after_model_change(self, form, model, is_created):
+       if is_created:
+          send_async_linux_task(msg = model.serialize, queue="domains", action = "new")
+       else:
+          send_async_linux_task(msg = model.serialize, queue="domains", action = "edit")
+    def after_model_delete(self, model):
+      send_async_linux_task(msg = model.serialize, queue="domains", action = "delete")
+
     def __init__(self, session, **kwargs):
         super(DomainsView, self).__init__(Domains, session, **kwargs)
 
