@@ -49,7 +49,7 @@ class User(db.Model):
 class Domains(db.Model):
     __tablename__ = "domains"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     name = db.Column(db.String(80), nullable=False)
 
     emails = relationship("Emails", backref="domain")
@@ -95,7 +95,7 @@ class Domains(db.Model):
 class Emails(db.Model):
     __tablename__ = "emails"
     id = db.Column(db.Integer, primary_key=True)
-    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'), nullable=False)
+    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
     username = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(20), nullable=False)
     @property
@@ -127,7 +127,7 @@ class Emails(db.Model):
 class Ftpaccounts(db.Model):
     __tablename__ = "ftpaccounts"
     id = db.Column(db.Integer, primary_key=True)
-    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'), nullable=False)
+    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
     username = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(20), nullable=False)
 
@@ -154,7 +154,7 @@ class Ftpaccounts(db.Model):
 class Databases(db.Model):
     __tablename__ = "databases"
     id = db.Column(db.Integer, primary_key=True)
-    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'), nullable=False)
+    domain_id = db.Column(db.Integer, db.ForeignKey('domains.id'))
     databasename = db.Column(db.String(20), nullable=False)
     username = db.Column(db.String(20), nullable=False)
     password = db.Column(db.String(20), nullable=False)
