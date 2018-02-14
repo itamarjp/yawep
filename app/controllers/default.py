@@ -1,25 +1,25 @@
-from flask import render_template
-from flask import url_for
 from app import app
 from app import db
 from app import login_manager
+from flask_login import current_user, login_user
 
 from app.models.tables import User
 from app.models.tables import Domains
 from app.models.tables import Emails
 from app.models.tables import Databases
 from app.models.tables import Ftpaccounts
-
+from app.forms.forms import LoginForm
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
-from flask import request
-from flask import jsonify
-from flask import abort
+from flask import request, abort, jsonify, flash, redirect, url_for, render_template
 from app.decorators import async
 
 from json import dumps
 from flask import make_response
+
+from flask_login import logout_user
+
 
 import pika
 
@@ -36,6 +36,43 @@ def send_async_linux_task(msg , action , queue):
 @login_manager.user_loader
 def load_user(id):
     return User.query.filter_by(id=id).first()
+
+@app.route("/")
+def hello():
+    return redirect(url_for('login'))
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('login'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        u = form.username.data
+        p = form.password.data
+        remember = form.remember_me.data;
+        app.logger.debug('login {}, {} remember = {}'.format( u,p , remember ))
+        user = User.query.filter_by(username=u).first()
+        app.logger.debug(user.serialize)
+        if user is None or not user.password==p:
+            flash('Invalid username or password')
+            return redirect(url_for('login'))
+        login_user(user, remember=remember)
+        app.logger.debug("Hi {}".format(current_user.name))
+        return redirect(url_for('admin.index'))
+    return render_template('login.html', title='Sign In', form=form)
+
+
+
+
+
+
+
+@app.route('/admin/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
 
 
 @app.route('/api/login',methods=['POST'])

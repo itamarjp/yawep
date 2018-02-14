@@ -1,8 +1,10 @@
-from flask import Flask
+from flask import Flask, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
+from flask_login import current_user, login_user
+
 
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
@@ -30,6 +32,7 @@ manager.add_command('db', MigrateCommand)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+#login.login_view = 'login' #login enabled  for all pages
 
 from app.controllers import default
 from app.controllers.default import send_async_linux_task
@@ -225,8 +228,21 @@ class EmailsView(ModelView):
     def __init__(self, session, **kwargs):
         super(EmailsView, self).__init__(Emails, session, **kwargs)
 
+    #def is_accessible(self):
+    #    return login.current_user.is_authenticated
+
+    #def inaccessible_callback(self, name, **kwargs):
+        # redirect to login page if user doesn't have access
+    #    return redirect(url_for('login', next=request.url))
 
 
+from flask_admin import Admin, BaseView, expose
+
+
+class MyView(BaseView):
+ @expose('/')
+ def index(self):
+    return redirect('/admin/logout')
 
 #admin.add_view(ModelView(User, db.session))
 admin.add_view(UserView(db.session))
@@ -235,6 +251,7 @@ admin.add_view(DomainsView(db.session))
 admin.add_view(DatabasesView(db.session))
 admin.add_view(EmailsView(db.session))
 admin.add_view(FtpaccountsView(db.session))
+admin.add_view(MyView(name='Logout', endpoint='logout', category='Logout'))
 
 
 db.create_all(app=app)
