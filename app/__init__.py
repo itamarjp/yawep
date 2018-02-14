@@ -206,15 +206,12 @@ class EmailsView(ModelView):
     #    'username':{'disabled':True},
     #    'domain':{'disabled':True},
     #}
+#   column_choices = { 'domain': [('domain.id', 'domain.name'),]}
+
     def on_form_prefill(self, form, id):
         form.username.render_kw = {'readonly': True}
         form.domain.render_kw = {'readonly': True}
-    form_ajax_refs = {
-      'domain': {
-        'fields': ['name'],
-        'page_size': 100
-       }
-      }
+    form_ajax_refs = {'domain': { 'fields': ['name'], 'page_size': 100   }      }
 
 
     def after_model_change(self, form, model, is_created):
