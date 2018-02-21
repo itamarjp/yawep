@@ -107,6 +107,10 @@ class DomainsView(ModelView):
     def after_model_delete(self, model):
       send_async_linux_task(msg = model.serialize, queue="domains", action = "delete")
 
+    #column_choices = {'user': [('user.id', 'user.username'),]}
+    #list_columns=['id', 'name', 'foreign_key']
+    #inline_models = [(User, dict(form_columns=['id', 'username','username']))]
+
     def __init__(self, session, **kwargs):
         super(DomainsView, self).__init__(Domains, session, **kwargs)
 

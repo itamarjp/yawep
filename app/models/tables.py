@@ -43,7 +43,7 @@ class User(db.Model):
       return len(self.domains)
 
     def __repr__(self):
-        return "{}\n".format(self.serialize)
+        return "{}\n".format(self.username)
 
     @property
     def is_authenticated(self):
@@ -108,7 +108,7 @@ class Domains(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return "{}\n".format(self.serialize)
+        return "{}\n".format(self.name)
 
 class Emails(db.Model):
     __tablename__ = "emails"
