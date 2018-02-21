@@ -36,6 +36,7 @@ def callback(ch, method, properties, body):
      return
 
     cursor = cnx.cursor()
+    
     if action == "new" or action =="edit":
      query =  "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(databasename)
      runsql(query,cursor)
@@ -43,6 +44,7 @@ def callback(ch, method, properties, body):
      runsql(query,cursor)
      query = "GRANT ALL ON {}.* TO {} IDENTIFIED BY '{}'".format(databasename, username, password)
      runsql(query,cursor)
+     
     if action == "delete":
      query =  ("DROP DATABASE {}".format(databasename))
      runsql(query,cursor)
