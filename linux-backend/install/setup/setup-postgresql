@@ -1,2 +1,8 @@
 #!/usr/bin/bash
 
+bash pgsql_pre.sh
+python3 pgsql.py
+bash pgsql_post.sh
+
+systemctl enable postgresql
+systemctl restart postgresql

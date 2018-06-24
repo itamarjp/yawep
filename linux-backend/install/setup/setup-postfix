@@ -1,2 +1,6 @@
 #!/usr/bin/bash
 
+bash postfix.sh
+
+systemctl enable postfix
+systemctl restart postfix
