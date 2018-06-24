@@ -54,21 +54,17 @@ def login():
         user = User.query.filter_by(username=u).first()
         if user is not None:
           app.logger.debug(user.serialize)
-          return 'OK'
+          return redirect(url_for('admin.index'))
+
         if verify_password(u,p):
             login_user(user, remember=remember)
             app.logger.debug("Hi {}".format(current_user.name))
             return redirect(url_for('admin.index'))
-            return 'OK'
         else:
             flash('Invalid username or password')
             return redirect(url_for('login'))
             return 'OK'
     return render_template('login.html', title='Sign In', form=form)
-    return 'OK'
-
-
-
 
 @app.route('/admin/logout')
 def logout():
