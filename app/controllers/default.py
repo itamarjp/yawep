@@ -54,7 +54,7 @@ def login():
         user = User.query.filter_by(username=u).first()
         if user is not None:
           app.logger.debug(user.serialize)
-          return
+          return 'OK'
         if verify_password(u,p):
             login_user(user, remember=remember)
             app.logger.debug("Hi {}".format(current_user.name))
