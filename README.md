@@ -19,3 +19,6 @@ how to install it.
 Theres a Fedora copr repo for Fedora 28 at 
 
 https://copr.fedorainfracloud.org/coprs/itamarjp/yawep/
+
+ dnf copr enable itamarjp/yawep
+ dnf -y install yawep
