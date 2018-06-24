@@ -47,16 +47,25 @@ Requires:        python3-pika
 Requires:        python3-PyMySQL
 Requires:        python3-pg8000
 Requires:        python3-dns
+Requires:        python3-flask
+Requires:        python3-flask-sqlalchemy
+Requires:        python3-flask-script
+Requires:        python3-flask-migrate
+Requires:        python3-flask-login
+Requires:        python3-passlib
+Requires:        python3-flask-httpauth
 Requires:        python3-flask-admin
-Requires:        python3-virtualenv
+Requires:        python4-virtualenv
+
 %endif
 
 %if 0%{?rhel}
 Requires:        python34-virtualenv
 Requires:        python34-pika
+Requires:        python34-PyMySQL
 Requires:        python34-pg8000
 Requires:        python34-dns
-Requires:        python3-PyMySQL
+
 Requires:        python-flask
 Requires:        python2-flask
 Requires:        python-flask-sqlalchemy
