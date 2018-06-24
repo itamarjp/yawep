@@ -56,17 +56,13 @@ def login():
           app.logger.debug(user.serialize)
           return
         if verify_password(u,p):
-            flash('Invalid username or password')
-            return redirect(url_for('login'))
             login_user(user, remember=remember)
             app.logger.debug("Hi {}".format(current_user.name))
-        return redirect(url_for('admin.index'))
+            return redirect(url_for('admin.index'))
+        else:
+            flash('Invalid username or password')
+            return redirect(url_for('login'))
     return render_template('login.html', title='Sign In', form=form)
-
-
-
-
-
 
 
 @app.route('/admin/logout')
