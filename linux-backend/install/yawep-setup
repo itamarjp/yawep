@@ -1,7 +1,8 @@
+#!/usr/bin/bash
+
 servicos=(httpd proftpd dovecot postgresql mariadb postfix rabbitmq-server)
 
-for s in "${servicos[@]}"
-do
+for s in "${servicos[@]}" do
     echo "Activating and starting service ${s}"
     systemctl enable ${s}
     systemctl start ${s}
@@ -11,3 +12,11 @@ systemctl disable firewalld
 systemctl stop firewalld
 setenforce 0
 sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+
+
+
+
+for file in $( cat setup/empty-files ); do
+do
+   [ -f $file ] || echo "" > $file
+done

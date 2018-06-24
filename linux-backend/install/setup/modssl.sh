@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 service httpd stop
 certbot certonly --standalone --preferred-challenges http -d painel.ispbrasil.com.br -m itamar@ispbrasil.com.br  --agree-tos -n
 

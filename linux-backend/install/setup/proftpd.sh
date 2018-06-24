@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 echo "ftp:x:50:" > /etc/group.ftp
 
 [ -f "/etc/passwd.ftp" ] || echo "" > /etc/passwd.ftp

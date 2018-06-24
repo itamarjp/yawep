@@ -1,5 +1,0 @@
-/etc/dovecot/users
-/etc/postfix/virtual
-/etc/postfix/vmailbox
-/etc/postfix/virtual_domains
-/etc/passwd.ftp
