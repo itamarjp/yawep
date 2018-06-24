@@ -52,7 +52,8 @@ def login():
         remember = form.remember_me.data;
         app.logger.debug('login {}, {} remember = {}'.format( u,p , remember ))
         user = User.query.filter_by(username=u).first()
-        app.logger.debug(user.serialize)
+        if user is not None:
+          app.logger.debug(user.serialize)
         if user is None or not user.password==p:
             flash('Invalid username or password')
             return redirect(url_for('login'))
