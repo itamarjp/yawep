@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+for file in $( cat empty-files );
+do
+   [ -f $file ] || echo "creating empty file $file\n" && echo "" > $file
+done
+

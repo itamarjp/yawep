@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+servicos=(linux-backend-apache linux-backend-database-mysql linux-backend-mail linux-backend-proftpd)
+
+for s in "${servicos[@]}"
+do
+    echo "Setting up ${s}\n"
+    systemctl enable $s
+    systemctl start $s
+done
+

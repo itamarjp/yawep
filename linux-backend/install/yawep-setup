@@ -1,23 +1,12 @@
 #!/usr/bin/bash
 
-servicos=(httpd proftpd dovecot postgresql mariadb postfix rabbitmq-server)
+servicos=(empty-files httpd proftpd dovecot postgresql mariadb postfix rabbitmq-server firewalld selinux mod_ssl yawep)
 
 for s in "${servicos[@]}"
 do
-    echo "Activating and starting service ${s}\n"
-    systemctl enable ${s}
-    systemctl start ${s}
+    echo "Setting up ${s}\n"
+    ( cd /usr/share/yawep/setup ; bash setup-$s )
 done
 
-systemctl disable firewalld
-systemctl stop firewalld
-setenforce 0
-sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 
 
-
-
-for file in $( cat setup/empty-files );
-do
-   [ -f $file ] || echo "creating empty file $file\n" && echo "" > $file
-done
