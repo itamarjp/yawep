@@ -1,2 +1,0 @@
-[machines]
-painel.ispbrasil.com.br transport=paramiko ansible_connection=ssh ansible_user=root

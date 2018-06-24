@@ -10,7 +10,7 @@ BuildArch:      noarch
 
 BuildRequires: systemd
 %{?systemd_requires}
-
+Requires:       sed
 Requires:       httpd
 Requires:       mod_ssl
 Requires:       mod_wsgi

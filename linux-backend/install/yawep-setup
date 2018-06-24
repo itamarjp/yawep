@@ -1,0 +1,13 @@
+servicos=(httpd proftpd dovecot postgresql mariadb postfix rabbitmq-server)
+
+for s in "${servicos[@]}"
+do
+    echo "Activating and starting service ${s}"
+    systemctl enable ${s}
+    systemctl start ${s}
+done
+
+systemctl disable firewalld
+systemctl stop firewalld
+setenforce 0
+sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
