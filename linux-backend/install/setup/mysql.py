@@ -30,7 +30,6 @@ try:
      cnx = pymysql.connect(user='root',host='127.0.0.1', db='mysql')
 except pymysql.err.OperationalError as e:
      print ("DB Error: {}".format(e))
-     return
 
 cursor = cnx.cursor()
 
