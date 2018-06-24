@@ -12,3 +12,10 @@ It's 100% free and opensource
 Data Model
 
 ![Data Model](https://github.com/itamarjp/yawep/blob/master/tcc/screenshoots/Model.png)
+
+
+how to install it.
+
+Theres a Fedora copr repo for Fedora 28 at 
+
+https://copr.fedorainfracloud.org/coprs/itamarjp/yawep/
