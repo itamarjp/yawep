@@ -54,7 +54,8 @@ def login():
         user = User.query.filter_by(username=u).first()
         if user is not None:
           app.logger.debug(user.serialize)
-        if user is None or not user.password==p:
+          return
+        if verify_password(u,p):
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=remember)
