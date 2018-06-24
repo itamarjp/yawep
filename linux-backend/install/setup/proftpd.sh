@@ -2,8 +2,6 @@
 
 echo "ftp:x:50:" > /etc/group.ftp
 
-[ -f "/etc/passwd.ftp" ] || echo "" > /etc/passwd.ftp
-
 sed -i '/^AuthUserFile/{h;s/=.*/=\/etc\/passwd.ftp/};${x;/^$/{s//AuthUserFile \/etc\/passwd.ftp/;H};x}'  /etc/proftpd.conf
 sed -i '/^AuthGroupFile/{h;s/=.*/=\/etc\/group.ftp/};${x;/^$/{s//AuthGroupFile \/etc\/group.ftp/;H};x}'  /etc/proftpd.conf
 

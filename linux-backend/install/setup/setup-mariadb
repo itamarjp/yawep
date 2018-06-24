@@ -1,2 +1,8 @@
 #!/usr/bin/bash
 
+systemctl start mariadb
+
+python3 mysql.py
+
+systemctl enable mariadb
+systemctl restart mariadb

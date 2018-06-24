@@ -1,2 +1,7 @@
 #!/usr/bin/bash
 
+cp dovecot-local.conf /etc/dovecot/local.conf
+
+systemctl enable dovecot
+systemctl restart dovecot
+
