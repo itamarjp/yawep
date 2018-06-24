@@ -1,7 +1,17 @@
 #!/usr/bin/env python3
 
-import MySQLdb
+import pymysql.cursors #https://github.com/PyMySQL/PyMySQL
 import string
+
+
+def runsql(sql, cursor):
+ print("sql: {}".format(sql))
+ try:
+   cursor.execute(sql)
+ except (pymysql.err.ProgrammingError,pymysql.err.OperationalError,pymysql.err.InternalError) as e:
+   print ("DB Error: {}".format(e))
+
+
 
 alphabet = string.ascii_letters + string.digits
 try:
@@ -15,24 +25,26 @@ file = open("/root/.mysql_password","w")
 file.write(password)
 file.close()
 
+
 try:
-  cnx = MySQLdb.connect(user='root',host='127.0.0.1', database='mysql')
-except mysql.Error as e:
-  print ("Error %d: %s" % (e.args[0], e.args[1]))
+     cnx = pymysql.connect(user='root',host='127.0.0.1', db='mysql')
+except pymysql.err.OperationalError as e:
+     print ("DB Error: {}".format(e))
+     return
 
 cursor = cnx.cursor()
 
 query =  ("delete from user where user=''")
-cursor.execute(query)
+runsql(query,cursor)
 
 query =  ("delete from user where host in ('::1', 'localhost.localdomain', 'localhost')")
-cursor.execute(query)
+runsql(query,cursor)
 
 query =  ("update user set password = password('{}') ,  host='%' where host='127.0.0.1' and user='root'".format(password))
-cursor.execute(query)
+runsql(query,cursor)
 
 query =  ("flush privileges")
-cursor.execute(query)
+runsql(query,cursor)
 
 #query = ("SELECT host,user, password from user")
 #cursor.execute(query)
