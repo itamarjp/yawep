@@ -63,6 +63,9 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
     return render_template('login.html', title='Sign In', form=form)
+    return 'OK'
+
+
 
 
 @app.route('/admin/logout')
