@@ -56,7 +56,7 @@ Requires:        python3-passlib
 Requires:        python3-flask-httpauth
 Requires:        python3-flask-admin
 Requires:        python3-virtualenv
-
+Requires:        python3-flask-wtf
 %endif
 
 %if 0%{?rhel}
@@ -76,6 +76,7 @@ Requires:        python-passlib
 Requires:        python2-flask-httpauth
 Requires:        python-flask-admin
 Requires:        python-virtualenv
+Requires:        python34-flask-wtf
 %endif
 
 
