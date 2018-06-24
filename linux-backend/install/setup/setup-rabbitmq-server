@@ -1,2 +1,4 @@
 #!/usr/bin/bash
 
+systemctl enable rabbitmq-server
+systemctl start rabbitmq-server
