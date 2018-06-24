@@ -55,7 +55,7 @@ Requires:        python3-flask-login
 Requires:        python3-passlib
 Requires:        python3-flask-httpauth
 Requires:        python3-flask-admin
-Requires:        python4-virtualenv
+Requires:        python3-virtualenv
 
 %endif
 
