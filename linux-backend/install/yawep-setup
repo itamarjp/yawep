@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-servicos=(empty-files httpd proftpd dovecot postgresql mariadb postfix rabbitmq-server firewalld selinux mod_ssl yawep)
+servicos=(empty-files httpd proftpd dovecot postgresql mariadb postfix rabbitmq-server firewalld selinux mod_ssl phpmyadmin yawep)
 
 for s in "${servicos[@]}"
 do
