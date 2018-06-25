@@ -1,6 +1,11 @@
 #!/usr/bin/bash
 
-systemctl start mariadb
+systemctl stop mariadb
+sleep 5;
+
+/usr/bin/mysqld_safe --skip-grant-tables &
+
+sleep 3;
 
 python3 mysql.py
 

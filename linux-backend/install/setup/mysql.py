@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 import pymysql.cursors #https://github.com/PyMySQL/PyMySQL
 import string
@@ -42,13 +42,15 @@ runsql(query,cursor)
 query =  ("update user set password = password('{}') ,  host='%' where host='127.0.0.1' and user='root'".format(password))
 runsql(query,cursor)
 
+query =  ("delete from user where password=''")
+runsql(query,cursor)
+
 query =  ("flush privileges")
 runsql(query,cursor)
 
-#query = ("SELECT host,user, password from user")
-#cursor.execute(query)
-#for (host , user, password) in cursor:
-#    print("{}, {} {}".format( host, user, password))
+query = ("SHUTDOWN")
+runsql(query,cursor)
+
 cursor.close()
 
 cnx.close()
