@@ -10,7 +10,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='admin/static')
 
 #from app.controllers.default import send_async_linux_task
 
