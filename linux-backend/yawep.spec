@@ -124,7 +124,6 @@ cp -r . %{buildroot}%{_datarootdir}/yawep
 %files
 # % license 
 %doc linux-backend/readme.txt
-%config(noreplace) %{_sysconfdir}/dovecot/local.conf
 %{_datarootdir}/yawep/
 %ghost %{_datarootdir}/yawep/storage.db
 %{_unitdir}/*.service
