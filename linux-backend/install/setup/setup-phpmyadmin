@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+if grep -q "Require all granted" /etc/httpd/conf.d/phpMyAdmin.conf; then
+  echo "phpmyadmin already OK"
+else
+  sed -i '/Require ip ::1/a\       Require all granted'  phpMyAdmin.conf
+fi
+
