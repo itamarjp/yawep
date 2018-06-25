@@ -32,7 +32,6 @@ VirtualHost = """
 VirtualHost_ssl = """
 <VirtualHost *:443>
  DocumentRoot {1}
- ServerName server.{0}
  ServerAlias www.{0}
  ServerAlias {0}
  SSLEngine on
