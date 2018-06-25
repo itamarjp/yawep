@@ -125,7 +125,6 @@ cp -r . %{buildroot}%{_datarootdir}/yawep
 # % license 
 %doc linux-backend/readme.txt
 %{_datarootdir}/yawep/
-%ghost %{_datarootdir}/yawep/storage.db
 %{_unitdir}/*.service
 
 %changelog

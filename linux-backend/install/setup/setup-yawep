@@ -9,3 +9,6 @@ do
     systemctl start $s
 done
 
+mkdir -p /var/lib/yawep/data
+chmod 1777 /var/lib/yawep/data
+chown apache:apache /var/lib/yawep/data -R
