@@ -12,3 +12,6 @@ done
 mkdir -p /var/lib/yawep/data
 chmod 1777 /var/lib/yawep/data
 chown apache:apache /var/lib/yawep/data -R
+
+#create default user
+curl -i -u x:x -X POST -H "Content-Type: application/json" -d '{"email":"itamar1@ispbrasil.com.br","username":"x","password":"x"}' https://painel.ispbrasil.com.br/api/users
