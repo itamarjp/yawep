@@ -123,7 +123,7 @@ class Emails(db.Model):
 
     @property
     def full_email(self):
-      if( self.username != None ):
+      if( self is not None ):
         return "{}@{}".format(self.username, self.domain.name)
 
     @property
@@ -184,7 +184,9 @@ class Databases(db.Model):
 
     @property
     def domain_name(self):
-      return self.domain.name
+      if( self is not None ):
+        if self.domain is not None:
+           return self.domain.name
 
 
     def save(self):
