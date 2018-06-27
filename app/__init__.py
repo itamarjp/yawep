@@ -87,9 +87,9 @@ class DomainsView(ModelView):
 #    }
 #    }
 
-    #form_widget_args = {
-    #    'user':{'readonly':True},
-    #}
+    form_widget_args = {
+        'user':{'name':True},
+    }
     #from flask_admin.form.rules import Field
     #form_edit_rules = [
     #    CustomizableField('user', field_args={'readonly': True}),
