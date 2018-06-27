@@ -1,0 +1,2 @@
+sed -i -e 's/Require local/Require all granted/' /etc/httpd/conf.d/roundcubemail.conf
+

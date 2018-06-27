@@ -44,7 +44,7 @@ def hello():
 @app.route('/admin/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('login'))
+        return redirect(url_for('admin.index'))
     form = LoginForm()
     if form.validate_on_submit():
         u = form.username.data
@@ -53,24 +53,18 @@ def login():
         app.logger.debug('login {}, {} remember = {}'.format( u,p , remember ))
         user = User.query.filter_by(username=u).first()
         if user is not None:
-          app.logger.debug(user.serialize)
-          return redirect(url_for('admin.index'))
-
-        if verify_password(u,p):
-            login_user(user, remember=remember)
-            app.logger.debug("Hi {}".format(current_user.name))
-            return redirect(url_for('admin.index'))
+           if verify_password(u,p):
+              login_user(user, remember=remember)
+              app.logger.debug("Hi {}".format(current_user.name))
+              return redirect(url_for('admin.index'))
         else:
-            flash('Invalid username or password')
-            return redirect(url_for('login'))
-            return 'OK'
+           flash('Invalid username or password.')
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/admin/logout')
 def logout():
     logout_user()
     return redirect(url_for('login'))
-
 
 
 
