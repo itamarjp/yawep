@@ -10,3 +10,5 @@ sed -i '/^RequireValidShell/{h;s/.*/RequireValidShell off/};${x;/^$/{s//RequireV
 
 sed -i '/^DirFakeUser/{h;s/.*/DirFakeUser on \~/};${x;/^$/{s//DirFakeUser on ~/;H};x}'  /etc/proftpd.conf
 sed -i '/^DirFakeGroup/{h;s/.*/DirFakeGroup on \~/};${x;/^$/{s//DirFakeGroup on ~/;H};x}'  /etc/proftpd.conf
+
+sed -i -e 's/AuthOrder .*/AuthOrder mod_auth_file.c/' /etc/proftpd.conf

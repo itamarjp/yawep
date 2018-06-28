@@ -31,7 +31,7 @@ def add_ftp(username, password, domain_name ):
     except:
      print ('bad line %s' %line)
      continue
-    print("debug {}, {}".format(username, user_name))
+    #print("verificando o usuario {}".format(username))
     if (username != user_name):
      file2.write(line.encode('utf-8'))
   file2.write(password_line.encode('utf-8'))
@@ -74,8 +74,8 @@ def callback(ch, method, properties, body):
   remove_ftp(username)
   add_ftp(username, password, domain_name)
 
- os.system("service proftpd restart")
- time.sleep(10)
+# os.system("service proftpd restart")
+# time.sleep(10)
 
 
 channel.basic_consume(callback , queue = queue , no_ack=True)
