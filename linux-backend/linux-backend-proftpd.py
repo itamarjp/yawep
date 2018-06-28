@@ -18,7 +18,7 @@ channel.queue_declare(queue = queue)
 passwd_ftp = "/etc/passwd.ftp"
 
 def add_ftp(username, password, domain_name ):
-  hashed_password = crypt.crypt(password)
+  hashed_password = crypt.crypt(password,crypt.METHOD_MD5)
   nome = "ftp-user-{}".format(domain_name)
   home = "/var/www/domains/{}/htdocs".format(domain_name)
   backend.make_web_home(home)
