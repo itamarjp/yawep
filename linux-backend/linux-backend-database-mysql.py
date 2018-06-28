@@ -27,6 +27,7 @@ def callback(ch, method, properties, body):
         x = json.loads(temp)
     except:
        print ("erro no json: {}".format(temp))
+       return
     #print (type(x))
     username =  x['username']
     password =  x['password']
