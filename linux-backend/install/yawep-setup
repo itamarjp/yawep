@@ -5,7 +5,7 @@ servicos=(empty-files httpd proftpd dovecot postgresql mariadb postfix rabbitmq-
 for s in "${servicos[@]}"
 do
     echo "Setting up ${s}\n"
-    ( cd /usr/share/yawep/setup ; bash setup-$s )
+    ( cd /usr/share/yawep/linux-backend/install/setup ; bash setup-$s )
 done
 
 

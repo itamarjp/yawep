@@ -2,7 +2,7 @@ var app = angular.module('myApp',['ngRoute','basicAuthModule']);
 
 app.controller('MyController', function($scope,$http,basicAuthService) {
 
-var ApiUrl = "http://127.0.0.1:5000/api/";
+var ApiUrl = "https://painel.ispbrasil.com.br/api/";
 
 $scope.showurl = function(url){
     $scope.template = url;
