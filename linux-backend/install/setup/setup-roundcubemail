@@ -1,6 +1,6 @@
 sed -i -e 's/Require local/Require all granted/' /etc/httpd/conf.d/roundcubemail.conf
 
-cp roundcube/config.inc.php /etc/roundcubemail/config.inc.php
+cp roundcube/config.inc.php.sample /etc/roundcubemail/config.inc.php
 
 chown apache:apache /etc/roundcubemail/config.inc.php
 
