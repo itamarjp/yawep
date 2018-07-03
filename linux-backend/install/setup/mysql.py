@@ -39,7 +39,7 @@ runsql(query,cursor)
 query =  ("delete from user where host in ('::1', 'localhost.localdomain', 'localhost')")
 runsql(query,cursor)
 
-query =  ("update user set password = password('{}') ,  host='%' where host='127.0.0.1' and user='root'".format(password))
+query =  ("update user set password = password('{}') ,  host='%' where user='root'".format(password))
 runsql(query,cursor)
 
 query =  ("delete from user where password=''")

@@ -2,17 +2,13 @@ from flask import Flask, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-from flask_login import LoginManager
-from flask_login import current_user, login_user
 
+from flask_login import current_user, login_user, LoginManager
 
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
-
 app = Flask(__name__)
-
-#from app.controllers.default import send_async_linux_task
 
 @app.after_request
 def after_request(response):
@@ -32,7 +28,6 @@ manager.add_command('db', MigrateCommand)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-#login.login_view = 'login' #login enabled  for all pages
 
 from app.controllers import default
 from app.controllers.default import send_async_linux_task
@@ -44,7 +39,6 @@ from app.models.tables import Domains
 from app.models.tables import Emails
 from app.models.tables import Databases
 from app.models.tables import Ftpaccounts
-
 
 #flask-admin
 admin = Admin(app, name='yawep', template_mode='bootstrap3')
@@ -87,9 +81,7 @@ class DomainsView(ModelView):
 #    }
 #    }
 
-    #form_widget_args = {
-    #    'user':{'readonly':True},
-    #}
+    form_widget_args = {        'Name':{'readonly':True}    }
     #from flask_admin.form.rules import Field
     #form_edit_rules = [
     #    CustomizableField('user', field_args={'readonly': True}),
@@ -232,12 +224,12 @@ class EmailsView(ModelView):
     def __init__(self, session, **kwargs):
         super(EmailsView, self).__init__(Emails, session, **kwargs)
 
-    #def is_accessible(self):
-    #    return login.current_user.is_authenticated
 
-    #def inaccessible_callback(self, name, **kwargs):
-        # redirect to login page if user doesn't have access
-    #    return redirect(url_for('login', next=request.url))
+#    def is_accessible(self):
+        #return login.current_user.is_authenticated
+
+#    def inaccessible_callback(self, name, **kwargs):
+#        return redirect(url_for('login'))
 
 
 from flask_admin import Admin, BaseView, expose

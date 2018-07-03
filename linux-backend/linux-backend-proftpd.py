@@ -18,7 +18,7 @@ channel.queue_declare(queue = queue)
 passwd_ftp = "/etc/passwd.ftp"
 
 def add_ftp(username, password, domain_name ):
-  hashed_password = crypt.crypt(password)
+  hashed_password = crypt.crypt(password,crypt.METHOD_MD5)
   nome = "ftp-user-{}".format(domain_name)
   home = "/var/www/domains/{}/htdocs".format(domain_name)
   backend.make_web_home(home)
@@ -26,8 +26,12 @@ def add_ftp(username, password, domain_name ):
   file1 = open(passwd_ftp)
   file2 = tempfile.NamedTemporaryFile(delete=False)
   for line in file1:
-    (user_name, hashed_password , uid, gid, gecos, homedir, usershell) = line.split(':')
-    print("debug {}, {}".format(username, user_name))
+    try:
+      (user_name, hashed_password , uid, gid, gecos, homedir, usershell) = line.strip().split(':')
+    except:
+     print ('bad line %s' %line)
+     continue
+    #print("verificando o usuario {}".format(username))
     if (username != user_name):
      file2.write(line.encode('utf-8'))
   file2.write(password_line.encode('utf-8'))
@@ -66,9 +70,12 @@ def callback(ch, method, properties, body):
   add_ftp(username, password, domain_name)
  if action == "delete":
   remove_ftp(username)
+ if action == "edit":
+  remove_ftp(username)
+  add_ftp(username, password, domain_name)
 
- os.system("service proftpd restart")
- time.sleep(10)
+# os.system("service proftpd restart")
+# time.sleep(10)
 
 
 channel.basic_consume(callback , queue = queue , no_ack=True)
