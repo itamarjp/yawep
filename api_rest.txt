@@ -39,22 +39,7 @@ curl -u x:x -i -X DELETE  https://painel.ispbrasil.com.br/api/domains/1
 curl -u x:x -i -X DELETE https://painel.ispbrasil.com.br/api/users/1
 
 
-
-
-ssh -o 'ProxyCommand ssh -p 19000 root@online.ispbrasil.com.br nc %h %p' root@192.168.122.74 
-ssh -p 19000 root@online.ispbrasil.com.br -L 5901:localhost:5900
-                <select ng-model="reviewCtrl.review.stars" class="form-control" ng-options="stars for stars in [5,4,3,2,1]" title="Stars">
-                  <option value="">Rate the Product</option>
-                </select>
-
-
-      this.review = {'createdOn': Date.now()};
-
-
-
 sudo rabbitmqctl list_queues
-
-
 
 from app.models.tables import User
 from app.models.tables import Domains
@@ -73,3 +58,5 @@ d = Domains.query.filter(Domains.user_id == 1).all()
 
 session.query(User).join("addresses")
 Domains.query.join("users").all()
+
+ssh -o 'ProxyCommand ssh -p 19000 root@machine1 nc %h %p' root@192.168.122.74 
