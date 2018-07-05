@@ -87,3 +87,4 @@ smtpd_recipient_restrictions =  permit_mynetworks
 
 
 
+https://wiki2.dovecot.org/HowTo/PostfixAndDovecotSASL
